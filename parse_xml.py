@@ -17,11 +17,12 @@ if db_exists == False:
     conn.executescript(pfx.read())
 
 
+find_pitches = etree.XPath('/player/atbat/pitch')
 def parse_game(game):
     xml_files = fnmatch.filter(os.listdir(game), '*.xml')
     for xml_file in xml_files:
         xml = etree.parse(os.path.join(game, xml_file))
-        pitches = xml.xpath('/player/atbat/pitch')
+        pitches = find_pitches(xml)
 
 
 def parse_day(output_dir, day):
