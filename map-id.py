@@ -20,7 +20,7 @@ mappings = []
 for player in mlb_map:
     # Make sure he's in MLB first.
     # Then ensure he's not already in the database
-    if player[1] == 1 and player[0] not in players:
+    if int(player[1]) == 1 and player[0] not in players:
         mappings.append([player[0], player[3]])
 
 conn.executemany("INSERT INTO player (mlbid, name) VALUES(?,?)", mappings)
