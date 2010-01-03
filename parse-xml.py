@@ -39,9 +39,10 @@ def parse_game(game):
                 insert = [pitch.get(key).strip() if pitch.get(key) else None for key in sorted(pitch_fields.keys())]
 
                 called = pitch.get('type')
+                des    = pitch.get('des')
                 if called == 'B':
                     balls += 1
-                elif called == 'S' and (strikes < 2 or pitch.get('des') == 'Foul Tip'):
+                elif called == 'S' and (strikes < 2 or (des != 'Foul' and des != 'Foul (Runner Going)')):
                     strikes += 1
 
                 insert.append(atbat_id)
