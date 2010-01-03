@@ -3,22 +3,36 @@ CREATE TABLE player (
     name text
 );
 
-CREATE TABLE egd_pitch (
-    id integer,
+CREATE TABLE atbat (
+    id integer PRIMARY KEY,
     pitcher integer,
     batter integer,
-    enhanced integer
+    batter_stand text,
+    pitcher_throw text,
+    des text,
+    event text,
+    brief_event text
+);
+
+CREATE TABLE raw_pitch (
+    id integer PRIMARY KEY,
+    atbat integer,
+    enhanced integer,
+    balls integer,  -- count data
+    strikes integer,
+    px real,
+    pz real,
+    x real,
+    y real,
     break_angle real,
     break_length real,
     break_y real,
-    end_speed real,
     pfx_x real,
     pfx_z real,
-    px real,
-    pz real,
     spin_dir real,
     spin_rate real,
     start_speed real,
+    end_speed real,
     sz_bot real,
     sz_top real,
     sv_id text,
@@ -33,7 +47,5 @@ CREATE TABLE egd_pitch (
     vz0 real,
     ax real,
     ay real,
-    az real,
-    x real,
-    y real
+    az real
 );
