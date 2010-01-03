@@ -44,10 +44,6 @@ def parse_game(game):
                 elif called == 'S' and (strikes < 2 or pitch.get('des') == 'Foul Tip'):
                     strikes += 1
 
-                if strikes > 3:
-                    print etree.tostring(atbat)
-                    print etree.tostring(pitch)
-
                 insert.append(1 if pitch.get('pitch_type') else 0)
                 insert.append(balls)
                 insert.append(strikes)
