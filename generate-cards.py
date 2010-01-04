@@ -1,0 +1,10 @@
+# colors:
+# FA: #008000
+# FF: 
+# FT: #000080
+# FC: #00FFFF
+# FS: #B1E0E6
+# CH: #FFA500
+# CU: #800080
+# SL: #FF0000
+# KN: #A52A2A
