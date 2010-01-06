@@ -71,7 +71,7 @@ def build_pitcher_card(pitcher, output_dir, img_dir):
     name = name[0]
 
     conn.row_factory = sqlite3.Row
-    row = conn.execute("SELECT pitch.* FROM raw_pitch pitch JOIN atbat ON pitch.atbat = atbat.id WHERE atbat.pitcher = ?", mlbid)
+    row = conn.execute("SELECT pitch.*,atbat.* FROM raw_pitch pitch JOIN atbat ON pitch.atbat = atbat.id WHERE atbat.pitcher = ?", mlbid)
     pitcher = Pitcher(name, row)
 
 
