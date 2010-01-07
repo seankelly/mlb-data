@@ -173,7 +173,7 @@ def graph_pitcher_card(pitcher, img_dir):
 
     # fifth velocity versus spin rate in a polar plot
     fig.add_axes((0.15, 0.15, 0.75, 0.75), projection="polar")
-    graph('spin_dir', 'start_speed', lambda x: x*3.14159/180)
+    graph('spin_dir', 'start_speed', lambda x: (-x-90)*3.14159/180)
     save(name, img_dir, '-5')
     fig.clear()
 
