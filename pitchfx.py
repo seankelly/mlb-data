@@ -166,14 +166,16 @@ class Pitcher(object):
         count = len(pitches)
         return (total / count)
 
-    def split(self, side):
-        split = {'count': 0, 'L': {'num': 0}, 'R': {'num': 0}}
+    def split(self):
+        split = {'L': {'num': 0}, 'R': {'num': 0}}
         for t in self.pitches.keys():
             left, right = self.pitches[t].split()
             split['L'][t] = left
             split['L']['num'] += len(left)
             split['R'][t] = right
             split['R']['num'] += len(right)
-            split['count'] += split['L']['num'] + split['R']['num']
+            split[t] = len(left) + len(right)
+
+        split['count'] = split['L']['num'] + split['R']['num']
 
         return split
