@@ -37,85 +37,6 @@ parser.add_option("-d", "", dest="backend", help="Matplotlib backend")
 
 conn = sqlite3.connect(options.file)
 
-def flatten(L):
-    if type(L) != type([]): return [L]
-    if L == []: return L
-    return flatten(L[0]) + flatten(L[1:])
-
-class Pitch(object):
-    def __init__(self, type):
-        self.type = type
-        self.total = 0
-        self.pitches = []
-
-    def add(self, pitch):
-        # Every pitch should be enhanced
-        # But check just in case I flub
-        if not pitch['enhanced']:
-            return
-        self.pitches.append(pitch)
-        self.total += 1
-
-    def avg(self, field):
-        if len(self.pitches) == 0:
-            return 0
-
-        total = sum(pitch[field] for pitch in self.pitches)
-        return (total / len(self.pitches))
-
-    def all(self, field):
-        if len(self.pitches) == 0:
-            return []
-
-        return list(pitch[field] for pitch in self.pitches)
-
-
-class Pitcher(object):
-    ignore_types = ['IN', 'PO', 'AB', 'UN']
-
-    def __init__(self, name, cursor):
-        self.name = name
-        self.pitches = {}
-        self.total = 0
-        self.enhanced = 0
-        for pitch in cursor:
-            self.total += 1
-            # Can only analyze enhanced pitches
-            if pitch['enhanced']:
-                self.enhanced += 1
-                if pitch['pitch_type'] in self.ignore_types:
-                    continue
-
-                if pitch['pitch_type'] not in self.pitches:
-                    self.pitches[pitch['pitch_type']] = Pitch(pitch['pitch_type'])
-
-                self.pitches[pitch['pitch_type']].add(pitch)
-
-    def _pitches(self, field, pitch_type):
-        if pitch_type:
-            if type(pitch_type) == type(u'unicode'):
-                pitches = [ self.pitches[pitch_type] ]
-            elif type(pitch_type) == type([]):
-                pitches = list(self.pitches[t] for t in pitch_type)
-            elif type(pitch_type) == type('str'):
-                pitches = [ self.pitches[unicode(pitch_type)] ]
-            else:
-                raise KeyError, "pitch_type not unicode or list"
-        else:
-            pitches = list(self.pitches[t] for t in self.pitches)
-        return pitches
-
-    # Default to merging none of the pitches
-    def all(self, field, pitch_type=None):
-        return flatten(list(pitch.all(field) for pitch in self._pitches(field, pitch_type)))
-
-    def avg(self, field, pitch_type=None):
-        pitches = self.all(field, pitch_type)
-        total = sum(pitches)
-        count = len(pitches)
-        return (total / count)
-
-
 def map_name(name):
     # Remove punctuation
     pname = str(name)
@@ -188,7 +109,7 @@ def build_pitcher_card(pitcher, output_dir, img_dir):
 
     conn.row_factory = sqlite3.Row
     row = conn.execute("SELECT pitch.*,atbat.* FROM raw_pitch pitch JOIN atbat ON pitch.atbat = atbat.id WHERE atbat.pitcher = ?", mlbid)
-    pitcher = Pitcher(name, row)
+    pitcher = pitchfx.Pitcher(name, row)
     # Ensure there is at least one enhanced pitch
     if pitcher.enhanced == 0:
         return
