@@ -136,10 +136,10 @@ class Pitcher(object):
                     continue
 
                 # Check if this pitch should be merged with another
-                if pitch_type in merge_types:
-                    pitch_type = merge_types[pitch_type]
+                if pitch_type in self.merge_types:
+                    pitch_type = self.merge_types[pitch_type]
                 if pitch_type not in self.pitches:
-                    self.pitches[pitch_type]] = Pitch(pitch_type)
+                    self.pitches[pitch_type] = Pitch(pitch_type)
 
                 self.pitches[pitch_type].add(pitch)
 
