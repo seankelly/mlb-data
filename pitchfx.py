@@ -119,6 +119,7 @@ class Pitch(object):
 
 class Pitcher(object):
     ignore_types = ['IN', 'PO', 'AB', 'UN']
+    merge_types = {'SI': 'FT', 'FF': 'FA'}
 
     def __init__(self, name, cursor):
         self.name = name
@@ -130,13 +131,17 @@ class Pitcher(object):
             # Can only analyze enhanced pitches
             if pitch['enhanced']:
                 self.enhanced += 1
-                if pitch['pitch_type'] in self.ignore_types:
+                pitch_type = pitch['pitch_type']
+                if pitch_type in self.ignore_types:
                     continue
 
-                if pitch['pitch_type'] not in self.pitches:
-                    self.pitches[pitch['pitch_type']] = Pitch(pitch['pitch_type'])
+                # Check if this pitch should be merged with another
+                if pitch_type in merge_types:
+                    pitch_type = merge_types[pitch_type]
+                if pitch_type not in self.pitches:
+                    self.pitches[pitch_type]] = Pitch(pitch_type)
 
-                self.pitches[pitch['pitch_type']].add(pitch)
+                self.pitches[pitch_type].add(pitch)
 
     def _pitches(self, field, pitch_type):
         if pitch_type:
