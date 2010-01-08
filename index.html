@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:py="http://genshi.edgewall.org/">
+ <head>
+  <title>
+MLB Pitcher Cards
+  </title>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <link rel="stylesheet" type="text/css" media="screen" title="main" href="/style/main.css" />
+ </head>
+<body>
+<div id="page">
+<div id="header">
+<h1>MLB Pitcher Cards</h1>
+</div>
+<div id="navigation">
+ <ul id="sections">
+  <li><a href="/">Home</a></li>
+  <li><a href="/articles/">Articles</a></li>
+  <li><a href="/projects/">Projects</a></li>
+  <li><a href="/unsorted/">Unsorted</a></li>
+ </ul>
+ <div style="clear:both"></div>
+</div>
+<div id="content">
+    <ul>
+        <li py:for="p in sorted(pitchers.keys())"><a href="${pitchers[p]}">$p</a></li>
+    </ul>
+</div>
+<div id="footer"></div>
+</div>
+</body>
+</html>
