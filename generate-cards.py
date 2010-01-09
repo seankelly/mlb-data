@@ -148,9 +148,9 @@ def build_cards(pitchers):
 
     index_pitchers = {}
     for pitcher in pitchers:
-        name,filename = build_pitcher_card(pitcher, output_dir, img_dir)
-        if name:
-            index_pitchers[name] = filename
+        r = build_pitcher_card(pitcher, output_dir, img_dir)
+        if r:
+            index_pitchers[r[0]] = r[1]
 
     if build_index:
         index = loader.load('index.html')
