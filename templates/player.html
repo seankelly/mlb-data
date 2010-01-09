@@ -1,0 +1,69 @@
+<?python
+from decimal import Decimal,getcontext
+D = lambda x: Decimal(str(x)).quantize(Decimal('.01'))
+def percent(x, y):
+    if y == 0:
+        return '0.00'
+    return D(100.0*x/y)
+count = pitcher.count()
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:py="http://genshi.edgewall.org/">
+ <head>
+     <title>${pitcher.name}</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <link rel="stylesheet" type="text/css" media="screen" title="main" href="pitch-style.css" />
+ </head>
+<body>
+    <p><a href="./">Back to pitcher cards</a></p>
+    <h1>${pitcher.name}</h1>
+    <h3>Pitch Averages</h3>
+    <table>
+        <thead>
+            <tr><th>Type</th><th>Initial Speed (mph)</th><th>Movement in X (in.)</th><th>Movement in Z (in.)</th><th>Number</th><th>Percentage</th><th>Versus RHB</th><th>Percentage</th><th>Versus LHB</th><th>Percentage</th></tr>
+        </thead>
+        <py:def function="each_pitch(p)">
+        <td class="text">${p}</td>
+            <td class="number">${D(pitcher.avg('start_speed', p))}</td>
+            <td class="number">${D(pitcher.avg('pfx_x', p))}</td>
+            <td class="number">${D(pitcher.avg('pfx_z', p))}</td>
+            <td class="number">${split[p]}</td>
+            <td class="number">${D(100.0*split[p]/split['count'])}</td>
+            <td class="number">${len(split['R'][p])}</td>
+            <td class="number">${D(100.0*len(split['R'][p])/split['R']['num'])}</td>
+            <td class="number">${len(split['L'][p])}</td>
+            <td class="number">${D(100.0*len(split['L'][p])/split['L']['num'])}</td>
+        </py:def>
+        <tbody>
+            <tr py:for="p in pitcher.pitches">
+                ${each_pitch(p)}
+            </tr>
+        </tbody>
+    </table>
+    <h3>Pitch Selection By Count</h3>
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th py:for="p in pitcher.pitches" colspan="2">$p</th>
+            </tr>
+            <tr>
+                <th>Count</th>
+                <py:for each="p in pitcher.pitches">
+                <th>Total</th><th>Percent</th>
+                </py:for>
+            </tr>
+        </thead>
+        <tbody>
+            <tr py:for="c in count.keys()">
+                <td class="text">$c</td>
+                <py:for each="p in pitcher.pitches">
+                <td>${count[c][p]}</td><td>${percent(count[c][p], count[c]['num'])}</td>
+                </py:for>
+            </tr>
+        </tbody>
+    </table>
+    <h3>Plots</h3>
+    <p>...</p>
+</body>
+</html>
