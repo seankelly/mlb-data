@@ -107,6 +107,9 @@ def pitcher_card_html(pitcher, output_dir):
     filename = os.path.join(output_dir, name + '.html')
 
     stream = player_tmpl.generate(pitcher=pitcher, split=pitcher.split())
+    fp = open(filename, "w")
+    fp.write(stream.render())
+    fp.close()
 
     return filename
 
