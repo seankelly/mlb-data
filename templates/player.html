@@ -59,7 +59,7 @@ count = pitcher.count()
             <tr py:for="c in counts()">
                 <td class="text">$c</td>
                 <py:for each="p in pitcher.pitches">
-                <td>${count[c][p]}</td><td>${percent(count[c][p], count[c]['num'])}</td>
+                <td class="number">${count[c][p]}</td><td class="number">${percent(count[c][p], count[c]['num'])}</td>
                 </py:for>
             </tr>
         </tbody>
