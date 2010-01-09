@@ -1,5 +1,6 @@
 <?python
 from decimal import Decimal,getcontext
+from pitchfx import counts
 D = lambda x: Decimal(str(x)).quantize(Decimal('.01'))
 def percent(x, y):
     if y == 0:
@@ -55,7 +56,7 @@ count = pitcher.count()
             </tr>
         </thead>
         <tbody>
-            <tr py:for="c in count.keys()">
+            <tr py:for="c in counts()">
                 <td class="text">$c</td>
                 <py:for each="p in pitcher.pitches">
                 <td>${count[c][p]}</td><td>${percent(count[c][p], count[c]['num'])}</td>
