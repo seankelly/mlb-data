@@ -38,18 +38,20 @@ def parse_game(game):
             for pitch in pitches:
                 insert = [pitch.get(key).strip() if pitch.get(key) else None for key in sorted(pitch_fields.keys())]
 
+                insert.append(atbat_id)
+                insert.append(1 if pitch.get('pitch_type') else 0)
+                insert.append(balls)
+                insert.append(strikes)
+                pitch_inserts.append(insert)
+
+                # Calculate the count
+                # ..after the pitch!
                 called = pitch.get('type')
                 des    = pitch.get('des')
                 if called == 'B':
                     balls += 1
                 elif called == 'S' and (strikes < 2 or (des != 'Foul' and des != 'Foul (Runner Going)')):
                     strikes += 1
-
-                insert.append(atbat_id)
-                insert.append(1 if pitch.get('pitch_type') else 0)
-                insert.append(balls)
-                insert.append(strikes)
-                pitch_inserts.append(insert)
 
     conn.executemany(pitch_sql, pitch_inserts)
 
