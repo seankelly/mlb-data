@@ -29,11 +29,11 @@ count = pitcher.count()
             <td class="number">${D(pitcher.avg('pfx_x', p))}</td>
             <td class="number">${D(pitcher.avg('pfx_z', p))}</td>
             <td class="number">${split[p]}</td>
-            <td class="number">${D(100.0*split[p]/split['count'])}</td>
+            <td class="number">${percent(split[p], split['count'])}</td>
             <td class="number">${len(split['R'][p])}</td>
-            <td class="number">${D(100.0*len(split['R'][p])/split['R']['num'])}</td>
+            <td class="number">${percent(len(split['R'][p]), split['R']['num'])}</td>
             <td class="number">${len(split['L'][p])}</td>
-            <td class="number">${D(100.0*len(split['L'][p])/split['L']['num'])}</td>
+            <td class="number">${percent(len(split['L'][p]), split['L']['num'])}</td>
         </py:def>
         <tbody>
             <tr py:for="p in pitcher.pitches">
