@@ -23,7 +23,9 @@ MLB Pitcher Cards
 </div>
 <div id="content">
     <ul>
-        <li py:for="p in sorted(pitchers.keys())"><a href="${pitchers[p]}">$p</a></li>
+        <li py:for="p in sorted(pitchers.keys())">
+            <a href="${pitchers[p]}">$p</a>
+        </li>
     </ul>
 </div>
 <div id="footer"></div>
