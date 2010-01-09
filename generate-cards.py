@@ -12,8 +12,9 @@
 import pitchfx
 import sqlite3
 import os, string
-from math import atan
 from optparse import OptionParser
+from genshi.template import TemplateLoader
+from math import pi
 import matplotlib.pyplot as P
 
 default_colors = {
@@ -34,6 +35,9 @@ parser.add_option("-f", "--file", dest="file", help="SQLite database file")
 parser.add_option("-d", "", dest="backend", help="Matplotlib backend")
 
 (options, args) = parser.parse_args()
+
+loader = TemplateLoader("templates/")
+player_tmpl = loader.load("player.html")
 
 conn = sqlite3.connect(options.file)
 
@@ -98,6 +102,14 @@ def graph_pitcher_card(pitcher, img_dir):
     save(name, img_dir, '-5')
     fig.clear()
 
+def pitcher_card_html(pitcher, output_dir):
+    name = map_name(pitcher.name)
+    filename = os.path.join(output_dir, name + '.html')
+
+    stream = player_tmpl.generate(pitcher=pitcher, split=pitcher.split())
+
+    return filename
+
 
 def build_pitcher_card(pitcher, output_dir, img_dir):
     mlbid = [pitcher]
@@ -115,6 +127,9 @@ def build_pitcher_card(pitcher, output_dir, img_dir):
         return
 
     graph_pitcher_card(pitcher, img_dir)
+    filename = pitcher_card_html(pitcher, output_dir)
+
+    return name, filename
 
 
 def build_cards(pitchers):
@@ -123,11 +138,20 @@ def build_cards(pitchers):
     if os.path.exists(img_dir) == False:
         os.makedirs(img_dir)
 
+    build_index = False
     if not pitchers:
         pitchers = [row[0] for row in conn.execute("SELECT distinct(pitcher) FROM atbat")]
+        build_index = True
 
+    index_pitchers = {}
     for pitcher in pitchers:
-        build_pitcher_card(pitcher, output_dir, img_dir)
+        name,filename = build_pitcher_card(pitcher, output_dir, img_dir)
+        if name:
+            index_pitchers[name] = filename
+
+    if build_index:
+        index = loader.load('index.html')
+        index_stream = index.generate(pitchers=index_pitchers)
 
 
 if len(args) > 0:
