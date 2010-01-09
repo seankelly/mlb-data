@@ -49,3 +49,11 @@ CREATE TABLE raw_pitch (
     ay real,
     az real
 );
+
+-- Useful indices.
+-- Commented out to make bulk importing faster.
+
+-- CREATE INDEX player_mlbid_idx ON player (mlbid);
+-- CREATE INDEX atbat_pitcher_idx ON atbat (pitcher);
+-- CREATE INDEX atbat_id_idx ON atbat (id);
+-- CREATE INDEX raw_pitch_atbat_idx ON raw_pitch (atbat);
