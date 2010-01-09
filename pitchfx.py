@@ -134,8 +134,8 @@ class Pitcher(object):
     merge_types = {'SI': 'FT', 'FF': 'FA'}
     map_types = {'FA': 'Fastball', 'FF': 'Fastball', 'FC': 'Cutter',
             'FT': 'Two-seam Fastball', 'SI': 'Two-seam Fastball',
-            'CU': 'Curveball', 'CH': 'Changeup', 'SL': 'Slider'
-            'KN': 'Knuckleball'}
+            'CU': 'Curveball', 'CH': 'Changeup', 'SL': 'Slider',
+            'FS': 'Splitter', 'KN': 'Knuckleball'}
 
     def __init__(self, name, cursor):
         self.name = name
