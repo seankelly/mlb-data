@@ -111,7 +111,7 @@ def pitcher_card_html(pitcher, output_dir):
     fp.write(stream.render())
     fp.close()
 
-    return filename
+    return name + '.html'
 
 
 def build_pitcher_card(pitcher, output_dir, img_dir):
