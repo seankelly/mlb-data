@@ -153,8 +153,12 @@ def build_cards(pitchers):
             index_pitchers[r[0]] = r[1]
 
     if build_index:
+        filename = os.path.join(output_dir, 'index.html')
         index = loader.load('index.html')
         index_stream = index.generate(pitchers=index_pitchers)
+        fp = open(filename, "w")
+        fp.write(index_stream.render())
+        fp.close()
 
 
 if len(args) > 0:
