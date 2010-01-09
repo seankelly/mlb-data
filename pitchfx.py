@@ -11,9 +11,7 @@ def counts():
             yield count
 
 def flatten(L):
-    if type(L) != type([]): return [L]
-    if L == []: return L
-    return flatten(L[0]) + flatten(L[1:])
+    return reduce(lambda x,y: x+y, L)
 
 def parse_date(date, default=date.today()):
     if date:
@@ -172,7 +170,8 @@ class Pitcher(object):
         return pitches
 
     def all(self, field, pitch_type=None):
-        return flatten(list(pitch.all(field) for pitch in self._pitches(field, pitch_type)))
+        pitches = [ pitch.all(field) for pitch in self._pitches(field, pitch_type) ]
+        return flatten(pitches)
 
     def avg(self, field, pitch_type=None):
         pitches = self.all(field, pitch_type)
