@@ -2,11 +2,11 @@ import csv, sqlite3
 from optparse import OptionParser
 
 parser = OptionParser()
-parser.add_option("-d", "--db", dest="db", help="SQLite database file")
+parser.add_option("-f", "--file", dest="file", help="SQLite database file")
 
 (options, args) = parser.parse_args()
 
-conn = sqlite3.connect(options.db)
+conn = sqlite3.connect(options.file)
 mlb_map = csv.reader(open(args[0]), delimiter="|")
 
 players = {}
