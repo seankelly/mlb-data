@@ -4,6 +4,12 @@ from optparse import OptionParser
 from math import atan
 import os, re
 
+def counts():
+    for balls in range(4):
+        for strikes in range(3):
+            count = str(balls) + '-' + str(strikes)
+            yield count
+
 def flatten(L):
     if type(L) != type([]): return [L]
     if L == []: return L
@@ -84,6 +90,9 @@ class Pitch(object):
         self.type = type
         self.total = 0
         self.pitches = []
+        self._count = {}
+        for c in counts():
+            self._count[c] = 0
 
     def add(self, pitch_row):
         # Every pitch should be enhanced
@@ -92,6 +101,8 @@ class Pitch(object):
             return
         self.pitches.append(pitch_row)
         self.total += 1
+        count = str(pitch_row['balls']) + '-' + str(pitch_row['strikes'])
+        self._count[count] += 1
 
     def avg(self, field):
         if len(self.pitches) == 0:
@@ -115,6 +126,9 @@ class Pitch(object):
             else:
                 left.append(p)
         return left, right
+
+    def count(self):
+        return self._count
 
 
 class Pitcher(object):
@@ -179,3 +193,16 @@ class Pitcher(object):
         split['count'] = split['L']['num'] + split['R']['num']
 
         return split
+
+    def count(self):
+        count = {}
+        pitch = {}
+        for t in self.pitches.keys():
+            pitch[t] = self.pitches[t].count()
+        for c in counts():
+            count[c] = { 'num': 0 }
+            for t in self.pitches.keys():
+                count[c][t] = pitch[t][c]
+                count[c]['num'] += pitch[t][c]
+
+        return count
