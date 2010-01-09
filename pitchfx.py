@@ -132,6 +132,9 @@ class Pitch(object):
 class Pitcher(object):
     ignore_types = ['IN', 'PO', 'AB', 'UN']
     merge_types = {'SI': 'FT', 'FF': 'FA'}
+    map_types = {'FA': 'Fastball', 'FF': 'Fastball', 'FC': 'Cutter',
+            'FT': 'Two-seam Fastball', 'SI', 'Two-seam Fastball',
+            'CU': 'Curveball', 'CH': 'Changeup', 'SL': 'Slider'}
 
     def __init__(self, name, cursor):
         self.name = name
@@ -148,8 +151,8 @@ class Pitcher(object):
                     continue
 
                 # Check if this pitch should be merged with another
-                if pitch_type in self.merge_types:
-                    pitch_type = self.merge_types[pitch_type]
+                if pitch_type in self.map_types:
+                    pitch_type = self.map_types[pitch_type]
                 if pitch_type not in self.pitches:
                     self.pitches[pitch_type] = Pitch(pitch_type)
 
