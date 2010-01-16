@@ -47,15 +47,15 @@ class HTML(HTMLParser):
 class PitchFX(object):
     def __init__(self):
         self.start_day = date.today() - timedelta(1)
-        self.end_day = date.today()
+        self.end_day = date.today() - timedelta(1)
 
     def parse_options(self, parser=OptionParser()):
         parser.add_option("-o", "--out", dest="outdir",
                         help="XML saved in this directory")
         parser.add_option("-s", "--start", dest="start_time", metavar="START",
-                        help="Start day, inclusive")
+                        help="Start day")
         parser.add_option("-e", "--end", dest="end_time", metavar="END",
-                        help="End day, exclusive")
+                        help="End day")
 
         (options, args) = parser.parse_args()
         # Default the start day to yesterday
@@ -78,7 +78,7 @@ class PitchFX(object):
 
     def each_day(self):
         current_day = self.start_day
-        while current_day < self.end_day:
+        while current_day <= self.end_day:
             yield current_day
             current_day += timedelta(1)
 
