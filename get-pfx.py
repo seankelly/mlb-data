@@ -4,26 +4,45 @@ from random import uniform
 import urllib2, os, os.path, time
 import pitchfx
 
-def fetch_game(url, gid):
-    pitchers = url + gid + "/pbp/pitchers/"
-    try:
-        pitcher_dir = urllib2.urlopen(pitchers)
-    except urllib2.HTTPError:
-        return
-
-    mlb = pitchfx.HTML()
-    mlb.feed(pitcher_dir.read())
-    mlb.close()
-
-    gid_dir = os.path.join(out_dir, gid)
+def save_game_data(gid_dir, xml_file, name):
     if os.path.exists(gid_dir) == False:
         os.makedirs(gid_dir)
 
-    for pitcher in mlb.get_links('\d+\.xml'):
-        xml_output = open(os.path.join(gid_dir, pitcher), 'w')
-        xml_file   = urllib2.urlopen(pitchers + pitcher)
-        xml_output.write(xml_file.read())
-        time.sleep(uniform(1, 5))
+    xml_output = open(os.path.join(gid_dir, name), 'w')
+    xml_output.write(xml_file.read())
+    xml_output.close()
+
+def scrape_game_dir(gid_dir, url, xml_re):
+    url_dir = urllib2.urlopen(url)
+    mlb = pitchfx.HTML()
+    mlb.feed(url_dir.read())
+    mlb.close()
+
+    # Scrape the links for what we want
+    for filename in mlb.get_links(xml_re):
+        xml_file = urllib2.urlopen(url + "/" + filename)
+        save_game_data(gid_dir, xml_file, filename)
+        time.sleep(uniform(2, 7))
+
+
+def fetch_game(url, gid):
+    gid_dir = os.path.join(pfx.output_dir, gid)
+
+    url_base = url + gid
+    game = url_base + "/game.xml"
+    # This file only exists for games that were played in
+    # some capacity. Try to fetch and return if cannot.
+    try:
+        game_xml = urllib2.urlopen(game)
+        save_game_data(gid_dir, game_xml, "game.xml")
+    except urllib2.HTTPError:
+        return
+
+    # Find and save pitcher XML files.
+    scrape_game_dir(gid_dir, url_base + "/pbp/pitchers", "\d+\.xml")
+
+    # Ditto for each inning file.
+    scrape_game_dir(gid_dir, url_base + "/inning", "inning_(\d+|hit)\.xml")
 
 
 def fetch_day(day):
