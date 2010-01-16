@@ -35,7 +35,7 @@ def fetch_day(day):
 
     for gid in mlb.get_links('^gid_'):
         fetch_game(url, gid)
-        time.sleep(20 + uniform(0, 10))
+        time.sleep(uniform(20, 30))
 
 pfx = pitchfx.PitchFX()
 
