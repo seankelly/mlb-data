@@ -53,9 +53,9 @@ class PitchFX(object):
         parser.add_option("-o", "--out", dest="outdir",
                         help="XML saved in this directory")
         parser.add_option("-s", "--start", dest="start_time", metavar="START",
-                        help="Start day")
+                        help="Start day, inclusive")
         parser.add_option("-e", "--end", dest="end_time", metavar="END",
-                        help="End day")
+                        help="End day, exclusive")
 
         (options, args) = parser.parse_args()
         # Default the start day to yesterday
