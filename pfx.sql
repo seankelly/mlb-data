@@ -71,6 +71,15 @@ CREATE TABLE raw_pitch (
     az real
 );
 
+CREATE TABLE bip (
+    atbat integer,
+    bip_type text,
+    x real,
+    y real,
+    feet_x real,
+    feet_y real
+);
+
 -- Useful indices.
 -- Commented out to make bulk importing faster.
 
