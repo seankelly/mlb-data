@@ -3,8 +3,28 @@ CREATE TABLE player (
     name text
 );
 
+CREATE TABLE park (
+    id integer, -- use MLB's ids
+    name text,
+    location text
+);
+
+CREATE TABLE team (
+    id integer, -- use MLB's
+    code text,
+    fullname text,
+    name text
+);
+
+CREATE TABLE game (
+    home integer,
+    away integer,
+    day integer
+);
+
 CREATE TABLE atbat (
     id integer PRIMARY KEY,
+    game integer,
     pitcher integer,
     batter integer,
     batter_stand text,
