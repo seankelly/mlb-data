@@ -38,6 +38,7 @@ CREATE TABLE raw_pitch (
     id integer PRIMARY KEY,
     atbat integer,
     enhanced integer,
+    inning integer,
     balls integer,  -- count data
     strikes integer,
     px real,
