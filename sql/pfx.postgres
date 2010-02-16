@@ -30,6 +30,10 @@ CREATE TABLE atbat (
     batter integer REFERENCES player (mlbid),
     batter_stand text,
     pitcher_throw text,
+    bip_x real,
+    bip_y real,
+    bip_x_feet real,
+    bip_y_feet real,
     des text,
     event text,
     brief_event text
