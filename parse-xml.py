@@ -46,6 +46,7 @@ def parse_game(game):
                 insert = [pitch.get(key).strip() if pitch.get(key) else None for key in sorted(pitch_fields.keys())]
 
                 insert.append(atbat_id)
+                # This is for the enhanced column
                 insert.append(1 if pitch.get('pitch_type') else 0)
                 insert.append(balls)
                 insert.append(strikes)
