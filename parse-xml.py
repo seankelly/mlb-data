@@ -18,9 +18,14 @@ if db_exists == False:
 
 
 find_atbats = etree.XPath('/inning/*/atbat')
-def parse_game(game):
+find_bip = etree.XPath('/hitchart/hip')
+def parse_game(game_dir):
+    game_xml = etree.parse(os.path.join(game_dir, 'game.xml'))
     # Skip inning_hit.xml. It is special and needs different processing.
-    xml_files = fnmatch.filter(os.listdir(game), 'inning_[!h]*.xml')
+    xml_files = fnmatch.filter(os.listdir(game_dir), 'inning_[!h]*.xml')
+    bip = find_bip(etree.parse(os.path.join(game_dir, 'inning_hit.xml')))
+    # Reverse it because python 2.5 doesn't have popleft()
+    bip.reverse()
 
     # Keep these fields.
     # Right now this is all but one ('des'), but MLBAM has added fields before.
@@ -33,12 +38,28 @@ def parse_game(game):
 
     for inning in range(1, len(xml_files) + 1):
         xml_file = 'inning' + str(inning) + '.xml'
-        xml = etree.parse(os.path.join(game, xml_file))
-        atbats = find_atbats(xml)
+        atbats = find_atbats(etree.parse(os.path.join(game_dir, xml_file)))
         for atbat in atbats:
+            atbat_fields = [atbat.get(key).strip() for key in sorted(atbat_fields.keys())]
             # Try to match the atbat with entry in inning_hit.xml
+            idx = len(bip)-1
+            if atbat.get('pitcher') == bip[idx].get('pitcher') and \
+               atbat.get('batter') == bip[idx].get('batter')   and \
+               atbat.get('event') == bip[idx].get('des'):
+                atbat_fields.append(bip[idx].get('type'))
+                atbat_fields.append(bip[idx].get('x'))
+                atbat_fields.append(bip[idx].get('y'))
+                # These are the x/y feet fields. I need to get the
+                # multiplier for each park and apply it here.
+                atbat_fields.append(None)
+                atbat_fields.append(None)
+                bip.pop()
+            else:
+                # X means not a BIP! Hopefully makes sense.
+                atbat_fields.append('X')
+                for i in range(4): atbat_fields.append(None)
 
-            cur = conn.execute(atbat_sql, [atbat.get(key).strip() for key in sorted(atbat_fields.keys())])
+            cur = conn.execute(atbat_sql, atbat_fields)
             atbat_id = cur.lastrowid
 
             balls, strikes = 0, 0
