@@ -40,6 +40,11 @@ class Options(object):
     def __init__(self):
         self.start_day = date.today() - timedelta(1)
         self.end_day = date.today() - timedelta(1)
+        self.conn = None
+
+    def __del__(self):
+        if self.conn:
+            conn.close()
 
     def parse_options(self, parser=OptionParser()):
         parser.add_option("-o", "--out", dest="outdir",
