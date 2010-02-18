@@ -1,7 +1,6 @@
 from lxml import etree
 import pitchfx
-import os.path, os, fnmatch
-import sqlite3
+import os, fnmatch
 
 
 game_children = etree.XPath('/game/*')
