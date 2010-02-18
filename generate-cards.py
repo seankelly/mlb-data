@@ -9,10 +9,8 @@
 # SL: #FF0000
 # KN: #A52A2A
 
-import pitchfx
-import sqlite3
+import pitchfx, gameday
 import os, string
-from optparse import OptionParser
 from genshi.template import TemplateLoader
 from math import pi
 import matplotlib.pyplot as P
@@ -30,16 +28,11 @@ default_colors = {
     'KN': '#A52A2A'
 }
 
-parser = OptionParser()
-parser.add_option("-f", "--file", dest="file", help="SQLite database file")
-parser.add_option("-d", "", dest="backend", help="Matplotlib backend")
-
-(options, args) = parser.parse_args()
+gd = gameday.Options()
+gd.parse_options()
 
 loader = TemplateLoader("templates/")
 player_tmpl = loader.load("player.html")
-
-conn = sqlite3.connect(options.file)
 
 def map_name(name):
     # Remove punctuation
@@ -116,14 +109,14 @@ def pitcher_card_html(pitcher, output_dir):
 
 def build_pitcher_card(pitcher, output_dir, img_dir):
     mlbid = [pitcher]
-    row = conn.execute("SELECT name FROM player WHERE mlbid = ?", mlbid)
+    row = gd.conn.execute("SELECT name FROM player WHERE mlbid = ?", mlbid)
     name = row.fetchone()
     if not name:
         return
     name = name[0]
 
-    conn.row_factory = sqlite3.Row
-    row = conn.execute("SELECT pitch.*,atbat.* FROM raw_pitch pitch JOIN atbat ON pitch.atbat = atbat.id WHERE atbat.pitcher = ?", mlbid)
+    gd.conn.row_factory = sqlite3.Row
+    row = gd.conn.execute("SELECT pitch.*,atbat.* FROM raw_pitch pitch JOIN atbat ON pitch.atbat = atbat.id WHERE atbat.pitcher = ?", mlbid)
     pitcher = pitchfx.Pitcher(name, row)
     # Ensure there is at least one enhanced pitch
     if pitcher.enhanced == 0:
@@ -143,7 +136,7 @@ def build_cards(pitchers):
 
     build_index = False
     if not pitchers:
-        pitchers = [row[0] for row in conn.execute("SELECT distinct(pitcher) FROM atbat")]
+        pitchers = [row[0] for row in gd.conn.execute("SELECT distinct(pitcher) FROM atbat")]
         build_index = True
 
     index_pitchers = {}
@@ -165,5 +158,3 @@ if len(args) > 0:
     build_cards(args)
 else:
     build_cards(None)
-
-conn.close()
