@@ -3,19 +3,6 @@ import pitchfx
 import os.path, os, fnmatch
 import sqlite3
 
-db = "pfx_card.db"
-
-db_exists = True
-if not os.path.exists(db):
-    db_exists = False
-
-conn = sqlite3.connect(db)
-
-# Create some tables if building the database.
-if db_exists == False:
-    pfx = open("pfx.sql", "r")
-    conn.executescript(pfx.read())
-
 
 find_atbats = etree.XPath('/inning/*/atbat')
 find_bip = etree.XPath('/hitchart/hip')
