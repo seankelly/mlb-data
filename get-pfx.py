@@ -2,7 +2,7 @@
 
 from random import uniform
 import urllib2, os, os.path, time
-import pitchfx
+import gameday
 
 def save_game_data(gid_dir, xml_file, name):
     if os.path.exists(gid_dir) == False:
@@ -14,7 +14,7 @@ def save_game_data(gid_dir, xml_file, name):
 
 def scrape_game_dir(gid_dir, url, xml_re):
     url_dir = urllib2.urlopen(url)
-    mlb = pitchfx.HTML()
+    mlb = gameday.HTML()
     mlb.feed(url_dir.read())
     mlb.close()
 
@@ -26,7 +26,7 @@ def scrape_game_dir(gid_dir, url, xml_re):
 
 
 def fetch_game(url, gid):
-    gid_dir = os.path.join(pfx.output_dir, gid)
+    gid_dir = os.path.join(gd.output_dir, gid)
 
     url_base = url + gid
     game = url_base + "/game.xml"
@@ -48,7 +48,7 @@ def fetch_game(url, gid):
 def fetch_day(day):
     url = "http://gd2.mlb.com/components/game/mlb/" + day.strftime("year_%Y/month_%m/day_%d/")
     day_dir = urllib2.urlopen(url)
-    mlb = pitchfx.HTML()
+    mlb = gameday.HTML()
     mlb.feed(day_dir.read())
     mlb.close()
 
@@ -56,9 +56,9 @@ def fetch_day(day):
         fetch_game(url, gid)
         time.sleep(uniform(20, 30))
 
-pfx = pitchfx.PitchFX()
+gd = gameday.Options()
 
-pfx.parse_options()
+gd.parse_options()
 
-for day in pfx.each_day():
+for day in gd.each_day():
     fetch_day(day)
