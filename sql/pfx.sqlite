@@ -17,9 +17,10 @@ CREATE TABLE team (
 );
 
 CREATE TABLE game (
-    game integer,
+    game integer PRIMARY KEY,
     home integer,
     away integer,
+    park integer,
     day integer
 );
 

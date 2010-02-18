@@ -4,10 +4,25 @@ import os.path, os, fnmatch
 import sqlite3
 
 
+game_children = etree.XPath('/game/*')
+def parse_game_xml(game_dir):
+    game_sql = 'INSERT INTO game (home,away,park,day) VALUES (?,?,?,?)'
+    game = {}
+    for el in game_children(etree.parse(os.path.join(game_dir, 'game.xml'))):
+        if el.tag == 'team':
+            game[el.get('type')] = el.get('id')
+        elif el.tag == 'stadium':
+            game['park'] = el.get('id')
+    insert = [ game['home'], game['away'], game['park'], game['day'] ]
+    cur = conn.execute(game_sql, insert)
+    game['id'] = cur.lastrowid
+    return game
+
+
 find_atbats = etree.XPath('/inning/*/atbat')
 find_bip = etree.XPath('/hitchart/hip')
 def parse_game(game_dir):
-    game_xml = etree.parse(os.path.join(game_dir, 'game.xml'))
+    game = parse_game_xml(game_dir)
     # Skip inning_hit.xml. It is special and needs different processing.
     xml_files = fnmatch.filter(os.listdir(game_dir), 'inning_[!h]*.xml')
     bip = find_bip(etree.parse(os.path.join(game_dir, 'inning_hit.xml')))

@@ -20,6 +20,7 @@ CREATE TABLE game (
     id serial PRIMARY KEY,
     home integer,
     away integer,
+    park integer,
     day date
 );
 
