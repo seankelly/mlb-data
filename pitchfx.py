@@ -56,6 +56,10 @@ class PitchFX(object):
                         help="Start day")
         parser.add_option("-e", "--end", dest="end_time", metavar="END",
                         help="End day")
+        parser.add_option("-d", "--db", dest="db", metavar="DATABASE",
+                        help="Database to use")
+        parser.add_option("-D", "--driver", dest="driver", metavar="DRIVER",
+                        help="Database driver to use")
 
         (options, args) = parser.parse_args()
         # Default the start day to yesterday
