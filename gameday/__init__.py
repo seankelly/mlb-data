@@ -41,6 +41,7 @@ class Options(object):
         self.start_day = date.today() - timedelta(1)
         self.end_day = date.today() - timedelta(1)
         self.conn = None
+        self.row_factory = None
 
     def __del__(self):
         if self.conn:
@@ -81,9 +82,15 @@ class Options(object):
         if options.driver == 'sqlite' or options.driver == 'sqlite3':
             import sqlite3
             conn = sqlite3.connect(options.db)
+            self.row_factory = sqlite3.Row
         elif options.driver == 'postgres' or options.driver == 'pygresql':
             import pgdb
             conn = pgdb.connect(database=options.db, user=options.user, password=options.password)
+            def row_factory(cursor, row):
+                d = {}
+                for idx, col in enumerate(cursor.description):
+                    d[col[0]] = row[idx]
+                return d
         else:
             raise ValueError, "No database driver specified"
         self.conn = conn

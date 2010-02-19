@@ -115,7 +115,7 @@ def build_pitcher_card(pitcher, output_dir, img_dir):
         return
     name = name[0]
 
-    gd.conn.row_factory = sqlite3.Row
+    gd.conn.row_factory = gd.row_factory
     row = gd.conn.execute("SELECT pitch.*,atbat.* FROM raw_pitch pitch JOIN atbat ON pitch.atbat = atbat.id WHERE atbat.pitcher = ?", mlbid)
     pitcher = pitchfx.Pitcher(name, row)
     # Ensure there is at least one enhanced pitch
