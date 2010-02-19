@@ -17,6 +17,13 @@ def parse_date(date, default=date.today()):
     return day
 
 
+def row_factory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
+
+
 class HTML(HTMLParser):
     def __init__(self):
         HTMLParser.__init__(self)
@@ -86,11 +93,7 @@ class Options(object):
         elif options.driver == 'postgres' or options.driver == 'pygresql':
             import pgdb
             conn = pgdb.connect(database=options.db, user=options.user, password=options.password)
-            def row_factory(cursor, row):
-                d = {}
-                for idx, col in enumerate(cursor.description):
-                    d[col[0]] = row[idx]
-                return d
+            self.row_factory = row_factory
         else:
             raise ValueError, "No database driver specified"
         self.conn = conn
