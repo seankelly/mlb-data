@@ -9,7 +9,7 @@
 # SL: #FF0000
 # KN: #A52A2A
 
-import pitchfx, gameday
+import gameday, gameday.pitchfx
 import os, string
 from genshi.template import TemplateLoader
 from math import pi

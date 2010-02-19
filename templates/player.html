@@ -1,6 +1,6 @@
 <?python
 from decimal import Decimal,getcontext
-from pitchfx import counts
+from gameday.pitchfx import counts
 D = lambda x: Decimal(str(x)).quantize(Decimal('.01'))
 def percent(x, y):
     if y == 0:
