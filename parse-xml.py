@@ -1,5 +1,5 @@
 from lxml import etree
-import pitchfx
+import gameday
 import os, fnmatch
 
 
@@ -93,12 +93,12 @@ def parse_day(output_dir, day):
         parse_game(os.path.join(output_dir, game))
 
 
-pfx = pitchfx.PitchFX()
+gd = gameday.Options()
 
-pfx.parse_options()
+gd.parse_options()
 
-for day in pfx.each_day():
-    parse_day(pfx.output_dir, day)
+for day in gd.each_day():
+    parse_day(gd.output_dir, day)
 
 conn.commit()
 conn.close()
