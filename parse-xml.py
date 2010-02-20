@@ -94,11 +94,10 @@ def parse_day(output_dir, day):
 
 
 gd = gameday.Options()
-
 gd.parse_options()
+conn = gd.conn
 
 for day in gd.each_day():
     parse_day(gd.output_dir, day)
 
 conn.commit()
-conn.close()
