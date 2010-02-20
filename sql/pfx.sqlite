@@ -37,8 +37,7 @@ CREATE TABLE atbat (
     bip_x_feet real,
     bip_y_feet real,
     des text,
-    event text,
-    brief_event text
+    event text
 );
 
 CREATE TABLE raw_pitch (
