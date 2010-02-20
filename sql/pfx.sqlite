@@ -39,11 +39,11 @@ CREATE TABLE bip (
     id integer PRIMARY KEY,
     atbat integer,
     park integer,
-    bip_type text,
-    bip_x real,
-    bip_y real,
-    bip_x_feet real,
-    bip_y_feet real
+    type text,
+    x real,
+    y real,
+    x_feet real,
+    y_feet real
 );
 
 CREATE TABLE raw_pitch (
@@ -81,15 +81,6 @@ CREATE TABLE raw_pitch (
     ax real,
     ay real,
     az real
-);
-
-CREATE TABLE bip (
-    atbat integer,
-    bip_type text,
-    x real,
-    y real,
-    feet_x real,
-    feet_y real
 );
 
 -- Useful indices.
