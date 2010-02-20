@@ -44,9 +44,7 @@ def parse_game(game_dir, day):
             atbat_insert = [atbat.get(key).strip() for key in sorted(atbat_fields.keys())]
             # Try to match the atbat with entry in inning_hit.xml
             idx = len(bip)-1
-            if atbat.get('pitcher') == bip[idx].get('pitcher') and \
-               atbat.get('batter') == bip[idx].get('batter')   and \
-               atbat.get('event') == bip[idx].get('des'):
+            if idx >= 0 and atbat.get('pitcher') == bip[idx].get('pitcher') and atbat.get('batter') == bip[idx].get('batter') and inning == int(bip[idx].get('inning')):
                 atbat_insert.append(bip[idx].get('type'))
                 atbat_insert.append(bip[idx].get('x'))
                 atbat_insert.append(bip[idx].get('y'))
@@ -59,6 +57,11 @@ def parse_game(game_dir, day):
                 # X means not a BIP! Hopefully makes sense.
                 atbat_insert.append('X')
                 for i in range(4): atbat_insert.append(None)
+
+            idx = len(bip) - 1
+            # Bleh. Ignore errors for now
+            if idx >= 0 and (bip[idx].get('des') == 'Error' or bip[idx].get('des') == 'Fan interference'):
+                bip.pop()
 
             cur = conn.execute(atbat_sql, atbat_insert)
             atbat_id = cur.lastrowid
