@@ -31,13 +31,19 @@ CREATE TABLE atbat (
     batter integer,
     batter_stand text,
     pitcher_throw text,
+    des text,
+    event text
+);
+
+CREATE TABLE bip (
+    id integer PRIMARY KEY,
+    atbat integer,
+    park integer,
     bip_type text,
     bip_x real,
     bip_y real,
     bip_x_feet real,
-    bip_y_feet real,
-    des text,
-    event text
+    bip_y_feet real
 );
 
 CREATE TABLE raw_pitch (
