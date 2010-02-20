@@ -21,7 +21,7 @@ CREATE TABLE game (
     home integer,
     away integer,
     park integer,
-    day integer
+    day text
 );
 
 CREATE TABLE atbat (
