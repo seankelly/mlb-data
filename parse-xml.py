@@ -32,7 +32,8 @@ def parse_game(game_dir, day):
     # Right now this is all but one ('des'), but MLBAM has added fields before.
     atbat_fields = {'pitcher': 'pitcher', 'batter': 'batter', 'stand': 'batter_stand', 'p_throws': 'pitcher_throw', 'des': 'des', 'event': 'event'}
     # Add in bip_x/y columns
-    atbat_sql = "INSERT INTO atbat (" + ",".join(atbat_fields[key] for key in sorted(atbat_fields.keys())) + ",bip_type,bip_x,bip_y,bip_x_feet,bip_y_feet) VALUES (" + ",".join(map(lambda a: '?', atbat_fields.keys())) + ",?,?,?,?,?)"
+    atbat_sql = "INSERT INTO atbat (" + ",".join(atbat_fields[key] for key in sorted(atbat_fields.keys())) + ") VALUES (" + ",".join(map(lambda a: '?', atbat_fields.keys())) + ")"
+    bip_sql = "INSERT INTO bip (atbat, park, type, x, y, x_feet, y_feet) VALUES (?,?,?,?,?,?,?)"
     pitch_fields = {'spin_rate': 'spin_rate', 'break_angle': 'break_angle', 'pitch_type': 'pitch_type', 'ax': 'ax', 'ay': 'ay', 'y0': 'y0', 'az': 'az', 'end_speed': 'end_speed', 'spin_dir': 'spin_dir', 'start_speed': 'start_speed', 'pz': 'pz', 'px': 'px', 'type': 'type', 'sz_bot': 'sz_bot', 'pfx_z': 'pfx_z', 'vy0': 'vy0', 'pfx_x': 'pfx_x', 'break_length': 'break_length', 'x0': 'x0', 'z0': 'z0', 'break_y': 'break_y', 'sz_top': 'sz_top', 'type_confidence': 'type_confidence', 'y': 'y', 'x': 'x', 'vz0': 'vz0', 'sv_id': 'sv_id', 'vx0': 'vx0'}
     pitch_sql = "INSERT INTO raw_pitch (" + ",".join(pitch_fields[key] for key in sorted(pitch_fields.keys())) + ",atbat,enhanced,balls,strikes) VALUES (" + ",".join(map(lambda a: '?', pitch_fields.keys())) + ",?,?,?,?)"
     pitch_inserts = []
@@ -42,29 +43,15 @@ def parse_game(game_dir, day):
         atbats = find_atbats(etree.parse(os.path.join(game_dir, xml_file)))
         for atbat in atbats:
             atbat_insert = [atbat.get(key).strip() for key in sorted(atbat_fields.keys())]
-            # Try to match the atbat with entry in inning_hit.xml
-            idx = len(bip)-1
-            if idx >= 0 and atbat.get('pitcher') == bip[idx].get('pitcher') and atbat.get('batter') == bip[idx].get('batter') and inning == int(bip[idx].get('inning')):
-                atbat_insert.append(bip[idx].get('type'))
-                atbat_insert.append(bip[idx].get('x'))
-                atbat_insert.append(bip[idx].get('y'))
-                # These are the x/y feet fields. I need to get the
-                # multiplier for each park and apply it here.
-                atbat_insert.append(None)
-                atbat_insert.append(None)
-                bip.pop()
-            else:
-                # X means not a BIP! Hopefully makes sense.
-                atbat_insert.append('X')
-                for i in range(4): atbat_insert.append(None)
-
-            idx = len(bip) - 1
-            # Bleh. Ignore errors for now
-            if idx >= 0 and (bip[idx].get('des') == 'Error' or bip[idx].get('des') == 'Fan interference'):
-                bip.pop()
-
             cur = conn.execute(atbat_sql, atbat_insert)
             atbat_id = cur.lastrowid
+
+            # Try to match the atbat with entry in inning_hit.xml
+            idx = len(bip)-1
+            while idx >= 0 and atbat.get('pitcher') == bip[idx].get('pitcher') and atbat.get('batter') == bip[idx].get('batter') and inning == int(bip[idx].get('inning')):
+                conn.execute(bip_sql, [ atbat_id, game['park'], bip[idx].get('type'), bip[idx].get('x'), bip[idx].get('y'), None, None ])
+                bip.pop()
+                idx = len(bip)-1
 
             balls, strikes = 0, 0
             for pitch in atbat.getiterator('pitch'):
