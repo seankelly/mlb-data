@@ -13,7 +13,6 @@ import gameday, gameday.pitchfx
 import os, string
 from genshi.template import TemplateLoader
 from math import pi
-import matplotlib.pyplot as P
 
 default_colors = {
     'FA': '#008000',
@@ -43,58 +42,6 @@ def map_name(name):
     pname = pname.replace(' ', '_')
     return pname
 
-def save(name, img_dir, graph_number):
-    filename = os.path.join(img_dir, name + graph_number + '.png')
-    P.savefig(filename)
-
-def graph_pitcher_card(pitcher, img_dir):
-    name = map_name(pitcher.name)
-
-    fig = P.figure(figsize=(5,5), dpi=100)
-
-    def graph(x, y, f=lambda x:x):
-        types = pitcher.pitches.keys()
-        for t in types:
-            P.scatter(map(f, pitcher.all(x, t)), pitcher.all(y, t), c=default_colors[t], edgecolors="none")
-
-    # first vertical vs horizontal movement
-    fig.add_axes((0.15, 0.12, 0.75, 0.78), xlim=[-20, 20], xlabel="Horizontal Movement", ylabel="Vertical Movement", ylim=[-20, 20])
-    graph('pfx_x', 'pfx_z')
-    P.xticks([-20, -10, 0, 10, 20])
-    P.yticks([-20, -10, 0, 10, 20])
-    save(name, img_dir, '-1')
-    fig.clear()
-
-    # second vertical vs horizontal release point
-    fig.add_axes((0.15, 0.12, 0.75, 0.78), xlabel="Horizontal Release Point", ylabel="Vertical Release Point")
-    graph('x0', 'z0')
-    P.xticks([-4, -2, 0, 2, 4])
-    P.yticks([0, 2, 4, 6, 8])
-    save(name, img_dir, '-2')
-    fig.clear()
-
-    # third velocity versus horizontal movement
-    fig.add_axes((0.15, 0.12, 0.75, 0.78), xlim=[-20, 20], xlabel="Horizontal Movement", ylabel="Velocity", ylim=[65, 105])
-    graph('pfx_x', 'start_speed')
-    P.xticks([-20, -10, 0, 10, 20])
-    P.yticks([65, 75, 85, 95, 105])
-    save(name, img_dir, '-3')
-    fig.clear()
-
-    # fourth vertical movement versus velocity
-    fig.add_axes((0.15, 0.12, 0.75, 0.78), xlabel="Velocity", xlim=[65, 105], ylim=[-20, 20], ylabel="Vertical Movement")
-    graph('start_speed', 'pfx_z')
-    P.xticks([65, 75, 85, 95, 105])
-    P.yticks([ -20, -10, 0, 10, 20])
-    save(name, img_dir, '-4')
-    fig.clear()
-
-    # fifth velocity versus spin rate in a polar plot
-    fig.add_axes((0.15, 0.15, 0.75, 0.75), projection="polar")
-    graph('spin_dir', 'start_speed', lambda x: (-x-90)*pi/180)
-    save(name, img_dir, '-5')
-    fig.clear()
-
 def pitcher_card_html(pitcher, output_dir):
     name = map_name(pitcher.name)
     filename = os.path.join(output_dir, name + '.html')
@@ -103,9 +50,7 @@ def pitcher_card_html(pitcher, output_dir):
     fp = open(filename, "w")
     fp.write(stream.render())
     fp.close()
-
     return name + '.html'
-
 
 def build_pitcher_card(pitcher, output_dir, img_dir):
     mlbid = [pitcher]
@@ -122,9 +67,7 @@ def build_pitcher_card(pitcher, output_dir, img_dir):
     if pitcher.enhanced == 0:
         return
 
-    graph_pitcher_card(pitcher, img_dir)
     filename = pitcher_card_html(pitcher, output_dir)
-
     return name, filename
 
 
