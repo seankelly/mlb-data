@@ -4,9 +4,9 @@ import os, fnmatch
 
 
 game_children = etree.XPath('/game/*')
-def parse_game_xml(game_dir):
+def parse_game_xml(game_dir, day):
     game_sql = 'INSERT INTO game (home,away,park,day) VALUES (?,?,?,?)'
-    game = {}
+    game = { 'day': str(day) }
     for el in game_children(etree.parse(os.path.join(game_dir, 'game.xml'))):
         if el.tag == 'team':
             game[el.get('type')] = el.get('id')
@@ -20,8 +20,8 @@ def parse_game_xml(game_dir):
 
 find_atbats = etree.XPath('/inning/*/atbat')
 find_bip = etree.XPath('/hitchart/hip')
-def parse_game(game_dir):
-    game = parse_game_xml(game_dir)
+def parse_game(game_dir, day):
+    game = parse_game_xml(game_dir, day)
     # Skip inning_hit.xml. It is special and needs different processing.
     xml_files = fnmatch.filter(os.listdir(game_dir), 'inning_[!h]*.xml')
     bip = find_bip(etree.parse(os.path.join(game_dir, 'inning_hit.xml')))
@@ -90,7 +90,7 @@ def parse_day(output_dir, day):
     datematch = day.strftime("gid_%Y_%m_%d*")
     games = fnmatch.filter(os.listdir(output_dir), datematch)
     for game in games:
-        parse_game(os.path.join(output_dir, game))
+        parse_game(os.path.join(output_dir, game), day)
 
 
 gd = gameday.Options()
