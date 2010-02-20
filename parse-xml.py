@@ -38,7 +38,7 @@ def parse_game(game_dir, day):
     pitch_inserts = []
 
     for inning in range(1, len(xml_files) + 1):
-        xml_file = 'inning' + str(inning) + '.xml'
+        xml_file = 'inning_' + str(inning) + '.xml'
         atbats = find_atbats(etree.parse(os.path.join(game_dir, xml_file)))
         for atbat in atbats:
             atbat_fields = [atbat.get(key).strip() for key in sorted(atbat_fields.keys())]
