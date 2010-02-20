@@ -83,6 +83,70 @@ CREATE TABLE raw_pitch (
     az real
 );
 
+-- Team data
+INSERT INTO team VALUES (108, 'ana', 'Los Angeles Angels', 'Angels');
+INSERT INTO team VALUES (109, 'ari', 'Arizona Diamondbacks', 'Diamondbacks');
+INSERT INTO team VALUES (110, 'bal', 'Baltimore Orioles', 'Orioles');
+INSERT INTO team VALUES (111, 'bos', 'Boston Red Sox', 'Red Sox');
+INSERT INTO team VALUES (112, 'chn', 'Chicago Cubs', 'Cubs');
+INSERT INTO team VALUES (113, 'cin', 'Cincinnati Reds', 'Reds');
+INSERT INTO team VALUES (114, 'cle', 'Cleveland Indians', 'Indians');
+INSERT INTO team VALUES (115, 'col', 'Colorado Rockies', 'Colorado');
+INSERT INTO team VALUES (116, 'det', 'Detroit Tigers', 'Tigers');
+INSERT INTO team VALUES (117, 'hou', 'Houston Astros', 'Astros');
+INSERT INTO team VALUES (118, 'kca', 'Kansas City Royals', 'Royals');
+INSERT INTO team VALUES (119, 'lan', 'Los Angeles Dodgers', 'Dodgers');
+INSERT INTO team VALUES (120, 'was', 'Washington Nationals', 'Nationals');
+INSERT INTO team VALUES (121, 'nyn', 'New York Mets', 'Mets');
+INSERT INTO team VALUES (133, 'oak', 'Oakland Athletics', 'Athletics');
+INSERT INTO team VALUES (134, 'pit', 'Pittsburgh Pirates', 'Pirates');
+INSERT INTO team VALUES (135, 'sdn', 'San Diego Padres', 'Padres');
+INSERT INTO team VALUES (136, 'sea', 'Seattle Mariners', 'Mariners');
+INSERT INTO team VALUES (137, 'sfn', 'San Francisco Giants', 'Giants');
+INSERT INTO team VALUES (138, 'sln', 'St. Louis Cardinals', 'Cardinals');
+INSERT INTO team VALUES (139, 'tba', 'Tamba Bay Rays', 'Rays');
+INSERT INTO team VALUES (140, 'tex', 'Texas Rangers', 'Rangers');
+INSERT INTO team VALUES (141, 'tor', 'Toronto Blue Jays', 'Blue Jays');
+INSERT INTO team VALUES (142, 'min', 'Minnesota Twins', 'Twins');
+INSERT INTO team VALUES (143, 'phi', 'Philadelphia Phillies', 'Phillies');
+INSERT INTO team VALUES (144, 'atl', 'Atlanta Braves', 'Braves');
+INSERT INTO team VALUES (145, 'cha', 'Chicago White Sox', 'White Sox');
+INSERT INTO team VALUES (146, 'flo', 'Florida Marlins', 'Marlins');
+INSERT INTO team VALUES (147, 'phi', 'New York Yankees', 'Yankees');
+INSERT INTO team VALUES (158, 'mil', 'Milwaukee Brewers', 'Brewsrs');
+
+-- Park data
+INSERT INTO park VALUES (1, 'Angel Stadium of Anaheim', 'Anaheim, CA');
+INSERT INTO park VALUES (2, 'Oriole Park at Camden Yards', 'Baltimore, MD');
+INSERT INTO park VALUES (3, 'Fenway Park', 'Boston, MA');
+INSERT INTO park VALUES (4, 'U.S. Cellular Field', 'Chicago, IL');
+INSERT INTO park VALUES (5, 'Progressive Field', 'Cleveland, OH');
+INSERT INTO park VALUES (7, 'Kauffman Stadium', 'Kansas City, MO');
+INSERT INTO park VALUES (8, 'Hubert H. Humphrey Metrodome', 'Minneapolis, MN');
+INSERT INTO park VALUES (10, 'Oakland Coliseum', 'Oakland, CA');
+INSERT INTO park VALUES (12, 'Tropicana Field', 'St. Petersburg, FL');
+INSERT INTO park VALUES (13, 'Rangers Ballpark in Arlington', 'Arlington, TX');
+INSERT INTO park VALUES (14, 'Rogers Centre', 'Toronto, ON');
+INSERT INTO park VALUES (15, 'Chase Field', 'Phoenix, AZ');
+INSERT INTO park VALUES (16, 'Turner Field', 'Atlanta, GA');
+INSERT INTO park VALUES (17, 'Wrigley Field', 'Chicago, CA');
+INSERT INTO park VALUES (19, 'Coors Field', 'Denver, CO');
+INSERT INTO park VALUES (20, 'Dolphin Stadium', 'Miami, FL');
+INSERT INTO park VALUES (22, 'Dodger Stadium', 'Los Angeles, CA');
+INSERT INTO park VALUES (31, 'PNC Park', 'Pittsburgh, PA');
+INSERT INTO park VALUES (32, 'Miller Park', 'Milwaukee, WI');
+INSERT INTO park VALUES (680, 'Safeco Field', 'Seattle, WA');
+INSERT INTO park VALUES (2392, 'Minute Maid Park', 'Houston, TX');
+INSERT INTO park VALUES (2394, 'Comerica Park', 'Detroit, MI');
+INSERT INTO park VALUES (2395, 'AT&T Park', 'San Francisco, CA');
+INSERT INTO park VALUES (2602, 'Great American Ball Park', 'Cincinnati, OH');
+INSERT INTO park VALUES (2680, 'PETCO Park', 'San Diego, CA');
+INSERT INTO park VALUES (2681, 'Citizens Bank Park', 'Philadelphia, PA');
+INSERT INTO park VALUES (2889, 'Busch Stadium', 'St. Louis, MO');
+INSERT INTO park VALUES (3289, 'Citi Field', 'Flushing, NY');
+INSERT INTO park VALUES (3309, 'Nationals Park', 'Washington, DC');
+INSERT INTO park VALUES (3313, 'Yankee Stadium', 'Bronx, NY');
+
 -- Useful indices.
 -- Commented out to make bulk importing faster.
 
