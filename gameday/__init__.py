@@ -52,7 +52,20 @@ class Options(object):
 
     def __del__(self):
         if self.conn:
-            conn.close()
+            self.conn.close()
+
+    def _init_conn(self, options):
+        if options.driver == 'sqlite' or options.driver == 'sqlite3':
+            import sqlite3
+            conn = sqlite3.connect(options.db)
+            self.row_factory = sqlite3.Row
+        elif options.driver == 'postgres' or options.driver == 'pygresql':
+            import pgdb
+            conn = pgdb.connect(database=options.db, user=options.user, password=options.password)
+            self.row_factory = row_factory
+        else:
+            raise ValueError, "No database driver specified"
+        self.conn = conn
 
     def parse_options(self, parser=OptionParser()):
         parser.add_option("-o", "--out", dest="outdir",
@@ -86,17 +99,8 @@ class Options(object):
         else:
             raise ValueError, "Output directory not given"
 
-        if options.driver == 'sqlite' or options.driver == 'sqlite3':
-            import sqlite3
-            conn = sqlite3.connect(options.db)
-            self.row_factory = sqlite3.Row
-        elif options.driver == 'postgres' or options.driver == 'pygresql':
-            import pgdb
-            conn = pgdb.connect(database=options.db, user=options.user, password=options.password)
-            self.row_factory = row_factory
-        else:
-            raise ValueError, "No database driver specified"
-        self.conn = conn
+        self._init_conn(options)
+
         return args
 
     def each_day(self):
