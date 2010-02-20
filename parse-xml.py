@@ -41,26 +41,26 @@ def parse_game(game_dir, day):
         xml_file = 'inning_' + str(inning) + '.xml'
         atbats = find_atbats(etree.parse(os.path.join(game_dir, xml_file)))
         for atbat in atbats:
-            atbat_fields = [atbat.get(key).strip() for key in sorted(atbat_fields.keys())]
+            atbat_insert = [atbat.get(key).strip() for key in sorted(atbat_fields.keys())]
             # Try to match the atbat with entry in inning_hit.xml
             idx = len(bip)-1
             if atbat.get('pitcher') == bip[idx].get('pitcher') and \
                atbat.get('batter') == bip[idx].get('batter')   and \
                atbat.get('event') == bip[idx].get('des'):
-                atbat_fields.append(bip[idx].get('type'))
-                atbat_fields.append(bip[idx].get('x'))
-                atbat_fields.append(bip[idx].get('y'))
+                atbat_insert.append(bip[idx].get('type'))
+                atbat_insert.append(bip[idx].get('x'))
+                atbat_insert.append(bip[idx].get('y'))
                 # These are the x/y feet fields. I need to get the
                 # multiplier for each park and apply it here.
-                atbat_fields.append(None)
-                atbat_fields.append(None)
+                atbat_insert.append(None)
+                atbat_insert.append(None)
                 bip.pop()
             else:
                 # X means not a BIP! Hopefully makes sense.
-                atbat_fields.append('X')
-                for i in range(4): atbat_fields.append(None)
+                atbat_insert.append('X')
+                for i in range(4): atbat_insert.append(None)
 
-            cur = conn.execute(atbat_sql, atbat_fields)
+            cur = conn.execute(atbat_sql, atbat_insert)
             atbat_id = cur.lastrowid
 
             balls, strikes = 0, 0
