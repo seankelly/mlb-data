@@ -6,7 +6,10 @@ CREATE TABLE player (
 CREATE TABLE park (
     id integer, -- use MLB's ids
     name text,
-    location text
+    location text,
+    hp_x,  -- these are scaled for 500x500px
+    hp_y,
+    scale
 );
 
 CREATE TABLE team (
