@@ -1,17 +1,17 @@
-import csv, sqlite3
+import csv, gameday
 from optparse import OptionParser
 
 parser = OptionParser()
-parser.add_option("-f", "--file", dest="file", help="SQLite database file")
+parser.add_option("-f", "--file", dest="player_map", help="MLBAM ID player mapping")
 
-(options, args) = parser.parse_args()
+gd = gameday.Options()
+(options, args) = gd.parse_options(parser)
 
-conn = sqlite3.connect(options.file)
-mlb_map = csv.reader(open(args[0]), delimiter="|")
+mlb_map = csv.reader(open(options.player_map), delimiter="|")
 
 players = {}
 
-for row in conn.execute("SELECT mlbid,name FROM player"):
+for row in gd.conn.execute("SELECT mlbid,name FROM player"):
     players[row[0]] = row[1]
 
 
@@ -23,7 +23,5 @@ for player in mlb_map:
     if int(player[1]) == 1 and player[0] not in players:
         mappings.append([player[0], player[3]])
 
-conn.executemany("INSERT INTO player (mlbid, name) VALUES(?,?)", mappings)
-
-conn.commit()
-conn.close()
+gd.conn.executemany("INSERT INTO player (mlbid, name) VALUES(?,?)", mappings)
+gd.conn.commit()
