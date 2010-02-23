@@ -101,7 +101,7 @@ class Options(object):
 
         self._init_conn(options)
 
-        return args
+        return options, args
 
     def each_day(self):
         current_day = self.start_day
