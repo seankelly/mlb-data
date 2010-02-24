@@ -8,8 +8,8 @@ gd.parse_options()
 conn = gd.conn
 
 park_sql = "SELECT id, name, hp_x, hp_y, scale FROM park"
-bip_sql = "SELECT bip.x as x, bip.y as y, p.name as pitcher, b.name as batter FROM bip JOIN park ON bip.park = park.id JOIN atbat ON bip.atbat = atbat.id LEFT JOIN player p ON p.mlbid = atbat.pitcher LEFT JOIN player b ON b.mlbid = atbat.batter where park = ?"
-bip_col = [ 'x', 'y', 'pitcher', 'batter' ]
+bip_sql = "SELECT bip.x AS x, bip.y AS y, atbat.event AS event, bip.type AS type, p.name AS pitcher, b.name AS batter FROM bip JOIN park ON bip.park = park.id JOIN atbat ON bip.atbat = atbat.id LEFT JOIN player p ON p.mlbid = atbat.pitcher LEFT JOIN player b ON b.mlbid = atbat.batter where park.id = ?"
+bip_col = [ 'x', 'y', 'event', 'type', 'pitcher', 'batter' ]
 
 park = {}
 cur = conn.execute(park_sql)
