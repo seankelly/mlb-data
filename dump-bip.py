@@ -1,6 +1,6 @@
 # Dump XML files containing BIP data for each park.
 
-import gameday
+import gameday, os
 from lxml import objectify, etree
 
 gd = gameday.Options()
@@ -32,6 +32,7 @@ for park_id in park.keys():
     if num_bip > 0:
         objectify.deannotate(park_xml)
         etree.cleanup_namespaces(park_xml)
-        xml_file = open("park-" + str(park_id) + ".xml", "w")
+        filename = os.path.join(gd.output_dir, "park-" + str(park_id) + ".xml")
+        xml_file = open(filename, "w")
         xml_file.write(etree.tostring(park_xml))
         xml_file.close()
