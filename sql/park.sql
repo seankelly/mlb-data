@@ -1,6 +1,6 @@
 -- Park data
 INSERT INTO park VALUES (1, 'Angel Stadium of Anaheim', 'Anaheim, CA', 248, 403, 1.178);
-INSERT INTO park VALUES (2, 'Oriole Park at Camden Yards', 'Baltimore, MD', 248, 404, 1.083);
+INSERT INTO park VALUES (2, 'Camden Yards', 'Baltimore, MD', 248, 404, 1.083);
 INSERT INTO park VALUES (3, 'Fenway Park', 'Boston, MA', 248.5, 403, 1.098);
 INSERT INTO park VALUES (4, 'U.S. Cellular Field', 'Chicago, IL', 251, 406, 1.148);
 INSERT INTO park VALUES (5, 'Progressive Field', 'Cleveland, OH', 251.5, 407, 1.101);
