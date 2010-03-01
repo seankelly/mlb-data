@@ -23,7 +23,7 @@ park = {}
 cur = conn.execute(park_sql)
 stadiums = objectify.Element("stadiums")
 for row in cur.fetchall():
-    park[row[0]] = { 'name': row[1], 'hp_x': row[2], 'hp_y': row[3], 'scale': row[4] }
+    park[row[0]] = { 'id': row[0], 'name': row[1], 'hp_x': row[2], 'hp_y': row[3], 'scale': row[4] }
     park_xml = objectify.Element("park")
     for park_opt in park[row[0]].keys():
         park_xml.set(park_opt, str(park[row[0]][park_opt]))
