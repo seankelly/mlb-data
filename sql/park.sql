@@ -7,7 +7,7 @@ INSERT INTO park VALUES (5, 'Progressive Field', 'Cleveland, OH', 251.5, 407, 1.
 INSERT INTO park VALUES (7, 'Kauffman Stadium', 'Kansas City, MO', 251, 407, 1.144);
 INSERT INTO park VALUES (8, 'Hubert H. Humphrey Metrodome', 'Minneapolis, MN', 252, 406, 1.117);
 INSERT INTO park VALUES (10, 'Oakland Coliseum', 'Oakland, CA', 249, 395.5, 1.092);
-INSERT INTO park VALUES (12, 'Tropicana Field', 'St. Petersburg, FL', 252.5, 408, 1.119);
+INSERT INTO park VALUES (12, 'Tropicana Field', 'St. Petersburg, FL', 252.5, 408, 1.126);
 INSERT INTO park VALUES (13, 'Rangers Ballpark in Arlington', 'Arlington, TX', 252, 407, 1.147);
 INSERT INTO park VALUES (14, 'Rogers Centre', 'Toronto, ON', 252.5, 403, 1.188);
 INSERT INTO park VALUES (15, 'Chase Field', 'Phoenix, AZ', 251.5, 407, 1.104);
