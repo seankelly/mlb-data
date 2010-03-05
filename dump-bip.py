@@ -10,7 +10,7 @@ gd = gameday.Options()
 gd.parse_options()
 conn = gd.conn
 
-park_sql = "SELECT id, name, hp_x, hp_y, scale FROM park ORDER BY id asc"
+park_sql = "SELECT park.id, name, hp_x, hp_y, scale, count(bip.id) AS num FROM park LEFT JOIN bip ON park.id = bip.park GROUP BY park.id"
 bip_sql = "SELECT bip.x AS x, bip.y AS y, atbat.event AS event, bip.type AS type, p.name AS pitcher, atbat.pitcher_throw AS throw, b.name AS batter, atbat.batter_stand AS stand FROM bip JOIN park ON bip.park = park.id JOIN atbat ON bip.atbat = atbat.id LEFT JOIN player p ON p.mlbid = atbat.pitcher LEFT JOIN player b ON b.mlbid = atbat.batter where park.id = ?"
 bip_col = [ 'x', 'y', 'event', 'type', 'pitcher', 'throw', 'batter', 'stand' ]
 
@@ -24,7 +24,7 @@ park = {}
 cur = conn.execute(park_sql)
 stadiums = []
 for row in cur.fetchall():
-    park[row[0]] = { 'id': row[0], 'name': row[1], 'hp_x': str(row[2]), 'hp_y': str(row[3]), 'scale': str(row[4]) }
+    park[row[0]] = { 'id': row[0], 'name': row[1], 'hp_x': str(row[2]), 'hp_y': str(row[3]), 'scale': str(row[4]), 'bip': row[5] }
     park_json = park[row[0]]
     stadiums.append(park_json)
 
