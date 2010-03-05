@@ -32,9 +32,9 @@ dump_json("parks.json", stadiums)
 
 for park_id in park.keys():
     cur = conn.execute(bip_sql, [park_id])
-    park_json = []
+    bip_list = []
     for bip in cur.fetchall():
-        park_json.append({ 'x':str(bip[0]), 'y':str(bip[1]), 'event':bip[2], 'type':bip[3], 'pitcher':bip[4], 'batter':bip[5] })
+        bip_list.append({ 'x':str(bip[0]), 'y':str(bip[1]), 'event':bip[2], 'type':bip[3], 'pitcher':bip[4], 'batter':bip[5] })
     # No need to write empty files!
-    if len(park_json) > 0:
-        dump_json("park-" + str(park_id) + ".json", park_json)
+    if len(bip_list) > 0:
+        dump_json("park-" + str(park_id) + ".json", bip_list)
