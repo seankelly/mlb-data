@@ -16,6 +16,7 @@ INSERT INTO park VALUES (17, 'Wrigley Field', 'Chicago, CA', 251.5, 406, 1.121);
 INSERT INTO park VALUES (19, 'Coors Field', 'Denver, CO', 245, 404, 1.103);
 INSERT INTO park VALUES (20, 'Dolphin Stadium', 'Miami, FL', 251.5, 406, 1.099);
 INSERT INTO park VALUES (22, 'Dodger Stadium', 'Los Angeles, CA', 252, 407, 1.139);
+INSERT INTO park VALUES (25, 'Shea Stadium', 'Flushing, NY', 253, 407, 1.140);
 INSERT INTO park VALUES (31, 'PNC Park', 'Pittsburgh, PA', 251.5, 408, 1.131);
 INSERT INTO park VALUES (32, 'Miller Park', 'Milwaukee, WI', 248, 405, 1.121);
 INSERT INTO park VALUES (680, 'Safeco Field', 'Seattle, WA', 252, 406, 1.132);
