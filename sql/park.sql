@@ -25,7 +25,7 @@ INSERT INTO park VALUES (2394, 'Comerica Park', 'Detroit, MI', 253.5, 408, 1.157
 INSERT INTO park VALUES (2395, 'AT&T Park', 'San Francisco, CA', 252.5, 405, 1.123);
 INSERT INTO park VALUES (2602, 'Great American Ball Park', 'Cincinnati, OH', 252, 402, 1.181);
 INSERT INTO park VALUES (2680, 'PETCO Park', 'San Diego, CA', 252.5, 407, 1.152);
-INSERT INTO park VALUES (2681, 'Citizens Bank Park', 'Philadelphia, PA', 251.5, 395, 1.181);
+INSERT INTO park VALUES (2681, 'Citizens Bank Park', 'Philadelphia, PA', 252, 398, 1.182);
 INSERT INTO park VALUES (2889, 'Busch Stadium III', 'St. Louis, MO', 252.5, 407, 1.162);
 INSERT INTO park VALUES (3289, 'Citi Field', 'Flushing, NY', 253, 406, 1.107);
 INSERT INTO park VALUES (3309, 'Nationals Park', 'Washington, DC', 251, 408, 1.101);
