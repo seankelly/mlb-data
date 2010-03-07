@@ -38,10 +38,7 @@ def fetch_game(url, gid):
     except urllib2.HTTPError:
         return
 
-    # Find and save pitcher XML files.
-    scrape_game_dir(gid_dir, url_base + "/pbp/pitchers", "\d+\.xml")
-
-    # Ditto for each inning file.
+    # Find and save each inning file.
     scrape_game_dir(gid_dir, url_base + "/inning", "inning_(\d+|hit)\.xml")
 
 
