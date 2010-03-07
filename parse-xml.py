@@ -32,7 +32,7 @@ def parse_game(game_dir, day):
     # Right now this is all but one ('des'), but MLBAM has added fields before.
     atbat_fields = {'pitcher': 'pitcher', 'batter': 'batter', 'stand': 'batter_stand', 'p_throws': 'pitcher_throw', 'des': 'des', 'event': 'event'}
     # Add in bip_x/y columns
-    atbat_sql = "INSERT INTO atbat (" + ",".join(atbat_fields[key] for key in sorted(atbat_fields.keys())) + ") VALUES (" + ",".join(map(lambda a: '?', atbat_fields.keys())) + ")"
+    atbat_sql = "INSERT INTO atbat (" + ",".join(atbat_fields[key] for key in sorted(atbat_fields.keys())) + ",game) VALUES (" + ",".join(map(lambda a: '?', atbat_fields.keys())) + ",?)"
     bip_sql = "INSERT INTO bip (atbat, park, type, x, y, x_feet, y_feet) VALUES (?,?,?,?,?,?,?)"
     pitch_fields = {'spin_rate': 'spin_rate', 'break_angle': 'break_angle', 'pitch_type': 'pitch_type', 'ax': 'ax', 'ay': 'ay', 'y0': 'y0', 'az': 'az', 'end_speed': 'end_speed', 'spin_dir': 'spin_dir', 'start_speed': 'start_speed', 'pz': 'pz', 'px': 'px', 'type': 'type', 'sz_bot': 'sz_bot', 'pfx_z': 'pfx_z', 'vy0': 'vy0', 'pfx_x': 'pfx_x', 'break_length': 'break_length', 'x0': 'x0', 'z0': 'z0', 'break_y': 'break_y', 'sz_top': 'sz_top', 'type_confidence': 'type_confidence', 'y': 'y', 'x': 'x', 'vz0': 'vz0', 'sv_id': 'sv_id', 'vx0': 'vx0'}
     pitch_sql = "INSERT INTO raw_pitch (" + ",".join(pitch_fields[key] for key in sorted(pitch_fields.keys())) + ",atbat,enhanced,balls,strikes) VALUES (" + ",".join(map(lambda a: '?', pitch_fields.keys())) + ",?,?,?,?)"
@@ -43,6 +43,7 @@ def parse_game(game_dir, day):
         atbats = find_atbats(etree.parse(os.path.join(game_dir, xml_file)))
         for atbat in atbats:
             atbat_insert = [atbat.get(key).strip() for key in sorted(atbat_fields.keys())]
+            atbat_insert.append(game['id']);
             cur = conn.execute(atbat_sql, atbat_insert)
             atbat_id = cur.lastrowid
 
