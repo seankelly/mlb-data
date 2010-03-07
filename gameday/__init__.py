@@ -55,6 +55,7 @@ class Options(object):
             self.conn.close()
 
     def _init_conn(self, options):
+        conn = None
         if options.driver == 'sqlite' or options.driver == 'sqlite3':
             import sqlite3
             conn = sqlite3.connect(options.db)
@@ -63,8 +64,6 @@ class Options(object):
             import pgdb
             conn = pgdb.connect(database=options.db, user=options.user, password=options.password)
             self.row_factory = row_factory
-        else:
-            raise ValueError, "No database driver specified"
         self.conn = conn
 
     def parse_options(self, parser=OptionParser()):
