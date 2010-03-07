@@ -20,7 +20,7 @@ CREATE TABLE team (
 );
 
 CREATE TABLE game (
-    game integer PRIMARY KEY,
+    id integer PRIMARY KEY,
     home integer,
     away integer,
     park integer,
