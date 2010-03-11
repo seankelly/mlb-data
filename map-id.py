@@ -12,9 +12,9 @@ mlb_map = csv.reader(open(options.player_map), delimiter="|")
 players = {}
 cur = gd.conn.cursor()
 
-for row in cur.execute("SELECT mlbid,name FROM player"):
+cur.execute("SELECT mlbid,name FROM player")
+for row in cur.fetchall():
     players[row[0]] = row[1]
-
 
 mappings = []
 
