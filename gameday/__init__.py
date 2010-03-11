@@ -48,23 +48,19 @@ class Options(object):
         self.start_day = date.today() - timedelta(1)
         self.end_day = date.today() - timedelta(1)
         self.conn = None
-        self.row_factory = None
+        self._options = None
 
     def __del__(self):
         if self.conn:
             self.conn.close()
 
-    def _init_conn(self, options):
-        conn = None
-        if options.driver == 'sqlite' or options.driver == 'sqlite3':
-            import sqlite3
-            conn = sqlite3.connect(options.db)
-            self.row_factory = sqlite3.Row
-        elif options.driver == 'postgres' or options.driver == 'pygresql':
-            import pgdb
-            conn = pgdb.connect(database=options.db, user=options.user, password=options.password)
-            self.row_factory = row_factory
-        self.conn = conn
+    def init_db(self):
+        from sqlalchemy import MetaData, create_engine
+        meta = MetaData()
+        engine = create_engine(self._options.db)
+        self.conn = engine.connect()
+        meta.reflect(bind = engine)
+        self.meta = meta
 
     def parse_options(self, parser=OptionParser()):
         parser.add_option("-o", "--out", dest="outdir",
@@ -74,15 +70,10 @@ class Options(object):
         parser.add_option("-e", "--end", dest="end_time", metavar="END",
                         help="End day")
         parser.add_option("-d", "--db", dest="db", metavar="DATABASE",
-                        help="Database to use")
-        parser.add_option("-D", "--driver", dest="driver", metavar="DRIVER",
-                        help="Database driver to use")
-        parser.add_option("-U", "--user", dest="user", metavar="USER",
-                        help="Database user to connect as")
-        parser.add_option("-P", "--password", dest="password", metavar="PASSWORD",
-                        help="Password for database")
+                        help="sqlalchemy database engine string")
 
         (options, args) = parser.parse_args()
+        self._options = options
         # Default the start day to yesterday
         self.start_day = parse_date(options.start_time, self.start_day)
         # Keep the default end day to be today
