@@ -10,8 +10,9 @@ gd = gameday.Options()
 mlb_map = csv.reader(open(options.player_map), delimiter="|")
 
 players = {}
+cur = gd.conn.cursor()
 
-for row in gd.conn.execute("SELECT mlbid,name FROM player"):
+for row in cur.execute("SELECT mlbid,name FROM player"):
     players[row[0]] = row[1]
 
 
@@ -23,5 +24,5 @@ for player in mlb_map:
     if int(player[1]) == 1 and player[0] not in players:
         mappings.append([player[0], player[3]])
 
-gd.conn.executemany("INSERT INTO player (mlbid, name) VALUES(?,?)", mappings)
-gd.conn.commit()
+cur.executemany("INSERT INTO player (mlbid, name) VALUES(?,?)", mappings)
+cur.commit()

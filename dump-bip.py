@@ -8,7 +8,7 @@ except ImportError:
 
 gd = gameday.Options()
 gd.parse_options()
-conn = gd.conn
+cur = gd.conn.cursor()
 
 park_sql = "SELECT park.id, name, hp_x, hp_y, scale, count(bip.id) AS num FROM park LEFT JOIN bip ON park.id = bip.park GROUP BY park.id"
 bip_sql = "SELECT bip.x AS x, bip.y AS y, atbat.event AS event, bip.type AS type, p.name AS pitcher, atbat.pitcher_throw AS throw, b.name AS batter, atbat.batter_stand AS stand FROM bip JOIN park ON bip.park = park.id JOIN atbat ON bip.atbat = atbat.id LEFT JOIN player p ON p.mlbid = atbat.pitcher LEFT JOIN player b ON b.mlbid = atbat.batter where park.id = ?"
@@ -21,7 +21,7 @@ def dump_json(filename, obj):
     json_file.close()
 
 park = {}
-cur = conn.execute(park_sql)
+cur.execute(park_sql)
 stadiums = []
 for row in cur.fetchall():
     park[row[0]] = { 'id': row[0], 'name': row[1], 'hp_x': str(row[2]), 'hp_y': str(row[3]), 'scale': str(row[4]), 'bip': row[5] }
@@ -31,7 +31,7 @@ for row in cur.fetchall():
 dump_json("parks.json", stadiums)
 
 for park_id in park.keys():
-    cur = conn.execute(bip_sql, [park_id])
+    cur.execute(bip_sql, [park_id])
     bip_list = []
     for bip in cur.fetchall():
         bip_list.append({ 'x': str(bip[0]), 'y': str(bip[1]), 'event': bip[2], 'type': bip[3], 'pitcher': bip[4], 'throw': bip[5], 'batter': bip[6], 'stand': bip[7]  })

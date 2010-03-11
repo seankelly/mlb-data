@@ -30,6 +30,8 @@ default_colors = {
 gd = gameday.Options()
 gd.parse_options()
 
+cur = gd.conn.cursor()
+
 loader = TemplateLoader("templates/")
 player_tmpl = loader.load("player.html")
 
@@ -54,14 +56,14 @@ def pitcher_card_html(pitcher, output_dir):
 
 def build_pitcher_card(pitcher, output_dir, img_dir):
     mlbid = [pitcher]
-    row = gd.conn.execute("SELECT name FROM player WHERE mlbid = ?", mlbid)
+    row = cur.execute("SELECT name FROM player WHERE mlbid = ?", mlbid)
     name = row.fetchone()
     if not name:
         return
     name = name[0]
 
-    gd.conn.row_factory = gd.row_factory
-    row = gd.conn.execute("SELECT pitch.*,atbat.* FROM raw_pitch pitch JOIN atbat ON pitch.atbat = atbat.id WHERE atbat.pitcher = ?", mlbid)
+    cur.row_factory = gd.row_factory
+    row = cur.execute("SELECT pitch.*,atbat.* FROM raw_pitch pitch JOIN atbat ON pitch.atbat = atbat.id WHERE atbat.pitcher = ?", mlbid)
     pitcher = pitchfx.Pitcher(name, row)
     # Ensure there is at least one enhanced pitch
     if pitcher.enhanced == 0:
@@ -79,7 +81,7 @@ def build_cards(pitchers):
 
     build_index = False
     if not pitchers:
-        pitchers = [row[0] for row in gd.conn.execute("SELECT distinct(pitcher) FROM atbat")]
+        pitchers = [row[0] for row in cur.execute("SELECT distinct(pitcher) FROM atbat")]
         build_index = True
 
     index_pitchers = {}

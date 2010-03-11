@@ -13,7 +13,7 @@ def parse_game_xml(game_dir, day):
         elif el.tag == 'stadium':
             game['park'] = el.get('id')
     insert = [ game['home'], game['away'], game['park'], game['day'] ]
-    cur = conn.execute(game_sql, insert)
+    cur.execute(game_sql, insert)
     game['id'] = cur.lastrowid
     return game
 
@@ -44,13 +44,13 @@ def parse_game(game_dir, day):
         for atbat in atbats:
             atbat_insert = [atbat.get(key).strip() for key in sorted(atbat_fields.keys())]
             atbat_insert.append(game['id']);
-            cur = conn.execute(atbat_sql, atbat_insert)
+            cur.execute(atbat_sql, atbat_insert)
             atbat_id = cur.lastrowid
 
             # Try to match the atbat with entry in inning_hit.xml
             idx = len(bip)-1
             while idx >= 0 and atbat.get('pitcher') == bip[idx].get('pitcher') and atbat.get('batter') == bip[idx].get('batter') and inning == int(bip[idx].get('inning')):
-                conn.execute(bip_sql, [ atbat_id, game['park'], bip[idx].get('type'), bip[idx].get('x'), bip[idx].get('y') ])
+                cur.execute(bip_sql, [ atbat_id, game['park'], bip[idx].get('type'), bip[idx].get('x'), bip[idx].get('y') ])
                 bip.pop()
                 idx = len(bip)-1
 
@@ -74,7 +74,7 @@ def parse_game(game_dir, day):
                 elif called == 'S' and (strikes < 2 or (des != 'Foul' and des != 'Foul (Runner Going)')):
                     strikes += 1
 
-    conn.executemany(pitch_sql, pitch_inserts)
+    cur.executemany(pitch_sql, pitch_inserts)
 
 
 def parse_day(output_dir, day):
@@ -86,7 +86,7 @@ def parse_day(output_dir, day):
 
 gd = gameday.Options()
 gd.parse_options()
-conn = gd.conn
+cur = gd.conn.cursor()
 
 for day in gd.each_day():
     parse_day(gd.output_dir, day)
