@@ -7,9 +7,9 @@ CREATE TABLE park (
     id integer PRIMARY KEY, -- use MLB's ids
     name text,
     location text,
-    hp_x,  -- these are scaled for 500x500px
-    hp_y,
-    scale
+    hp_x real,  -- these are scaled for 500x500px
+    hp_y real,
+    scale real
 );
 
 CREATE TABLE team (
