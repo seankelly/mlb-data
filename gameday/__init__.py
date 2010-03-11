@@ -95,10 +95,6 @@ class Options(object):
             self.output_dir = os.path.abspath(options.outdir)
             if os.path.exists(self.output_dir) == False:
                 os.makedirs(self.output_dir)
-        else:
-            raise ValueError, "Output directory not given"
-
-        self._init_conn(options)
 
         return options, args
 
