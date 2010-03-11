@@ -50,7 +50,7 @@ def parse_game(game_dir, day):
             # Try to match the atbat with entry in inning_hit.xml
             idx = len(bip)-1
             while idx >= 0 and atbat.get('pitcher') == bip[idx].get('pitcher') and atbat.get('batter') == bip[idx].get('batter') and inning == int(bip[idx].get('inning')):
-                conn.execute(bip_sql, [ atbat_id, game['park'], bip[idx].get('type'), bip[idx].get('x'), bip[idx].get('y'), None, None ])
+                conn.execute(bip_sql, [ atbat_id, game['park'], bip[idx].get('type'), bip[idx].get('x'), bip[idx].get('y') ])
                 bip.pop()
                 idx = len(bip)-1
 

@@ -44,9 +44,7 @@ CREATE TABLE bip (
     park integer,
     type text,
     x real,
-    y real,
-    x_feet real,
-    y_feet real
+    y real
 );
 
 CREATE TABLE raw_pitch (
