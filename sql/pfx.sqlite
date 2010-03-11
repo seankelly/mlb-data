@@ -7,9 +7,9 @@ CREATE TABLE park (
     id integer, -- use MLB's ids
     name text,
     location text,
-    hp_x,  -- these are scaled for 500x500px
-    hp_y,
-    scale
+    hp_x real,  -- these are scaled for 500x500px
+    hp_y real,
+    scale real
 );
 
 CREATE TABLE team (
@@ -27,7 +27,7 @@ CREATE TABLE game (
     day text
 );
 
-CREATE TABLE atbat (
+CREATE TABLE appearance (
     id integer PRIMARY KEY,
     game integer,
     pitcher integer,
@@ -35,21 +35,26 @@ CREATE TABLE atbat (
     batter_stand text,
     pitcher_throw text,
     des text,
-    event text
+    event text,
+    FOREIGN KEY (game) REFERENCES game (id),
+    FOREIGN KEY (pitcher) REFERENCES player (mlbid),
+    FOREIGN KEY (batter) REFERENCES player (mlbid)
 );
 
 CREATE TABLE bip (
     id integer PRIMARY KEY,
-    atbat integer,
+    pa integer,
     park integer,
     type text,
     x real,
-    y real
+    y real,
+    FOREIGN KEY (pa) REFERENCES appearance (id),
+    FOREIGN KEY (park) REFERENCES park (id)
 );
 
 CREATE TABLE raw_pitch (
     id integer PRIMARY KEY,
-    atbat integer,
+    pa integer,
     enhanced integer,
     inning integer,
     balls integer,  -- count data
@@ -81,7 +86,8 @@ CREATE TABLE raw_pitch (
     vz0 real,
     ax real,
     ay real,
-    az real
+    az real,
+    FOREIGN KEY (pa) REFERENCES appearance (id)
 );
 
 -- Useful indices.
