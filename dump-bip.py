@@ -1,5 +1,6 @@
 # Dump XML files containing BIP data for each park.
 
+from sqlalchemy.sql import select, bindparam, func
 import gameday, os
 try:
     import json
@@ -8,10 +9,18 @@ except ImportError:
 
 gd = gameday.Options()
 gd.parse_options()
-cur = gd.conn.cursor()
+gd.init_db()
 
-park_sql = "SELECT park.id, name, hp_x, hp_y, scale, count(bip.id) AS num FROM park LEFT JOIN bip ON park.id = bip.park GROUP BY park.id"
-bip_sql = "SELECT bip.x AS x, bip.y AS y, atbat.event AS event, bip.type AS type, p.name AS pitcher, atbat.pitcher_throw AS throw, b.name AS batter, atbat.batter_stand AS stand FROM bip JOIN park ON bip.park = park.id JOIN atbat ON bip.atbat = atbat.id LEFT JOIN player p ON p.mlbid = atbat.pitcher LEFT JOIN player b ON b.mlbid = atbat.batter where park.id = ?"
+park_table = gd.meta.tables['park']
+bip_table = gd.meta.tables['bip']
+park_sql = select([park_table, func.count(bip_table.c.id).label('num')], from_obj=[park_table.outerjoin(bip_table)]).group_by(park_table.c.id)
+
+player_table = gd.meta.tables['player']
+pa_table = gd.meta.tables['appearance']
+
+p = player_table.alias()
+b = player_table.alias()
+bip_sql = select([bip_table.c.type.label('type'), bip_table.c.x.label('x'), bip_table.c.y.label('y'), pa_table.c.event.label('event'), pa_table.c.batter.label('batter'), pa_table.c.batter_stand.label('stand'), pa_table.c.pitcher.label('pitcher'), pa_table.c.pitcher_throw.label('throw')], park_table.c.id==bindparam('park'), from_obj=bip_table.join(park_table).join(pa_table).outerjoin(p, onclause=p.c.mlbid==pa_table.c.pitcher).outerjoin(b, onclause=b.c.mlbid==pa_table.c.batter))
 bip_col = [ 'x', 'y', 'event', 'type', 'pitcher', 'throw', 'batter', 'stand' ]
 
 def dump_json(filename, obj):
@@ -21,20 +30,26 @@ def dump_json(filename, obj):
     json_file.close()
 
 park = {}
-cur.execute(park_sql)
 stadiums = []
-for row in cur.fetchall():
-    park[row[0]] = { 'id': row[0], 'name': row[1], 'hp_x': str(row[2]), 'hp_y': str(row[3]), 'scale': str(row[4]), 'bip': row[5] }
-    park_json = park[row[0]]
+for row in gd.conn.execute(park_sql):
+    p = {}
+    for key in row.keys():
+        if key in ['hp_x', 'hp_y', 'id', 'num']:
+            p[key] = int(row[key])
+        else:
+            p[key] = str(row[key])
+    p['bip'] = p['num']
+    del p['location']
+    del p['num']
+    park[p['id']] = park_json = p
     stadiums.append(park_json)
 
 dump_json("parks.json", stadiums)
 
 for park_id in park.keys():
-    cur.execute(bip_sql, [park_id])
     bip_list = []
-    for bip in cur.fetchall():
-        bip_list.append({ 'x': str(bip[0]), 'y': str(bip[1]), 'event': bip[2], 'type': bip[3], 'pitcher': bip[4], 'throw': bip[5], 'batter': bip[6], 'stand': bip[7]  })
+    for bip in gd.conn.execute(bip_sql, { 'park': park_id }):
+        bip_list.append({ 'x': str(bip['x']), 'y': str(bip['y']), 'event': bip['event'], 'type': bip['type'], 'pitcher': bip['pitcher'], 'throw': bip['throw'], 'batter': bip['batter'], 'stand': bip['stand']  })
     # No need to write empty files!
     if len(bip_list) > 0:
         dump_json("park-" + str(park_id) + ".json", bip_list)
