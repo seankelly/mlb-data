@@ -9,6 +9,8 @@
 # SL: #FF0000
 # KN: #A52A2A
 
+exit('NEEDS TO BE UPDATED TO USE SQLALCHEMY. Plus other stuff.')
+
 import gameday, gameday.pitchfx
 import os, string
 from genshi.template import TemplateLoader
