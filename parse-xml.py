@@ -44,7 +44,9 @@ def parse_game(game_dir, day):
         for atbat in atbats:
             pa_data = { 'game': game['id'] }
             for key in pa_fields:
-                pa_data[key] = atbat.get(key).strip()
+                pa_data[key] = atbat.get(key)
+                if pa_data[key]:
+                    pa_data[key].strip()
             res = gd.conn.execute(pa_ins, pa_data)
             ids = res.last_inserted_ids()
             pa_id = ids[0]
