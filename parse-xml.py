@@ -46,7 +46,7 @@ def parse_game(game_dir, day):
             for key in pa_fields:
                 pa_data[key] = atbat.get(key)
                 if pa_data[key]:
-                    pa_data[key].strip()
+                    pa_data[key] = pa_data[key].strip()
             res = gd.conn.execute(pa_ins, pa_data)
             ids = res.last_inserted_ids()
             pa_id = ids[0]
@@ -65,7 +65,7 @@ def parse_game(game_dir, day):
                 for key in pitch_fields:
                     pitch_data[key] = pitch.get(key)
                     if pitch_data[key]:
-                        pitch_data[key].strip()
+                        pitch_data[key] = pitch_data[key].strip()
                 pitch_inserts.append(pitch_data)
 
                 # Calculate the count
