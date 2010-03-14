@@ -54,7 +54,12 @@ def parse_game(game_dir, day):
             # Try to match the atbat with entry in inning_hit.xml
             idx = len(bip)-1
             while idx >= 0 and pa_data['pitcher'] == bip[idx].get('pitcher') and pa_data['batter'] == bip[idx].get('batter') and inning == int(bip[idx].get('inning')):
-                gd.conn.execute(bip_ins, { 'pa': pa_id, 'park': game['park'], 'type': bip[idx].get('type'), 'x': bip[idx].get('x'), 'y': bip[idx].get('y') })
+                try:
+                    x = float(bip[idx].get('x'))
+                    y = float(bip[idx].get('y'))
+                    gd.conn.execute(bip_ins, { 'pa': pa_id, 'park': game['park'], 'type': bip[idx].get('type'), 'x': x, 'y': y })
+                except ValueError:
+                    pass
                 bip.pop()
                 idx = len(bip)-1
 
