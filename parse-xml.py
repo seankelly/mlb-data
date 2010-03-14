@@ -60,7 +60,7 @@ def parse_game(game_dir, day):
 
             balls, strikes = 0, 0
             for pitch in atbat.getiterator('pitch'):
-                enhanced = 1 if pitch.get('pitch_type') else 0
+                enhanced = True if pitch.get('pitch_type') else False
                 pitch_data = { 'pa': pa_id, 'enhanced': enhanced, 'balls': balls, 'strikes': strikes }
                 for key in pitch_fields:
                     pitch_data[key] = pitch.get(key)
