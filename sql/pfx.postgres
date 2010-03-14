@@ -1,8 +1,3 @@
-CREATE TABLE player (
-    mlbid integer PRIMARY KEY,
-    name text
-);
-
 CREATE TABLE park (
     id integer PRIMARY KEY, -- use MLB's ids
     name text,
@@ -30,8 +25,8 @@ CREATE TABLE game (
 CREATE TABLE appearance (
     id serial PRIMARY KEY,
     game integer REFERENCES game (id),
-    pitcher integer REFERENCES player (mlbid),
-    batter integer REFERENCES player (mlbid),
+    pitcher integer REFERENCES master (mlbamid),
+    batter integer REFERENCES master (mlbamid),
     batter_stand text,
     pitcher_throw text,
     des text,
@@ -87,7 +82,6 @@ CREATE TABLE raw_pitch (
 -- Useful indices.
 -- Commented out to make bulk importing faster.
 
--- CREATE INDEX player_mlbid_idx ON player (mlbid);
 -- CREATE INDEX appearance_pitcher_idx ON appearance (pitcher);
 -- CREATE INDEX appearance_id_idx ON appearance (id);
 -- CREATE INDEX raw_pitch_atbat_idx ON raw_pitch (atbat);
