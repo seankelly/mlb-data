@@ -15,12 +15,12 @@ park_table = gd.meta.tables['park']
 bip_table = gd.meta.tables['bip']
 park_sql = select([park_table, func.count(bip_table.c.id).label('num')], from_obj=[park_table.outerjoin(bip_table)]).group_by(park_table.c.id)
 
-player_table = gd.meta.tables['player']
+player_table = gd.meta.tables['master']
 pa_table = gd.meta.tables['appearance']
 
 p = player_table.alias()
 b = player_table.alias()
-bip_sql = select([bip_table.c.type.label('type'), bip_table.c.x.label('x'), bip_table.c.y.label('y'), pa_table.c.event.label('event'), pa_table.c.batter.label('batter'), pa_table.c.batter_stand.label('stand'), pa_table.c.pitcher.label('pitcher'), pa_table.c.pitcher_throw.label('throw')], park_table.c.id==bindparam('park'), from_obj=bip_table.join(park_table).join(pa_table).outerjoin(p, onclause=p.c.mlbid==pa_table.c.pitcher).outerjoin(b, onclause=b.c.mlbid==pa_table.c.batter))
+bip_sql = select([bip_table.c.type.label('type'), bip_table.c.x.label('x'), bip_table.c.y.label('y'), pa_table.c.event.label('event'), pa_table.c.batter.label('batter'), pa_table.c.batter_stand.label('stand'), pa_table.c.pitcher.label('pitcher'), pa_table.c.pitcher_throw.label('throw')], park_table.c.id==bindparam('park'), from_obj=bip_table.join(park_table).join(pa_table).outerjoin(p, onclause=p.c.mlbamid==pa_table.c.pitcher).outerjoin(b, onclause=b.c.mlbamid==pa_table.c.batter))
 bip_col = [ 'x', 'y', 'event', 'type', 'pitcher', 'throw', 'batter', 'stand' ]
 
 def dump_json(filename, obj):
