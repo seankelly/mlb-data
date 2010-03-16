@@ -54,7 +54,7 @@ for row in gd.conn.execute(park_sql):
 
 dump_json("parks.json", stadiums)
 
-years = gd.conn.execute(years_sql)
+years = [int(row[0]) for row in gd.conn.execute(years_sql)]
 
 for park_id in park.keys():
     for year in years:
