@@ -1,11 +1,17 @@
 # Dump XML files containing BIP data for each park.
 
-from sqlalchemy.sql import select, bindparam, func
+from sqlalchemy.sql import select, bindparam, func, text, and_
 import gameday, os
 try:
     import json
 except ImportError:
     import simplejson as json
+
+def get_year(conn, label):
+    if conn.dialect.__module__ != 'sqlalchemy.databases.sqlite':
+        return "EXTRACT(year from " + label + ")"
+    else:
+        return "strftime('%Y', " + label + ")"
 
 gd = gameday.Options()
 gd.parse_options()
@@ -15,13 +21,15 @@ park_table = gd.meta.tables['park']
 bip_table = gd.meta.tables['bip']
 park_sql = select([park_table, func.count(bip_table.c.id).label('num')], from_obj=[park_table.outerjoin(bip_table)]).group_by(park_table.c.id)
 
+game_table = gd.meta.tables['game']
+years_sql = select([func.distinct(text(get_year(gd.conn, 'day')))], from_obj=game_table)
+
 player_table = gd.meta.tables['master']
 pa_table = gd.meta.tables['appearance']
 
 p = player_table.alias()
 b = player_table.alias()
-bip_sql = select([bip_table.c.type.label('type'), bip_table.c.x.label('x'), bip_table.c.y.label('y'), pa_table.c.event.label('event'), pa_table.c.batter.label('batter'), pa_table.c.batter_stand.label('stand'), pa_table.c.pitcher.label('pitcher'), pa_table.c.pitcher_throw.label('throw')], park_table.c.id==bindparam('park'), from_obj=bip_table.join(park_table).join(pa_table).outerjoin(p, onclause=p.c.mlbamid==pa_table.c.pitcher).outerjoin(b, onclause=b.c.mlbamid==pa_table.c.batter))
-bip_col = [ 'x', 'y', 'event', 'type', 'pitcher', 'throw', 'batter', 'stand' ]
+bip_sql = select([game_table.c.day.label('day'), bip_table.c.type.label('type'), bip_table.c.x.label('x'), bip_table.c.y.label('y'), pa_table.c.event.label('event'), pa_table.c.batter.label('batter'), pa_table.c.batter_stand.label('stand'), pa_table.c.pitcher.label('pitcher'), pa_table.c.pitcher_throw.label('throw')], and_(park_table.c.id == bindparam('park'), text(get_year(gd.conn, 'day')) == bindparam('year')), from_obj=bip_table.join(park_table).join(pa_table).join(game_table).outerjoin(p, onclause=p.c.mlbamid==pa_table.c.pitcher).outerjoin(b, onclause=b.c.mlbamid==pa_table.c.batter))
 
 def dump_json(filename, obj):
     filename = os.path.join(gd.output_dir, filename)
@@ -46,10 +54,13 @@ for row in gd.conn.execute(park_sql):
 
 dump_json("parks.json", stadiums)
 
+years = gd.conn.execute(years_sql)
+
 for park_id in park.keys():
-    bip_list = []
-    for bip in gd.conn.execute(bip_sql, { 'park': park_id }):
-        bip_list.append({ 'x': str(bip['x']), 'y': str(bip['y']), 'event': bip['event'], 'type': bip['type'], 'pitcher': bip['pitcher'], 'throw': bip['throw'], 'batter': bip['batter'], 'stand': bip['stand']  })
-    # No need to write empty files!
-    if len(bip_list) > 0:
-        dump_json("park-" + str(park_id) + ".json", bip_list)
+    for year in years:
+        bip_list = []
+        for bip in gd.conn.execute(bip_sql, { 'park': park_id }):
+            bip_list.append({ 'x': str(bip['x']), 'y': str(bip['y']), 'event': bip['event'], 'type': bip['type'], 'pitcher': bip['pitcher'], 'throw': bip['throw'], 'batter': bip['batter'], 'stand': bip['stand']  })
+        # No need to write empty files!
+        if len(bip_list) > 0:
+            dump_json("park-" + str(park_id) + str(year) + ".json", bip_list)
