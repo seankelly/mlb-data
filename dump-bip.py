@@ -59,7 +59,7 @@ years = [int(row[0]) for row in gd.conn.execute(years_sql)]
 for park_id in park.keys():
     for year in years:
         bip_list = []
-        for bip in gd.conn.execute(bip_sql, { 'park': park_id }):
+        for bip in gd.conn.execute(bip_sql, { 'park': park_id, 'year': year }):
             bip_list.append({ 'x': str(bip['x']), 'y': str(bip['y']), 'event': bip['event'], 'type': bip['type'], 'pitcher': bip['pitcher'], 'throw': bip['throw'], 'batter': bip['batter'], 'stand': bip['stand']  })
         # No need to write empty files!
         if len(bip_list) > 0:
