@@ -48,7 +48,7 @@ for row in gd.conn.execute(park_sql):
         else:
             p[key] = str(row[key])
     p['bip'] = p['num']
-    p['years'] = []
+    p['years'] = {}
     del p['num']
     park[p['id']] = park_json = p
     stadiums.append(park_json)
@@ -62,7 +62,7 @@ for park_id in park.keys():
             bip_list.append({ 'x': str(bip['x']), 'y': str(bip['y']), 'event': bip['event'], 'type': bip['type'], 'pitcher': bip['pitcher'], 'throw': bip['throw'], 'batter': bip['batter'], 'stand': bip['stand']  })
         # No need to write empty files!
         if len(bip_list) > 0:
-            park[park_id]['years'].append(year)
+            park[park_id]['years'][year] = True
             dump_json("park-" + str(park_id) + "-" + str(year) + ".json", bip_list)
 
 dump_json("parks.json", stadiums)
