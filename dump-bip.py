@@ -19,7 +19,8 @@ gd.init_db()
 
 park_table = gd.meta.tables['park']
 bip_table = gd.meta.tables['bip']
-park_sql = select([park_table, func.count(bip_table.c.id).label('num')], from_obj=[park_table.outerjoin(bip_table)]).group_by(park_table.c.id)
+# Arg, postgres requires every column to be in the ORDER BY clause
+park_sql = select([park_table.c.id, park_table.c.name, park_table.c.hp_x, park_table.c.hp_y, park_table.c.scale, func.count(bip_table.c.id).label('num')], from_obj=[park_table.outerjoin(bip_table)]).group_by(park_table.c.id, park_table.c.name, park_table.c.hp_x, park_table.c.hp_y, park_table.c.scale)
 
 game_table = gd.meta.tables['game']
 years_sql = select([func.distinct(text(get_year(gd.conn, 'day')))], from_obj=game_table)
@@ -47,7 +48,6 @@ for row in gd.conn.execute(park_sql):
         else:
             p[key] = str(row[key])
     p['bip'] = p['num']
-    del p['location']
     del p['num']
     park[p['id']] = park_json = p
     stadiums.append(park_json)
