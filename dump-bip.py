@@ -63,4 +63,4 @@ for park_id in park.keys():
             bip_list.append({ 'x': str(bip['x']), 'y': str(bip['y']), 'event': bip['event'], 'type': bip['type'], 'pitcher': bip['pitcher'], 'throw': bip['throw'], 'batter': bip['batter'], 'stand': bip['stand']  })
         # No need to write empty files!
         if len(bip_list) > 0:
-            dump_json("park-" + str(park_id) + str(year) + ".json", bip_list)
+            dump_json("park-" + str(park_id) + "-" + str(year) + ".json", bip_list)
