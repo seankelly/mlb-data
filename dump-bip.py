@@ -30,7 +30,7 @@ pa_table = gd.meta.tables['appearance']
 
 p = player_table.alias()
 b = player_table.alias()
-bip_sql = select([game_table.c.day.label('day'), bip_table.c.type.label('type'), bip_table.c.x.label('x'), bip_table.c.y.label('y'), pa_table.c.event.label('event'), b.c.namelast + ', ' + b.c.namefirst, pa_table.c.batter_stand.label('stand'), p.c.namelast + ', ' + p.c.namefirst, pa_table.c.pitcher_throw.label('throw')], and_(park_table.c.id == bindparam('park'), text(get_year(gd.conn, 'day')) == bindparam('year')), from_obj=bip_table.join(park_table).join(pa_table).join(game_table).outerjoin(p, onclause=p.c.mlbamid==pa_table.c.pitcher).outerjoin(b, onclause=b.c.mlbamid==pa_table.c.batter))
+bip_sql = select([game_table.c.day.label('day'), bip_table.c.type.label('type'), bip_table.c.x.label('x'), bip_table.c.y.label('y'), pa_table.c.event.label('event'), (b.c.namelast + ', ' + b.c.namefirst).label('batter'), pa_table.c.batter_stand.label('stand'), (p.c.namelast + ', ' + p.c.namefirst).label('pitcher'), pa_table.c.pitcher_throw.label('throw')], and_(park_table.c.id == bindparam('park'), text(get_year(gd.conn, 'day')) == bindparam('year')), from_obj=bip_table.join(park_table).join(pa_table).join(game_table).outerjoin(p, onclause=p.c.mlbamid==pa_table.c.pitcher).outerjoin(b, onclause=b.c.mlbamid==pa_table.c.batter))
 
 def dump_json(filename, obj):
     filename = os.path.join(gd.output_dir, filename)
