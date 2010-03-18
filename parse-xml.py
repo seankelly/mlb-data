@@ -29,7 +29,7 @@ def parse_game(game_dir, day):
     bip.reverse()
 
     # Keep these fields.
-    # Right now this is all but one ('des'), but MLBAM has added fields before.
+    # Right now this is all but one ('brief_event'), but MLBAM has added fields before.
     pa_fields = {'pitcher': 'pitcher', 'batter': 'batter', 'stand': 'batter_stand', 'p_throws': 'pitcher_throw', 'des': 'des', 'event': 'event'}
     # Add in bip_x/y columns
     pa_ins = gd.meta.tables['appearance'].insert()
@@ -43,8 +43,12 @@ def parse_game(game_dir, day):
         atbats = find_atbats(etree.parse(os.path.join(game_dir, xml_file)))
         for atbat in atbats:
             pa_data = { 'game': game['id'] }
-            for key in pa_fields:
-                pa_data[key] = atbat.get(key)
+            for field in pa_fields:
+                try:
+                    key = pa_fields[field]
+                except KeyError:
+                    continue
+                pa_data[key] = atbat.get(field)
                 if pa_data[key]:
                     pa_data[key] = pa_data[key].strip()
             res = gd.conn.execute(pa_ins, pa_data)
