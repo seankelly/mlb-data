@@ -44,10 +44,7 @@ def parse_game(game_dir, day):
         for atbat in atbats:
             pa_data = { 'game': game['id'] }
             for field in pa_fields:
-                try:
-                    key = pa_fields[field]
-                except KeyError:
-                    continue
+                key = pa_fields[field]
                 pa_data[key] = atbat.get(field)
                 if pa_data[key]:
                     pa_data[key] = pa_data[key].strip()
