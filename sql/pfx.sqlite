@@ -85,6 +85,36 @@ CREATE TABLE raw_pitch (
     FOREIGN KEY (pa) REFERENCES appearance (id)
 );
 
+CREATE TABLE norm_pitch (
+    id integer PRIMARY KEY, -- this should be identical to the raw pitch
+    pa integer,
+    inning integer,
+    balls integer,  -- count data
+    strikes integer,
+    x0 real,
+    y0 real,
+    z0 real,
+    vx0 real,
+    vy0 real,
+    vz0 real,
+    ax real,
+    ay real,
+    az real,
+    px real,
+    pz real,
+    pfx_x real,
+    pfx_z real,
+    spin_dir real,
+    spin_rate real,
+    start_speed real,
+    end_speed real,
+    sz_bot real,
+    sz_top real,
+    sv_id text,
+    pitch_type text,
+    FOREIGN KEY (pa) REFERENCES appearance (id)
+);
+
 -- Useful indices.
 -- Commented out to make bulk importing faster.
 
