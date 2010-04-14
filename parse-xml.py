@@ -42,7 +42,7 @@ def parse_game(game_dir, day):
         xml_file = 'inning_' + str(inning) + '.xml'
         atbats = find_atbats(etree.parse(os.path.join(game_dir, xml_file)))
         for atbat in atbats:
-            pa_data = { 'game': game['id'] }
+            pa_data = { 'game': game['id'], 'inning': inning }
             for field in pa_fields:
                 key = pa_fields[field]
                 pa_data[key] = atbat.get(field)
