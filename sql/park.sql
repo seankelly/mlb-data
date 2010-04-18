@@ -33,4 +33,5 @@ INSERT INTO park VALUES (2681, 'Citizens Bank Park', 'Philadelphia, PA', 252, 39
 INSERT INTO park VALUES (2889, 'Busch Stadium III', 'St. Louis, MO', 252.5, 407, 1.179);
 INSERT INTO park VALUES (3289, 'Citi Field', 'Flushing, NY', 253, 406, 1.107);
 INSERT INTO park VALUES (3309, 'Nationals Park', 'Washington, DC', 251, 408, 1.095);
+INSERT INTO park VALUES (3312, 'Target Field', 'Minneapolis, MN', 252, 406, 1.136);
 INSERT INTO park VALUES (3313, 'Yankee Stadium III', 'Bronx, NY', 252, 407, 1.126);
