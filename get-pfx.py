@@ -35,6 +35,9 @@ def fetch_game(url, gid):
     try:
         game_xml = urllib2.urlopen(game)
         save_game_data(gid_dir, game_xml, "game.xml")
+
+        players_xml = urllib2.urlopen(url_base + "/players.xml")
+        save_game_data(gid_dir, players_xml, "players.xml")
     except urllib2.HTTPError:
         return
 
