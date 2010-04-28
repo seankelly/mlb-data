@@ -28,7 +28,7 @@ CREATE TABLE game (
     day date
 );
 
-CREATE TABLE appearance (
+CREATE TABLE atbat (
     id serial PRIMARY KEY,
     game integer REFERENCES game (id),
     pitcher integer REFERENCES master (mlbamid),
@@ -41,7 +41,7 @@ CREATE TABLE appearance (
 
 CREATE TABLE bip (
     id serial PRIMARY KEY,
-    pa integer REFERENCES appearance (id),
+    atbat integer REFERENCES atbat (id),
     park integer REFERENCES park (id),
     type text,
     x real,
@@ -50,7 +50,7 @@ CREATE TABLE bip (
 
 CREATE TABLE raw_pitch (
     id serial PRIMARY KEY,
-    pa integer REFERENCES appearance (id),
+    atbat integer REFERENCES atbat (id),
     enhanced boolean,
     inning integer,
     balls integer,  -- count data
@@ -87,7 +87,7 @@ CREATE TABLE raw_pitch (
 
 CREATE TABLE norm_pitch (
     id integer PRIMARY KEY, -- this should be identical to the raw pitch
-    pa integer REFERENCES appearance (id),
+    atbat integer REFERENCES atbat (id),
     inning integer,
     balls integer,  -- count data
     strikes integer,
@@ -117,6 +117,6 @@ CREATE TABLE norm_pitch (
 -- Useful indices.
 -- Commented out to make bulk importing faster.
 
--- CREATE INDEX appearance_pitcher_idx ON appearance (pitcher);
--- CREATE INDEX appearance_id_idx ON appearance (id);
+-- CREATE INDEX atbat_pitcher_idx ON atbat (pitcher);
+-- CREATE INDEX atbat_id_idx ON atbat (id);
 -- CREATE INDEX raw_pitch_atbat_idx ON raw_pitch (atbat);
