@@ -30,9 +30,9 @@ def parse_game(game_dir, day):
 
     # Keep these fields.
     # Right now this is all but one ('brief_event'), but MLBAM has added fields before.
-    pa_fields = {'pitcher': 'pitcher', 'batter': 'batter', 'stand': 'batter_stand', 'p_throws': 'pitcher_throw', 'des': 'des', 'event': 'event'}
+    ab_fields = {'pitcher': 'pitcher', 'batter': 'batter', 'stand': 'batter_stand', 'p_throws': 'pitcher_throw', 'des': 'des', 'event': 'event'}
     # Add in bip_x/y columns
-    pa_ins = gd.meta.tables['appearance'].insert()
+    ab_ins = gd.meta.tables['atbat'].insert()
     bip_ins = gd.meta.tables['bip'].insert()
     pitch_fields = {'spin_rate': 'spin_rate', 'break_angle': 'break_angle', 'pitch_type': 'pitch_type', 'ax': 'ax', 'ay': 'ay', 'y0': 'y0', 'az': 'az', 'end_speed': 'end_speed', 'spin_dir': 'spin_dir', 'start_speed': 'start_speed', 'pz': 'pz', 'px': 'px', 'type': 'type', 'sz_bot': 'sz_bot', 'pfx_z': 'pfx_z', 'vy0': 'vy0', 'pfx_x': 'pfx_x', 'break_length': 'break_length', 'x0': 'x0', 'z0': 'z0', 'break_y': 'break_y', 'sz_top': 'sz_top', 'type_confidence': 'type_confidence', 'y': 'y', 'x': 'x', 'vz0': 'vz0', 'sv_id': 'sv_id', 'vx0': 'vx0'}
     pitch_ins = gd.meta.tables['raw_pitch'].insert()
@@ -42,23 +42,23 @@ def parse_game(game_dir, day):
         xml_file = 'inning_' + str(inning) + '.xml'
         atbats = find_atbats(etree.parse(os.path.join(game_dir, xml_file)))
         for atbat in atbats:
-            pa_data = { 'game': game['id'], 'inning': inning }
-            for field in pa_fields:
-                key = pa_fields[field]
-                pa_data[key] = atbat.get(field)
-                if pa_data[key]:
-                    pa_data[key] = pa_data[key].strip()
-            res = gd.conn.execute(pa_ins, pa_data)
+            ab_data = { 'game': game['id'], 'inning': inning }
+            for field in ab_fields:
+                key = ab_fields[field]
+                ab_data[key] = atbat.get(field)
+                if ab_data[key]:
+                    ab_data[key] = ab_data[key].strip()
+            res = gd.conn.execute(ab_ins, ab_data)
             ids = res.last_inserted_ids()
-            pa_id = ids[0]
+            ab_id = ids[0]
 
             # Try to match the atbat with entry in inning_hit.xml
             idx = len(bip)-1
-            while idx >= 0 and pa_data['pitcher'] == bip[idx].get('pitcher') and pa_data['batter'] == bip[idx].get('batter') and inning == int(bip[idx].get('inning')):
+            while idx >= 0 and ab_data['pitcher'] == bip[idx].get('pitcher') and ab_data['batter'] == bip[idx].get('batter') and inning == int(bip[idx].get('inning')):
                 try:
                     x = float(bip[idx].get('x'))
                     y = float(bip[idx].get('y'))
-                    gd.conn.execute(bip_ins, { 'pa': pa_id, 'park': game['park'], 'type': bip[idx].get('type'), 'x': x, 'y': y })
+                    gd.conn.execute(bip_ins, { 'pa': ab_id, 'park': game['park'], 'type': bip[idx].get('type'), 'x': x, 'y': y })
                 except ValueError:
                     pass
                 bip.pop()
@@ -67,7 +67,7 @@ def parse_game(game_dir, day):
             balls, strikes = 0, 0
             for pitch in atbat.getiterator('pitch'):
                 enhanced = True if pitch.get('pitch_type') else False
-                pitch_data = { 'pa': pa_id, 'enhanced': enhanced, 'balls': balls, 'strikes': strikes }
+                pitch_data = { 'pa': ab_id, 'enhanced': enhanced, 'balls': balls, 'strikes': strikes }
                 for key in pitch_fields:
                     pitch_data[key] = pitch.get(key)
                     if pitch_data[key]:
