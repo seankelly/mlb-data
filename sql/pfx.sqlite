@@ -1,3 +1,9 @@
+CREATE TABLE mlbam_player (
+    mlbam integer UNIQUE, -- Straight from MLBAM
+    firstname text,
+    lastname text
+);
+
 CREATE TABLE park (
     id integer, -- use MLB's ids
     name text,
