@@ -83,7 +83,7 @@ def parse_game(game_dir, day):
                 try:
                     x = float(bip[idx].get('x'))
                     y = float(bip[idx].get('y'))
-                    gd.conn.execute(bip_ins, { 'pa': ab_id, 'park': game['park'], 'type': bip[idx].get('type'), 'x': x, 'y': y })
+                    gd.conn.execute(bip_ins, { 'atbat': ab_id, 'park': game['park'], 'type': bip[idx].get('type'), 'x': x, 'y': y })
                 except ValueError:
                     pass
                 bip.pop()
@@ -92,7 +92,7 @@ def parse_game(game_dir, day):
             balls, strikes = 0, 0
             for pitch in atbat.getiterator('pitch'):
                 enhanced = True if pitch.get('pitch_type') else False
-                pitch_data = { 'pa': ab_id, 'enhanced': enhanced, 'balls': balls, 'strikes': strikes }
+                pitch_data = { 'atbat': ab_id, 'enhanced': enhanced, 'balls': balls, 'strikes': strikes }
                 for key in pitch_fields:
                     pitch_data[key] = pitch.get(key)
                     if pitch_data[key]:
