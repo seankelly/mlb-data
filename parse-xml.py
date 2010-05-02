@@ -1,6 +1,27 @@
+from sqlalchemy.sql import select
 from lxml import etree
 import gameday
 import os, fnmatch
+
+mlbamids = set()
+
+def load_players():
+    player_table = gd.meta.tables['mlbam_player']
+    select_ids = select([player_table.c.mlbamid], player_table.c.mlbamid != None)
+    for row in gd.conn.execute(select_ids):
+        mlbamids.add(row['mlbamid'])
+
+find_players = etree.XPath('/game/team/player')
+def add_players_xml(game_dir):
+    add_player = gd.meta.tables['mlbam_player'].insert()
+    ins = []
+    for player in find_players(etree.parse(os.path.join(game_dir, 'players.xml'))):
+        mlbid = player.get('id')
+        if mlbid not in mlbamids:
+            ins.append({ 'mlbamid': mlbid, 'firstname': player.get('first'), 'lastname': player.get('last') })
+            mlbamids.add(mlbid)
+    if (len(ins) > 0):
+        gd.conn.execute(add_player, ins)
 
 
 game_children = etree.XPath('/game/*')
@@ -22,6 +43,7 @@ find_atbats = etree.XPath('/inning/*/atbat')
 find_bip = etree.XPath('/hitchart/hip')
 def parse_game(game_dir, day):
     game = parse_game_xml(game_dir, day)
+    add_players_xml(game_dir)
     # Skip inning_hit.xml. It is special and needs different processing.
     xml_files = fnmatch.filter(os.listdir(game_dir), 'inning_[!h]*.xml')
     bip = find_bip(etree.parse(os.path.join(game_dir, 'inning_hit.xml')))
@@ -98,6 +120,7 @@ gd.parse_options()
 gd.init_db()
 
 trans = gd.conn.begin()
+load_players()
 for day in gd.each_day():
     parse_day(gd.output_dir, day)
 
