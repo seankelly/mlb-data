@@ -1,5 +1,5 @@
 CREATE TABLE mlbam_player (
-    mlbam integer UNIQUE, -- Straight from MLBAM
+    mlbamid integer UNIQUE, -- Straight from MLBAM
     firstname text,
     lastname text
 );
@@ -38,8 +38,8 @@ CREATE TABLE atbat (
     des text,
     event text,
     FOREIGN KEY (game) REFERENCES game (id),
-    FOREIGN KEY (pitcher) REFERENCES master (mlbamid),
-    FOREIGN KEY (batter) REFERENCES master (mlbamid)
+    FOREIGN KEY (pitcher) REFERENCES mlbam_player (mlbamid),
+    FOREIGN KEY (batter) REFERENCES mlbam_player (mlbamid)
 );
 
 CREATE TABLE bip (

@@ -1,5 +1,5 @@
 CREATE TABLE mlbam_player (
-    mlbam integer PRIMARY KEY, -- Straight from MLBAM
+    mlbamid integer PRIMARY KEY, -- Straight from MLBAM
     firstname text,
     lastname text
 );
@@ -31,8 +31,8 @@ CREATE TABLE game (
 CREATE TABLE atbat (
     id serial PRIMARY KEY,
     game integer REFERENCES game (id),
-    pitcher integer REFERENCES master (mlbamid),
-    batter integer REFERENCES master (mlbamid),
+    pitcher integer REFERENCES mlbam_player (mlbamid),
+    batter integer REFERENCES mlbam_player (mlbamid),
     batter_stand text,
     pitcher_throw text,
     des text,
