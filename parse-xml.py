@@ -1,3 +1,12 @@
+'''
+Parse the PitchFX data and store in a database.
+
+Usage:
+    python parse-xml.py -o path/to/data/ -d 'sqlite:///file.db' [-s <start day>] [-e <end day>]
+
+The database path given can be whatever sqlalchemy supports. For instance, postgres:///pitchfx if the username and password are not necessary when connecting to the PostgreSQL database 'pitchfx'.
+'''
+
 from sqlalchemy.sql import select
 from lxml import etree
 import gameday

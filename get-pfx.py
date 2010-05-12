@@ -1,4 +1,11 @@
-#!/usr/bin/python
+'''
+Fetch MLBAM's PitchFX data.
+
+Usage:
+    python get-pfx.py -o path/to/save/ [-s <start date>] [-e <end date>]
+
+With no start or end days specified, it will fetch the previous day's data.
+'''
 
 from random import uniform
 import urllib2, os, os.path, time

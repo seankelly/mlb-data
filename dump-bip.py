@@ -1,4 +1,9 @@
-# Dump XML files containing BIP data for each park.
+'''
+Dump XML files containing BIP data for each park.
+
+Usage:
+    python dump-bip.py -o path/to/output/ -d 'sqlite:///pfx.db'
+'''
 
 from sqlalchemy.sql import select, bindparam, func, text, and_
 import gameday, os
