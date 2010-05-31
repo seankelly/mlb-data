@@ -55,6 +55,7 @@ CREATE TABLE raw_pitch (
     inning integer,
     balls integer,  -- count data
     strikes integer,
+    des text,
     px real,
     pz real,
     x real,
