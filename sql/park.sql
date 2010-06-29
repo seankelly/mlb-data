@@ -27,6 +27,7 @@ INSERT INTO park VALUES (2394, 'Comerica Park', 'Detroit, MI', 253.5, 408, 1.158
 INSERT INTO park VALUES (2395, 'AT&T Park', 'San Francisco, CA', 252.5, 405, 1.124);
 INSERT INTO park VALUES (2397, 'Tokyo Dome', 'Tokyo, JP', 252, 406, 1.136);
 INSERT INTO park VALUES (2504, 'Champion Stadium', 'Lake Buena Vista, FL', 251, 399, 1.198);
+INSERT INTO park VALUES (2535, 'Hiram Bithorn Stadium', 'San Juan, PR', 252, 398.5, 1.177);
 INSERT INTO park VALUES (2602, 'Great American Ball Park', 'Cincinnati, OH', 252, 402, 1.182);
 INSERT INTO park VALUES (2680, 'PETCO Park', 'San Diego, CA', 252.5, 407, 1.148);
 INSERT INTO park VALUES (2681, 'Citizens Bank Park', 'Philadelphia, PA', 252, 398, 1.182);
