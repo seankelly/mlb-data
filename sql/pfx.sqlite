@@ -98,7 +98,9 @@ CREATE TABLE raw_pitch (
 CREATE TABLE norm_pitch (
     id integer PRIMARY KEY, -- this should be identical to the raw pitch
     atbat integer,
+    game integer,
     inning integer,
+    sequence integer,
     balls integer,  -- count data
     strikes integer,
     x0 real,
@@ -122,7 +124,8 @@ CREATE TABLE norm_pitch (
     sz_top real,
     sv_id text,
     pitch_type text,
-    FOREIGN KEY (atbat) REFERENCES atbat (id)
+    FOREIGN KEY (atbat) REFERENCES atbat (id),
+    FOREIGN KEY (game) REFERENCES game (id)
 );
 
 -- Useful indices.
