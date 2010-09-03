@@ -51,8 +51,10 @@ CREATE TABLE bip (
 CREATE TABLE raw_pitch (
     id serial PRIMARY KEY,
     atbat integer REFERENCES atbat (id),
+    game integer REFERENCES game (id),
     enhanced boolean,
     inning integer,
+    sequence integer,
     balls integer,  -- count data
     strikes integer,
     des text,

@@ -56,8 +56,10 @@ CREATE TABLE bip (
 CREATE TABLE raw_pitch (
     id integer PRIMARY KEY,
     atbat integer,
+    game integer,
     enhanced integer,
     inning integer,
+    sequence integer,
     balls integer,  -- count data
     strikes integer,
     des text,
@@ -89,7 +91,8 @@ CREATE TABLE raw_pitch (
     ax real,
     ay real,
     az real,
-    FOREIGN KEY (atbat) REFERENCES atbat (id)
+    FOREIGN KEY (atbat) REFERENCES atbat (id),
+    FOREIGN KEY (game) REFERENCES game (id)
 );
 
 CREATE TABLE norm_pitch (
