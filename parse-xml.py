@@ -99,15 +99,17 @@ def parse_game(game_dir, day):
                 idx = len(bip)-1
 
             balls, strikes = 0, 0
+            sequence = 1
             for pitch in atbat.getiterator('pitch'):
                 enhanced = True if pitch.get('pitch_type') else False
-                pitch_data = { 'atbat': ab_id, 'enhanced': enhanced, 'balls': balls, 'strikes': strikes }
+                pitch_data = { 'atbat': ab_id, 'enhanced': enhanced, 'balls': balls, 'strikes': strikes, 'pitch_number': sequence, 'game': game['id'] }
                 for key in pitch_fields:
                     pitch_data[key] = pitch.get(key)
                     if pitch_data[key]:
                         pitch_data[key] = pitch_data[key].strip()
                 pitch_inserts.append(pitch_data)
 
+                sequence += 1
                 # Calculate the count
                 # ..after the pitch!
                 called = pitch.get('type')
