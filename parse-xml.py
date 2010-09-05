@@ -30,7 +30,7 @@ def add_players_xml(game_dir):
     for player in find_players(etree.parse(players_xml)):
         mlbid = int(player.get('id'))
         if mlbid not in mlbamids:
-            ins.append({ 'mlbamid': mlbid, 'firstname': player.get('first'), 'lastname': player.get('last') })
+            ins.append({ 'mlbamid': mlbid, 'namefirst': player.get('first'), 'namelast': player.get('last') })
             mlbamids.add(mlbid)
     if (len(ins) > 0):
         gd.conn.execute(add_player, ins)
