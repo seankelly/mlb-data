@@ -1,7 +1,7 @@
 CREATE TABLE mlbam_player (
     mlbamid integer UNIQUE, -- Straight from MLBAM
-    firstname text,
-    lastname text
+    namefirst text,
+    namelast text
 );
 
 CREATE TABLE park (
