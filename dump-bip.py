@@ -13,7 +13,7 @@ except ImportError:
     import simplejson as json
 
 def get_year(conn, label):
-    if conn.dialect.__module__ != 'sqlalchemy.databases.sqlite':
+    if not 'sqlite' in conn.dialect.__module__:
         return "EXTRACT(year from " + label + ")"
     else:
         return "strftime('%Y', " + label + ")"
