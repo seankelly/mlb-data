@@ -102,7 +102,7 @@ def parse_game(game_dir, day):
             sequence = 1
             for pitch in atbat.getiterator('pitch'):
                 enhanced = True if pitch.get('pitch_type') else False
-                pitch_data = { 'atbat': ab_id, 'enhanced': enhanced, 'balls': balls, 'strikes': strikes, 'sequence': sequence, 'game': game['id'] }
+                pitch_data = { 'atbat': ab_id, 'enhanced': enhanced, 'balls': balls, 'strikes': strikes, 'sequence': sequence, 'game': game['id'], 'batter': ab_data['batter'], 'pitcher': ab_data['pitcher'] }
                 for key in pitch_fields:
                     pitch_data[key] = pitch.get(key)
                     if pitch_data[key]:
