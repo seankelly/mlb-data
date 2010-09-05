@@ -30,7 +30,7 @@ park_sql = select([park_table.c.id, park_table.c.name, park_table.c.hp_x, park_t
 game_table = gd.meta.tables['game']
 years_sql = select([func.distinct(text(get_year(gd.conn, 'day')))], from_obj=game_table)
 
-player_table = gd.meta.tables['master']
+player_table = gd.meta.tables['mlbam_player']
 ab_table = gd.meta.tables['atbat']
 
 p = player_table.alias()
