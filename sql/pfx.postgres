@@ -52,6 +52,8 @@ CREATE TABLE raw_pitch (
     id serial PRIMARY KEY,
     atbat integer REFERENCES atbat (id),
     game integer REFERENCES game (id),
+    pitcher integer REFERENCES mlbam_player (mlbamid),
+    batter integer REFERENCES mlbam_player (mlbamid),
     enhanced boolean,
     inning integer,
     sequence integer,
@@ -92,6 +94,8 @@ CREATE TABLE norm_pitch (
     id integer PRIMARY KEY, -- this should be identical to the raw pitch
     atbat integer REFERENCES atbat (id),
     game integer REFERENCES game (id),
+    pitcher integer REFERENCES mlbam_player (mlbamid),
+    batter integer REFERENCES mlbam_player (mlbamid),
     inning integer,
     sequence integer,
     balls integer,  -- count data
