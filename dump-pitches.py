@@ -5,7 +5,6 @@ Usage:
     python dump-pitches.py -o path/to/output/ -d 'sqlite:///pfx.db'
 '''
 
-import decimal
 from sqlalchemy.sql import select, bindparam, func, text, and_
 import gameday, os
 try:
@@ -44,22 +43,30 @@ def dump_json(filename, obj):
     json_file.close()
 
 def add_pitch(obj, pitch):
+    from decimal import Decimal
+    from datetime import date
     t = pitch['pitch_type']
     if t not in obj['average']:
         obj['average'][t] = { 'x0': 0.0, 'y0': 0.0, 'z0': 0.0, 'vx0': 0.0, 'vy0': 0.0, 'vz0': 0.0, 'ax': 0.0, 'ay': 0.0, 'az': 0.0, 'start_speed': 0.0, 'num': 0 } 
 
-    dec = type(decimal.Decimal(0))
+    type_dec = type(Decimal(0))
     avg = obj['average'][t]
     avg['num'] += 1
     for x in avg:
         if x != 'num': avg[x] += float(pitch[x])
 
     p = { }
-    for x in ['x0', 'y0', 'z0', 'vx0', 'vy0', 'vz0', 'ax', 'ay', 'az', 'pitch_type', 'day', 'batter_name', 'sequence']:
-        if type(pitch[x]) == dec:
-            p[x] = float(pitch[x])
-        else:
+    for x in ['x0', 'y0', 'z0', 'vx0', 'vy0', 'vz0', 'ax', 'ay', 'az', 'pitch_type', 'batter_name', 'sequence']:
+        if type(pitch[x]) != type_dec:
             p[x] = pitch[x]
+        else:
+            p[x] = float(pitch[x])
+    if type(pitch['day']) != type(date.today()):
+        ymd = pitch['day'].split('-')
+        day = date(int(ymd[0]), int(ymd[1]), int(ymd[2]))
+    else:
+        day = pitch['day']
+    p['day'] = day.strftime('%b %d')
     obj['all'].append(p)
 
 def save_pitches(pitches, year):
