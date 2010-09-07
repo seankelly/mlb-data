@@ -73,9 +73,9 @@ def add_pitch(obj, pitch):
 def save_pitches(pitches, year):
     for t in pitches['average']:
         N = pitches['average'][t]['num']
-        del pitches['average'][t]['num']
         for x in pitches['average'][t]:
             pitches['average'][t][x] = pitches['average'][t][x] / N
+        pitches['average'][t]['num'] = N
     dump_json(str(year) + "-" + str(pitches['id']) + ".json", pitches)
 
 years = [row[0] for row in gd.conn.execute(years_sql)]
