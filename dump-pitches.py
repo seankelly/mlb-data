@@ -56,11 +56,12 @@ def add_pitch(obj, pitch):
         if x != 'num': avg[x] += float(pitch[x])
 
     p = { }
-    for x in ['x0', 'y0', 'z0', 'vx0', 'vy0', 'vz0', 'ax', 'ay', 'az', 'pitch_type', 'batter_name', 'sequence']:
+    for x in ['x0', 'y0', 'z0', 'vx0', 'vy0', 'vz0', 'ax', 'ay', 'az', 'pitch_type', 'sequence']:
         if type(pitch[x]) != type_dec:
             p[x] = pitch[x]
         else:
             p[x] = float(pitch[x])
+    p['batter'] = pitch['batter_name']
     if type(pitch['day']) != type(date.today()):
         ymd = pitch['day'].split('-')
         day = date(int(ymd[0]), int(ymd[1]), int(ymd[2]))
