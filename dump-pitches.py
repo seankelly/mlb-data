@@ -78,10 +78,10 @@ def save_pitches(pitches, year):
         pitches['average'][t]['num'] = N
     dump_json(str(year) + "-" + str(pitches['id']) + ".json", pitches)
 
-years = [row[0] for row in gd.conn.execute(years_sql)]
+years = [int(row[0]) for row in gd.conn.execute(years_sql)]
 for year in years:
     pitcher = 0
-    for pitch in gd.conn.execute(get_pitches, { 'year': year }):
+    for pitch in gd.conn.execute(get_pitches, { 'year': str(year) }):
         if pitch['pitcher'] != pitcher:
             if pitcher != 0:
                 save_pitches(pitches, year)
