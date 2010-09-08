@@ -127,5 +127,6 @@ CREATE TABLE norm_pitch (
 -- Commented out to make bulk importing faster.
 
 -- CREATE INDEX atbat_pitcher_idx ON atbat (pitcher);
--- CREATE INDEX atbat_id_idx ON atbat (id);
 -- CREATE INDEX raw_pitch_atbat_idx ON raw_pitch (atbat);
+-- CREATE INDEX raw_pitch_pitcher_idx on raw_pitch (pitcher);
+-- CREATE INDEX raw_pitch_pitcher_game_idx on raw_pitch (pitcher, game);
