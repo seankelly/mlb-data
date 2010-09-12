@@ -42,6 +42,12 @@ def dump_json(filename, obj):
     json.dump(obj, json_file, separators=(',',':'))
     json_file.close()
 
+def load_players(player_list):
+    player_list = {}
+    player_select = select([player_table])
+    for player in gd.conn.execute(player_select):
+        player_list[int(player_select['mlbamid'])] = { 'first': player_select['namefirst'], 'last': player_select['namelast'] }
+
 def add_pitch(obj, pitch):
     from decimal import Decimal
     from datetime import date
@@ -77,6 +83,9 @@ def save_pitches(pitches, year):
             pitches['average'][t][x] = pitches['average'][t][x] / N
         pitches['average'][t]['num'] = N
     dump_json(str(year) + "-" + str(pitches['id']) + ".json", pitches)
+
+player_list = {}
+load_players(player_list)
 
 years = [int(row[0]) for row in gd.conn.execute(years_sql)]
 for year in years:
