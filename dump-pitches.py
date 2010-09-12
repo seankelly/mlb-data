@@ -28,7 +28,7 @@ years_sql = select([func.distinct(text(get_year(gd.conn, 'day')))], from_obj=gam
 
 # This should be changed to norm_pitch once normalization is done.
 pitch_table = gd.meta.tables['raw_pitch']
-pitcher_list = select([func.distinct(pitch_table.c.pitcher)], from_obj=pitch_table.join(game_table))
+pitcher_list = select([func.distinct(pitch_table.c.pitcher)], text(get_year(gd.conn, 'day')) == bindparam('year'), from_obj=pitch_table.join(game_table))
 
 player_table = gd.meta.tables['mlbam_player']
 p = player_table.alias()
