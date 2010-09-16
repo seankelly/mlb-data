@@ -90,11 +90,9 @@ player_list = load_players()
 
 years = [int(row[0]) for row in gd.conn.execute(years_sql)]
 for year in years:
-    pitcher = 0
-    for pitch in gd.conn.execute(get_pitches, { 'year': str(year) }):
-        if pitch['pitcher'] != pitcher:
-            if pitcher != 0:
-                save_pitches(pitches, year)
-            pitches = { 'all': [], 'average': {}, 'id': pitch['pitcher'], 'pitcher': pitch['pitcher_name'] }
-            pitcher = pitch['pitcher']
-        add_pitch(pitches, pitch)
+    pitchers = [int(row[0]) for row in gd.conn.execute(pitcher_list, { 'year': str(year) })]
+    for pitcher_id in pitchers:
+        pitches = { 'all': [], 'average': {}, 'id': pitcher_id, 'pitcher': get_name(player_list, pitcher_id) }
+        for pitch in gd.conn.execute(get_pitches, { 'pitcher': pitcher_id, 'year': str(year) }):
+            add_pitch(pitches, pitch)
+        save_pitches(pitches, year)
