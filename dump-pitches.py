@@ -31,9 +31,7 @@ pitch_table = gd.meta.tables['raw_pitch']
 pitcher_list = select([func.distinct(pitch_table.c.pitcher)], text(get_year(gd.conn, 'day')) == bindparam('year'), from_obj=pitch_table.join(game_table))
 
 player_table = gd.meta.tables['mlbam_player']
-p = player_table.alias()
-b = player_table.alias()
-get_pitches = select([pitch_table, game_table.c.day, (b.c.namelast + ', ' + b.c.namefirst).label('batter_name'), (p.c.namelast + ', ' + p.c.namefirst).label('pitcher_name')], and_(pitch_table.c.enhanced == True, text(get_year(gd.conn, 'day')) == bindparam('year')), from_obj=pitch_table.join(game_table).outerjoin(p, onclause=p.c.mlbamid==pitch_table.c.pitcher).outerjoin(b, onclause=b.c.mlbamid==pitch_table.c.batter)).order_by(pitch_table.c.pitcher, game_table.c.day.asc())
+get_pitches = select([pitch_table, game_table.c.day], and_(pitch_table.c.enhanced == True, text(get_year(gd.conn, 'day')) == bindparam('year'), pitch_table.c.pitcher == bindparam('pitcher')), from_obj=pitch_table.join(game_table)).order_by(pitch_table.c.pitcher, game_table.c.day.asc())
 
 
 def dump_json(filename, obj):
