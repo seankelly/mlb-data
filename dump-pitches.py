@@ -47,7 +47,11 @@ def load_players():
         player_list[int(player['mlbamid'])] = { 'first': player['namefirst'], 'last': player['namelast'] }
     return player_list
 
+def get_name(player_list, id):
+    return player_list[id]['last'] + ', ' + player_list[id]['first']
+
 def add_pitch(obj, pitch):
+    global player_list
     from decimal import Decimal
     from datetime import date
     t = pitch['pitch_type']
@@ -60,13 +64,12 @@ def add_pitch(obj, pitch):
     for x in avg:
         if x != 'num': avg[x] += float(pitch[x])
 
-    p = { }
+    p = { 'batter': get_name(player_list, pitch['batter']) }
     for x in ['x0', 'y0', 'z0', 'vx0', 'vy0', 'vz0', 'ax', 'ay', 'az', 'pitch_type', 'sequence']:
         if type(pitch[x]) != type_dec:
             p[x] = pitch[x]
         else:
             p[x] = float(pitch[x])
-    p['batter'] = pitch['batter_name']
     if type(pitch['day']) != type(date.today()):
         ymd = pitch['day'].split('-')
         day = date(int(ymd[0]), int(ymd[1]), int(ymd[2]))
