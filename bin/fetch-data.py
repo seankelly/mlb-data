@@ -9,6 +9,7 @@ With no start or end days specified, it will fetch the previous day's data.
 
 from random import uniform
 import urllib2, os, os.path, time
+import re
 import gameday
 
 def save_game_data(gid_dir, xml_file, name):
@@ -59,7 +60,7 @@ def fetch_day(day):
     mlb.feed(day_dir.read())
     mlb.close()
 
-    for gid in mlb.get_links('^gid_'):
+    for gid in mlb.get_links("^gid_{0:%Y_%m_%d}_".format(day)):
         fetch_game(url, gid)
         time.sleep(uniform(20, 30))
 
