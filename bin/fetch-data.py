@@ -19,6 +19,7 @@ def save_game_data(gid_dir, xml_file, name):
     xml_output.write(xml_file.read())
     xml_output.close()
 
+
 def scrape_game_dir(gid_dir, url, xml_re):
     url_dir = urllib2.urlopen(url)
     mlb = gameday.HTML()
@@ -63,8 +64,8 @@ def fetch_day(day):
         fetch_game(url, gid)
         time.sleep(uniform(20, 30))
 
-gd = gameday.Options()
 
+gd = gameday.Options()
 gd.parse_options()
 
 for day in gd.each_day():
