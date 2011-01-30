@@ -37,11 +37,10 @@ def fetch_game(url, gid):
     gid_dir = os.path.join(gd.output_dir, gid)
 
     url_base = url + gid
-    game = url_base + "/game.xml"
-    # This file only exists for games that were played in
-    # some capacity. Try to fetch and return if cannot.
     try:
-        game_xml = urllib2.urlopen(game)
+        # This file only exists for games that were played in
+        # some capacity. Try to fetch and return if cannot.
+        game_xml = urllib2.urlopen(game + "/game.xml")
         save_game_data(gid_dir, game_xml, "game.xml")
 
         players_xml = urllib2.urlopen(url_base + "/players.xml")
