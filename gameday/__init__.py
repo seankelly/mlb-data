@@ -94,12 +94,3 @@ class Options(object):
         while current_day <= self.end_day:
             yield current_day
             current_day += timedelta(1)
-
-
-# Clean up imports.
-del HTMLParser
-del OptionParser
-del date
-del datetime
-del os
-del re
