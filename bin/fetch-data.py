@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 '''
 Fetch MLBAM's PitchFX data.
 
