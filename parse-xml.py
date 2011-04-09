@@ -46,7 +46,7 @@ def parse_game_xml(game_dir, day):
         elif el.tag == 'stadium':
             game['park'] = el.get('id')
     res = gd.conn.execute(game_ins, game)
-    ids = res.last_inserted_ids()
+    ids = res.inserted_primary_key()
     game['id'] = ids[0]
     return game
 
@@ -83,7 +83,7 @@ def parse_game(game_dir, day):
                 if ab_data[key]:
                     ab_data[key] = ab_data[key].strip()
             res = gd.conn.execute(ab_ins, ab_data)
-            ids = res.last_inserted_ids()
+            ids = res.inserted_primary_key()
             ab_id = ids[0]
 
             # Try to match the atbat with entry in inning_hit.xml
