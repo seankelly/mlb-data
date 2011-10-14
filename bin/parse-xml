@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 '''
 Parse the PitchFX data and store in a database.
 
