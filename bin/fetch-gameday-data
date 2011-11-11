@@ -12,7 +12,7 @@ With no start or end days specified, it will fetch the previous day's data.
 from random import uniform
 import urllib2, os, os.path, time
 import re
-import gameday
+import mlbam.gameday
 
 def save_game_data(gid_dir, xml_file, name):
     if os.path.exists(gid_dir) == False:
@@ -25,7 +25,7 @@ def save_game_data(gid_dir, xml_file, name):
 
 def scrape_game_dir(gid_dir, url, xml_re):
     url_dir = urllib2.urlopen(url)
-    mlb = gameday.HTML()
+    mlb = mlbam.gameday.HTML()
     mlb.feed(url_dir.read())
     mlb.close()
 
@@ -58,7 +58,7 @@ def fetch_game(url, gid):
 def fetch_day(day):
     url = "http://gd2.mlb.com/components/game/mlb/" + day.strftime("year_%Y/month_%m/day_%d/")
     day_dir = urllib2.urlopen(url)
-    mlb = gameday.HTML()
+    mlb = mlbam.gameday.HTML()
     mlb.feed(day_dir.read())
     mlb.close()
 
@@ -67,7 +67,7 @@ def fetch_day(day):
         time.sleep(uniform(20, 30))
 
 
-gd = gameday.Options()
+gd = mlbam.gameday.Options()
 gd.parse_options()
 
 for day in gd.each_day():

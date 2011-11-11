@@ -11,7 +11,7 @@ The database path given can be whatever sqlalchemy supports. For instance, postg
 
 from sqlalchemy.sql import select
 from lxml import etree
-import gameday
+import mlbam.gameday
 import os, fnmatch
 
 mlbamids = set()
@@ -129,7 +129,7 @@ def parse_day(output_dir, day):
         parse_game(os.path.join(output_dir, game), day)
 
 
-gd = gameday.Options()
+gd = mlbam.gameday.Options()
 gd.parse_options()
 gd.init_db()
 

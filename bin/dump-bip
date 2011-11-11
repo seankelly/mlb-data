@@ -8,7 +8,7 @@ Usage:
 '''
 
 from sqlalchemy.sql import select, bindparam, func, text, and_
-import gameday, os
+import mlbam.gameday, os
 try:
     import json
 except ImportError:
@@ -20,7 +20,7 @@ def get_year(conn, label):
     else:
         return "strftime('%Y', " + label + ")"
 
-gd = gameday.Options()
+gd = mlbam.gameday.Options()
 gd.parse_options()
 gd.init_db()
 

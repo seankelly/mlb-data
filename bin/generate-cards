@@ -13,7 +13,7 @@
 
 exit('NEEDS TO BE UPDATED TO USE SQLALCHEMY. Plus other stuff.')
 
-import gameday, gameday.pitchfx
+import mlbam.gameday, mlbam.gameday.pitchfx
 import os, string
 from genshi.template import TemplateLoader
 from math import pi
@@ -31,7 +31,7 @@ default_colors = {
     'KN': '#A52A2A'
 }
 
-gd = gameday.Options()
+gd = mlbam.gameday.Options()
 gd.parse_options()
 
 cur = gd.conn.cursor()
