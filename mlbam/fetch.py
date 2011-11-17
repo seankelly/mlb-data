@@ -37,7 +37,7 @@ class DirectoryList(HTMLParser):
 
 class FetchMLBAM(object):
     base_url = "http://gd2.mlb.com/components/game/"
-    mlbam_leagues = set('aaa', 'aax', 'afa', 'afx', 'mlb', 'win')
+    mlbam_leagues = set(('aaa', 'aax', 'afa', 'afx', 'mlb', 'win'))
 
     def __init__(self, start = date.today()-timedelta(1), end = date.today(), output_dir = 'data', leagues = ('mlb',)):
         if not isinstance(start, date):
