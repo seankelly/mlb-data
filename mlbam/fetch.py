@@ -41,13 +41,13 @@ class FetchMLBAM(object):
 
     def __init__(self, start = date.today()-timedelta(1), end = date.today(), output_dir = 'data', leagues = ('mlb',)):
         if not isinstance(start, date):
-            raise TypeError
+            raise TypeError, "Start day is not a date"
         if not isinstance(end, date):
-            raise TypeError
+            raise TypeError, "End day is not a date"
         self.start = start
         self.end = end
         if isinstance(leagues, (list, tuple)):
-            raise TypeError
+            raise TypeError, "League list is not a tuple or list"
         valid_leagues = []
         for league in leagues:
             if type(league) == str:
