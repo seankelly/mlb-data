@@ -46,7 +46,7 @@ class FetchMLBAM(object):
             raise TypeError, "End day is not a date"
         self.start = start
         self.end = end
-        if isinstance(leagues, (list, tuple)):
+        if not isinstance(leagues, (list, tuple)):
             raise TypeError, "League list is not a tuple or list"
         valid_leagues = []
         for league in leagues:
