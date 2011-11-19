@@ -18,4 +18,4 @@ if __name__ == "__main__":
     parser.add_argument('-e', '--end', metavar='DATE', help='End day')
     parser.add_argument('-l', '--leagues', action='append', help='Fetch these leagues')
     args = parser.parse_args()
-    gameday_fetch = FetchMLBAM()
+    gameday_fetch = FetchMLBAM(**args.__dict__)
