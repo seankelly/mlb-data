@@ -84,7 +84,7 @@ class FetchMLBAM(object):
 
     def fetch_game(self, league, day, gid):
         game_url = self.base_url + league + '/' + day.strftime("year_%Y/month_%m/day_%d/") + gid
-        gid_dir = os.path.join(self.output_dir, league, day.year, gid)
+        gid_dir = os.path.join(self.output_dir, league, str(day.year), gid)
         if not os.path.exists(gid_dir):
             os.makedirs(gid_dir)
         try:
