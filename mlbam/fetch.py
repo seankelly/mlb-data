@@ -39,11 +39,19 @@ class FetchMLBAM(object):
     base_url = "http://gd2.mlb.com/components/game/"
     mlbam_leagues = set(('aaa', 'aax', 'afa', 'afx', 'mlb', 'win'))
 
-    def __init__(self, start = date.today()-timedelta(1), end = date.today(), output_dir = 'data', leagues = ('mlb',)):
-        if not isinstance(start, date):
+    def __init__(self, start, end, output_dir, leagues):
+        if start is None:
+            start = date.today()-timedelta(1)
+        elif not isinstance(start, date):
             raise TypeError, "Start day is not a date"
-        if not isinstance(end, date):
+        if end is None:
+            end = date.today()
+        elif not isinstance(end, date):
             raise TypeError, "End day is not a date"
+        if output_dir is None:
+            output_dir = 'data'
+        if leagues is None:
+            leagues = ('mlb',)
         self.start = start
         self.end = end
         if not isinstance(leagues, (list, tuple)):
