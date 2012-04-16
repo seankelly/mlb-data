@@ -90,8 +90,8 @@ def parse_game(game_dir, day):
             idx = len(bip)-1
             while idx >= 0 and ab_data['pitcher'] == bip[idx].get('pitcher') and ab_data['batter'] == bip[idx].get('batter') and inning == int(bip[idx].get('inning')):
                 try:
-                    x = float(bip[idx].get('x'))
-                    y = float(bip[idx].get('y'))
+                    x = int(float(bip[idx].get('x')) * 249/250)
+                    y = int(float(bip[idx].get('y')) * 249/250)
                     gd.conn.execute(bip_ins, { 'atbat': ab_id, 'park': game['park'], 'type': bip[idx].get('type'), 'x': x, 'y': y })
                 except ValueError:
                     pass

@@ -44,8 +44,8 @@ CREATE TABLE bip (
     atbat integer REFERENCES atbat (id),
     park integer REFERENCES park (id),
     type text,
-    x real,
-    y real
+    x integer,
+    y integer
 );
 
 CREATE TABLE raw_pitch (

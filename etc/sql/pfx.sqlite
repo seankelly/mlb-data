@@ -47,8 +47,8 @@ CREATE TABLE bip (
     atbat integer,
     park integer,
     type text,
-    x real,
-    y real,
+    x integer,
+    y integer,
     FOREIGN KEY (atbat) REFERENCES atbat (id),
     FOREIGN KEY (park) REFERENCES park (id)
 );
