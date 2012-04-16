@@ -1,11 +1,11 @@
 CREATE TABLE mlbam_player (
-    mlbamid integer PRIMARY KEY, -- Straight from MLBAM
+    mlbamid integer UNIQUE, -- Straight from MLBAM
     namefirst text,
     namelast text
 );
 
 CREATE TABLE park (
-    id integer PRIMARY KEY, -- use MLB's ids
+    id integer, -- use MLB's ids
     name text,
     location text,
     hp_x real,  -- these are scaled for 500x500px
@@ -13,48 +13,63 @@ CREATE TABLE park (
     scale real
 );
 
+CREATE TABLE park_dimension (
+    park_id integer,
+    opening date,
+    closing date,
+    hp_x real,
+    hp_y real,
+    scale real,
+    FOREIGN KEY (park_id) REFERENCES park (id)
+);
+
 CREATE TABLE team (
-    id integer PRIMARY KEY, -- use MLB's
+    id integer, -- use MLB's
     code text,
     fullname text,
     name text
 );
 
 CREATE TABLE game (
-    id serial PRIMARY KEY,
+    id integer PRIMARY KEY,
     home integer,
     away integer,
     park integer,
-    day date
+    day text
 );
 
 CREATE TABLE atbat (
-    id serial PRIMARY KEY,
-    game integer REFERENCES game (id),
-    pitcher integer REFERENCES mlbam_player (mlbamid),
-    batter integer REFERENCES mlbam_player (mlbamid),
+    id integer PRIMARY KEY,
+    game integer,
+    pitcher integer,
+    batter integer,
     batter_stand text,
     pitcher_throw text,
     des text,
-    event text
+    event text,
+    FOREIGN KEY (game) REFERENCES game (id),
+    FOREIGN KEY (pitcher) REFERENCES mlbam_player (mlbamid),
+    FOREIGN KEY (batter) REFERENCES mlbam_player (mlbamid)
 );
 
 CREATE TABLE bip (
-    id serial PRIMARY KEY,
-    atbat integer REFERENCES atbat (id),
-    park integer REFERENCES park (id),
+    id integer PRIMARY KEY,
+    atbat integer,
+    park integer,
     type text,
     x integer,
-    y integer
+    y integer,
+    FOREIGN KEY (atbat) REFERENCES atbat (id),
+    FOREIGN KEY (park) REFERENCES park (id)
 );
 
 CREATE TABLE raw_pitch (
-    id serial PRIMARY KEY,
-    atbat integer REFERENCES atbat (id),
-    game integer REFERENCES game (id),
-    pitcher integer REFERENCES mlbam_player (mlbamid),
-    batter integer REFERENCES mlbam_player (mlbamid),
-    enhanced boolean,
+    id integer PRIMARY KEY,
+    atbat integer,
+    game integer,
+    pitcher integer,
+    batter integer,
+    enhanced integer,
     inning integer,
     sequence integer,
     balls integer,  -- count data
@@ -87,15 +102,19 @@ CREATE TABLE raw_pitch (
     vz0 real,
     ax real,
     ay real,
-    az real
+    az real,
+    FOREIGN KEY (atbat) REFERENCES atbat (id),
+    FOREIGN KEY (game) REFERENCES game (id),
+    FOREIGN KEY (pitcher) REFERENCES mlbam_player (mlbamid),
+    FOREIGN KEY (batter) REFERENCES mlbam_player (mlbamid)
 );
 
 CREATE TABLE norm_pitch (
     id integer PRIMARY KEY, -- this should be identical to the raw pitch
-    atbat integer REFERENCES atbat (id),
-    game integer REFERENCES game (id),
-    pitcher integer REFERENCES mlbam_player (mlbamid),
-    batter integer REFERENCES mlbam_player (mlbamid),
+    atbat integer,
+    game integer,
+    pitcher integer,
+    batter integer,
     inning integer,
     sequence integer,
     balls integer,  -- count data
@@ -120,13 +139,16 @@ CREATE TABLE norm_pitch (
     sz_bot real,
     sz_top real,
     sv_id text,
-    pitch_type text
+    pitch_type text,
+    FOREIGN KEY (atbat) REFERENCES atbat (id),
+    FOREIGN KEY (game) REFERENCES game (id),
+    FOREIGN KEY (pitcher) REFERENCES mlbam_player (mlbamid),
+    FOREIGN KEY (batter) REFERENCES mlbam_player (mlbamid)
 );
 
 -- Useful indices.
 -- Commented out to make bulk importing faster.
 
 -- CREATE INDEX atbat_pitcher_idx ON atbat (pitcher);
+-- CREATE INDEX atbat_id_idx ON atbat (id);
 -- CREATE INDEX raw_pitch_atbat_idx ON raw_pitch (atbat);
--- CREATE INDEX raw_pitch_pitcher_idx on raw_pitch (pitcher);
--- CREATE INDEX raw_pitch_pitcher_game_idx on raw_pitch (pitcher, game);
