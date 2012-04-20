@@ -16,7 +16,7 @@ class GamedayParser():
         self.find_players = etree.XPath('/game/team/player')
         self.find_atbats = etree.XPath('/inning/*/atbat')
         self.find_bip = etree.XPath('/hitchart/hip')
-        self.game = {'team':{}, 'player':{}, 'atbat':[]}
+        self.game = {'team':{}, 'player':set(), 'atbat':[]}
         self._parse()
 
     def _parse_game_xml(self):
@@ -28,8 +28,17 @@ class GamedayParser():
             elif el.tag == 'stadium':
                 game['park'] = el.get('id')
 
+    def add_players_xml(self):
+        players_xml = os.path.join(game_dir, 'players.xml')
+        if not os.path.exists(players_xml):
+            return
+        for player in find_players(etree.parse(players_xml)):
+            mlbid = int(player.get('id'))
+            self.game['player'].add(mlbamid)
+
     def _parse(self):
-        game = self._parse_game_xml()
+        self._parse_game_xml()
+        self._parse_players_xml()
         add_players_xml(game_dir)
         # Skip inning_hit.xml. It is special and needs different processing.
         xml_files = fnmatch.filter(os.listdir(game_dir), 'inning_[!h]*.xml')
