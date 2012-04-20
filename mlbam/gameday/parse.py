@@ -6,8 +6,8 @@ from lxml import etree
 import fnmatch
 import os
 
-def parse(**kwargs):
-    return GamedayParser(**kwargs)
+def parse(directory, **kwargs):
+    return GamedayParser(directory, **kwargs)
 
 class GamedayParser():
     def __init__(self, directory):
