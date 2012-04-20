@@ -2,8 +2,9 @@
 Parse the Gameday data.
 '''
 
-import os, fnmatch
 from lxml import etree
+import fnmatch
+import os
 
 def parse(**kwargs):
     return GamedayParser(**kwargs)
