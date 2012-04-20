@@ -27,7 +27,6 @@ class GamedayParser():
                 game['team'][el.get('type')] = el.get('id')
             elif el.tag == 'stadium':
                 game['park'] = el.get('id')
-        game['id'] = res.inserted_primary_key[0]
 
     def _parse(self):
         game = self._parse_game_xml()
