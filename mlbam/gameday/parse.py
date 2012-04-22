@@ -16,7 +16,7 @@ class GamedayParser():
         self.find_players = etree.XPath('/game/team/player')
         self.find_atbats = etree.XPath('/inning/*/atbat')
         self.find_bip = etree.XPath('/hitchart/hip')
-        self.game = {'team':{}, 'player':set(), 'atbat':[]}
+        self.game = {'team':{}, 'player':{}, 'atbat':[]}
         self._parse()
 
     def _parse_game_xml(self):
@@ -28,13 +28,16 @@ class GamedayParser():
             elif el.tag == 'stadium':
                 game['park'] = el.get('id')
 
-    def add_players_xml(self):
+    def _parse_players_xml(self):
         players_xml = os.path.join(game_dir, 'players.xml')
         if not os.path.exists(players_xml):
             return
         for player in find_players(etree.parse(players_xml)):
             mlbid = int(player.get('id'))
-            self.game['player'].add(mlbamid)
+            self.game['player'][mlbamid] = {
+                'first': player.get('first'),
+                'last': player.get('last'),
+            }
 
     def _parse(self):
         self._parse_game_xml()
