@@ -90,8 +90,8 @@ class GamedayParser():
         xml_files = fnmatch.filter(os.listdir(self.directory), 'inning_[!h]*.xml')
         for inning in range(1, len(xml_files) + 1):
             xml_file = os.path.join(self.directory, 'inning_' + str(inning) + '.xml')
-            inning_ab = self.find_atbats(etree.parse(xml_file)))
-            for atbat in inning_ab:
+            inning_atbats = self.find_atbats(etree.parse(xml_file)))
+            for atbat in inning_atbats:
                 ab_data = {'inning': inning}
                 for field in ab_fields:
                     key = ab_fields[field]
