@@ -100,7 +100,7 @@ class GamedayParser():
                         ab_data[key] = ab_data[key].strip()
                 ab_data['pitches'] = self._parse_pitches(atbat, ab_data)
                 atbats.append(ab_data)
-        self.game['atbats'] = atbats
+        self.game['atbat'] = atbats
 
     def _parse(self):
         self._parse_game_xml()
