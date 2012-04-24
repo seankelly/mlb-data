@@ -102,6 +102,18 @@ class GamedayParser():
                 atbats.append(ab_data)
         self.game['atbat'] = atbats
 
+    def _match_bip(self):
+        bip_idx, ab_idx = 0, 0
+        bip_max, ab_max = len(self.game['bip']), len(self.game['atbat'])
+        for bip in self.game['bip']:
+            ab = self.game['atbat'][ab_idx]
+            while ab_idx < ab_max:
+                if (bip['pitcher'] == ab['pitcher'] and
+                        bip['batter'] == ab['batter'] and
+                        bip['inning'] == ab['inning']):
+                    break
+                ab_idx += 1
+
     def _parse(self):
         self._parse_game_xml()
         self._parse_players_xml()
@@ -109,32 +121,7 @@ class GamedayParser():
         # with data in the inning XML files.
         self._parse_inning_hit_xml()
         self._parse_inning_xml()
-        return
-
-        for inning in range(1, len(xml_files) + 1):
-            xml_file = 'inning_' + str(inning) + '.xml'
-            atbats = find_atbats(etree.parse(os.path.join(game_dir, xml_file)))
-            for atbat in atbats:
-                ab_data = { 'game': game['id'], 'inning': inning }
-                for field in ab_fields:
-                    key = ab_fields[field]
-                    ab_data[key] = atbat.get(field)
-                    if ab_data[key]:
-                        ab_data[key] = ab_data[key].strip()
-                res = gd.conn.execute(ab_ins, ab_data)
-                ab_id = res.inserted_primary_key[0]
-
-                # Try to match the atbat with entry in inning_hit.xml
-                idx = len(bip)-1
-                while idx >= 0 and ab_data['pitcher'] == bip[idx].get('pitcher') and ab_data['batter'] == bip[idx].get('batter') and inning == int(bip[idx].get('inning')):
-                    try:
-                        x = int(float(bip[idx].get('x')) * 249/250)
-                        y = int(float(bip[idx].get('y')) * 249/250)
-                        gd.conn.execute(bip_ins, { 'atbat': ab_id, 'park': game['park'], 'type': bip[idx].get('type'), 'x': x, 'y': y })
-                    except ValueError:
-                        pass
-                    bip.pop()
-                    idx = len(bip)-1
+        self._match_bip()
 
 
 def load_players():
