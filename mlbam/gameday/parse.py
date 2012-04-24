@@ -42,12 +42,12 @@ class GamedayParser():
     def _parse_inning_hit_xml(self):
         xml_file = etree.parse(os.path.join(self.directory, 'inning_hit.xml'))
         BIP = []
-        for bip in self.find_bip(xml_file)
+        for bip in self.find_bip(xml_file):
             x = int(float(bip.get('x')) * 249/250)
             y = int(float(bip.get('y')) * 249/250)
             # Skip the 'des' field, since it will be in the atbat XML.
             BIP.append({'x': x, 'y': y, 'park': self.game['park'], 'type':
-                        bip.get('type')}]
+                        bip.get('type')})
         self.game['bip'] = BIP
 
     def _parse_pitches(self, atbat, ab_data):
@@ -90,7 +90,7 @@ class GamedayParser():
         xml_files = fnmatch.filter(os.listdir(self.directory), 'inning_[!h]*.xml')
         for inning in range(1, len(xml_files) + 1):
             xml_file = os.path.join(self.directory, 'inning_' + str(inning) + '.xml')
-            inning_atbats = self.find_atbats(etree.parse(xml_file)))
+            inning_atbats = self.find_atbats(etree.parse(xml_file))
             for atbat in inning_atbats:
                 ab_data = {'inning': inning}
                 for field in ab_fields:
