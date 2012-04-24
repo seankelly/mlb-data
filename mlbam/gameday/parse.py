@@ -2,12 +2,14 @@
 Parse the Gameday data.
 '''
 
+from .. import commandline_args
 from lxml import etree
 import fnmatch
 import os
 
-def parse(directory, **kwargs):
-    return GamedayParser(directory, **kwargs)
+def parse(directory):
+    args = commandline_args('Parse Gameday XML files')
+    return GamedayParser(directory, **args.__dict__)
 
 class GamedayParser():
     def __init__(self, directory):
