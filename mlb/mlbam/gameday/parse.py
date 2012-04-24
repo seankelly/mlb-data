@@ -2,7 +2,7 @@
 Parse the Gameday data.
 '''
 
-from .. import commandline_args
+from ...util import commandline_args
 from lxml import etree
 import fnmatch
 import os
