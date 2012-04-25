@@ -34,4 +34,4 @@ def parse_day(output_dir, day):
 
 
 if __name__ == "__main__":
-    gameday.parse()
+    games = gameday.parse()
