@@ -10,9 +10,9 @@ import os
 def parse():
     parsed_games = []
     args = commandline_args('Parse Gameday XML files')
-    for league in args.leagues:
-        dir = os.path.join(args.output_dir, league)
-        for day in each_day(args.start, args.end):
+    for league in args['leagues']:
+        dir = os.path.join(args['output_dir'], league)
+        for day in each_day(args['start'], args['end']):
             parsed_games.extend(parse_day(dir, day))
     return parsed_games
 
