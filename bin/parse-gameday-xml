@@ -16,7 +16,7 @@ except ImportError:
     sys.exc_clear()
 
 from sqlalchemy.sql import select
-import mlbam.gameday as gameday
+import mlb.mlbam.gameday as gameday
 import argparse
 
 def load_players():
