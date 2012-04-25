@@ -2,14 +2,26 @@
 Parse the Gameday data.
 '''
 
-from ...util import commandline_args
+from ...util import commandline_args, each_day
 from lxml import etree
 import fnmatch
 import os
 
-def parse(directory):
+def parse():
+    parsed_games = []
     args = commandline_args('Parse Gameday XML files')
-    return GamedayParser(directory, **args.__dict__)
+    for league in args.leagues:
+        dir = os.path.join(args.output_dir, league)
+        for day in each_day(args.start, args.end):
+            parsed_games.extend(parse_day(dir, day))
+
+def parse_day(output_dir, day):
+    parsed_games = []
+    datematch = day.strftime("gid_%Y_%m_%d*")
+    games = fnmatch.filter(os.listdir(output_dir), datematch)
+    for game in games:
+        parsed_games.append(GamedayParser(game))
+    return parsed_games
 
 class GamedayParser():
     def __init__(self, directory):
