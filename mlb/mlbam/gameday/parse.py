@@ -18,8 +18,9 @@ def parse():
 
 def parse_day(output_dir, day):
     parsed_games = []
-    datematch = day.strftime("gid_%Y_%m_%d*")
-    games = fnmatch.filter(os.listdir(output_dir), datematch)
+    datematch = day.strftime("gid_%Y_%m_%d_*")
+    year_dir = os.path.join(output_dir, str(day.year))
+    games = fnmatch.filter(os.listdir(year_dir), datematch)
     for game in games:
         parsed_games.append(GamedayParser(game))
     return parsed_games
