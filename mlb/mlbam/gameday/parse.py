@@ -33,7 +33,7 @@ class GamedayParser():
         self.find_players = etree.XPath('/game/team/player')
         self.find_atbats = etree.XPath('/inning/*/atbat')
         self.find_bip = etree.XPath('/hitchart/hip')
-        self.game = {'team':{}, 'player':{}, 'atbat':[]}
+        self.game = {}
         self._parse()
 
     def _parse_game_xml(self):
@@ -134,6 +134,10 @@ class GamedayParser():
                     break
 
     def _parse(self):
+        game_xml = os.path.join(self.directory, 'game.xml')
+        if not os.path.exists(game_xml):
+            return
+        self.game = {'team':{}, 'player':{}, 'atbat':[]}
         self._parse_game_xml()
         self._parse_players_xml()
         # Parse the inning_hit.xml first to make it easier to match each bip
