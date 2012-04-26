@@ -63,8 +63,9 @@ class GamedayParser():
             x = int(float(bip.get('x')) * 249/250)
             y = int(float(bip.get('y')) * 249/250)
             # Skip the 'des' field, since it will be in the atbat XML.
-            BIP.append({'x': x, 'y': y, 'park': self.game['park'], 'type':
-                        bip.get('type')})
+            BIP.append({'x': x, 'y': y, 'pitcher': bip.get('pitcher'),
+                       'batter': bip.get('batter'), 'park': self.game['park'],
+                       'type': bip.get('type')})
         self.game['bip'] = BIP
 
     def _parse_pitches(self, atbat, ab_data):
