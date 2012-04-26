@@ -125,8 +125,8 @@ class GamedayParser():
         bip_idx, ab_idx = 0, 0
         bip_max, ab_max = len(self.game['bip']), len(self.game['atbat'])
         for bip in self.game['bip']:
-            ab = self.game['atbat'][ab_idx]
             while ab_idx < ab_max:
+                ab = self.game['atbat'][ab_idx]
                 if (bip['pitcher'] == ab['pitcher'] and
                         bip['batter'] == ab['batter'] and
                         bip['inning'] == ab['inning']):
