@@ -50,7 +50,7 @@ class GamedayParser():
         if not os.path.exists(players_xml):
             return
         for player in self.find_players(etree.parse(players_xml)):
-            mlbid = int(player.get('id'))
+            mlbamid = int(player.get('id'))
             self.game['player'][mlbamid] = {
                 'first': player.get('first'),
                 'last': player.get('last'),
