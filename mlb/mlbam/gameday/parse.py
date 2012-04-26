@@ -122,16 +122,16 @@ class GamedayParser():
         self.game['atbat'] = atbats
 
     def _match_bip(self):
-        bip_idx, ab_idx = 0, 0
-        bip_max, ab_max = len(self.game['bip']), len(self.game['atbat'])
-        for bip in self.game['bip']:
+        ab_idx, ab_max = 0, len(self.game['atbat'])
+        for bip_idx, bip in enumerate(self.game['bip']):
             while ab_idx < ab_max:
                 ab = self.game['atbat'][ab_idx]
+                ab_idx += 1
                 if (bip['pitcher'] == ab['pitcher'] and
                         bip['batter'] == ab['batter'] and
                         bip['inning'] == ab['inning']):
+                    ab['bip'] = bip_idx
                     break
-                ab_idx += 1
 
     def _parse(self):
         self._parse_game_xml()
