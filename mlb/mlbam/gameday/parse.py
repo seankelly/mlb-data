@@ -22,7 +22,8 @@ def parse_day(output_dir, day):
     year_dir = os.path.join(output_dir, str(day.year))
     games = fnmatch.filter(os.listdir(year_dir), datematch)
     for game in games:
-        parsed_games.append(GamedayParser(game))
+        game_dir = os.path.join(year_dir, game)
+        parsed_games.append(GamedayParser(game_dir))
     return parsed_games
 
 class GamedayParser():
