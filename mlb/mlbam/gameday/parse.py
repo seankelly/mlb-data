@@ -65,7 +65,7 @@ class GamedayParser():
             # Skip the 'des' field, since it will be in the atbat XML.
             bip_data = {'x': x, 'y': y, 'park': self.game['park']}
             for key in ['inning', 'pitcher', 'batter', 'type']:
-                bip_data = bip.get(key)
+                bip_data[key] = bip.get(key)
             BIP.append(bip_data)
         self.game['bip'] = BIP
 
