@@ -115,9 +115,12 @@ class GamedayParser():
                 ab_data = {'inning': inning}
                 for field in ab_fields:
                     key = ab_fields[field]
-                    ab_data[key] = atbat.get(field)
-                    if ab_data[key]:
-                        ab_data[key] = ab_data[key].strip()
+                    if key != 'pitcher' and key != 'batter':
+                        ab_data[key] = atbat.get(field)
+                        if ab_data[key]:
+                            ab_data[key] = ab_data[key].strip()
+                    else:
+                        ab_data[key] = int(atbat.get(field))
                 ab_data['pitches'] = self._parse_pitches(atbat, ab_data)
                 atbats.append(ab_data)
         self.game['atbat'] = atbats
