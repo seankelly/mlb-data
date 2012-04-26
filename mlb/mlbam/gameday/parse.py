@@ -46,10 +46,10 @@ class GamedayParser():
                 game['park'] = el.get('id')
 
     def _parse_players_xml(self):
-        players_xml = os.path.join(game_dir, 'players.xml')
+        players_xml = os.path.join(self.directory, 'players.xml')
         if not os.path.exists(players_xml):
             return
-        for player in find_players(etree.parse(players_xml)):
+        for player in self.find_players(etree.parse(players_xml)):
             mlbid = int(player.get('id'))
             self.game['player'][mlbamid] = {
                 'first': player.get('first'),
