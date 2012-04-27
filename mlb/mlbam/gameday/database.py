@@ -1,3 +1,7 @@
+'''
+Add parsed Gameday data to the database.
+'''
+
 from sqlalchemy import MetaData, create_engine
 from sqlalchemy.sql import select
 
