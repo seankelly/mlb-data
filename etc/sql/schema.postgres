@@ -31,6 +31,7 @@ CREATE TABLE team (
 
 CREATE TABLE game (
     id serial PRIMARY KEY,
+    league text,
     home integer,
     away integer,
     park integer,
