@@ -14,13 +14,15 @@ def add_to_db(options, games):
     insert_games(options['database'], games)
 
 def insert_games(database, games):
-    conn = connect_db(database)
+    conn, meta = connect_db(database)
     conn.close()
 
 def connect_db(database):
     engine = create_engine(database)
     conn = engine.connect()
-    return conn
+    meta = MetaData()
+    meta.reflect(bind=conn)
+    return conn, meta
 
 def load_players(conn):
     mlbamids = set()
