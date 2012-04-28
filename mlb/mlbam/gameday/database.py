@@ -19,7 +19,7 @@ def insert_games(database, games):
     trans = conn.begin()
     try:
         for game in games:
-            pass
+            insert_game(conn, meta, game, players)
         trans.commit()
     except:
         trans.rollback()
@@ -33,6 +33,12 @@ def connect_db(database):
     meta.reflect(bind=conn)
     return conn, meta
 
+def insert_game(conn, meta, game, players):
+    # Check that there's even a game to parse.
+    if not game.game:
+        return
+    add_players(conn, meta, players, game.game['player'])
+
 def load_players(conn, meta):
     mlbamids = set()
     player_table = meta.tables['mlbam_player']
@@ -42,5 +48,12 @@ def load_players(conn, meta):
         mlbamids.add(row['mlbamid'])
     return mlbamids
 
-def insert_game(conn, game):
-    pass
+def add_players(conn, meta, players, player_list):
+    new_players = set(player_list) - players
+    if new_players:
+        insert_players = meta.tables['mlbam_player'].insert()
+        plist = []
+        for id in new_players:
+            plist.append({'mlbamid': id, 'namefirst': player_list[id]['first'],
+                          'namelast': player_list[id]['last']})
+        conn.execute(insert_players, plist)
