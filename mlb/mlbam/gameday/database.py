@@ -15,6 +15,15 @@ def add_to_db(options, games):
 
 def insert_games(database, games):
     conn, meta = connect_db(database)
+    players = load_players(conn, meta)
+    trans = conn.begin()
+    try:
+        for game in games:
+            pass
+        trans.commit()
+    except:
+        trans.rollback()
+        raise
     conn.close()
 
 def connect_db(database):
