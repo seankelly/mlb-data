@@ -11,12 +11,16 @@ from sqlalchemy.sql import select
 def add_to_db(options, games):
     if 'database' not in options or not options['database']:
         raise ValueError("No database specified.")
+    insert_games(options['database'], games)
 
-def insert_games():
-    pass
+def insert_games(database, games):
+    conn = connect_db(database)
+    conn.close()
 
-def connect_db():
-    pass
+def connect_db(database):
+    engine = create_engine(database)
+    conn = engine.connect()
+    return conn
 
 def load_players(conn):
     mlbamids = set()
