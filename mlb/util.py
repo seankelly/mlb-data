@@ -17,6 +17,7 @@ def commandline_args(desc):
     map_options = {
         'output_dir': passthrough,
         'leagues': passthrough,
+        'database': passthrough,
         'start': parse_str_date,
         'end': parse_str_date,
     }
@@ -30,6 +31,8 @@ def commandline_args(desc):
                         default=yesterday, help='End day')
     parser.add_argument('-l', '--leagues', action='append',
                         help='Fetch these leagues')
+    parser.add_argument('-d', '--database',
+                        help='Database to use')
     args = parser.parse_args()
     options = {}
     args_dict = args.__dict__
