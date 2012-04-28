@@ -19,19 +19,6 @@ from sqlalchemy.sql import select
 import mlb.mlbam.gameday as gameday
 import argparse
 
-def load_players():
-    player_table = gd.meta.tables['mlbam_player']
-    select_ids = select([player_table.c.mlbamid], player_table.c.mlbamid != None)
-    for row in gd.conn.execute(select_ids):
-        mlbamids.add(row['mlbamid'])
-
-
-def parse_day(output_dir, day):
-    datematch = day.strftime("gid_%Y_%m_%d*")
-    games = fnmatch.filter(os.listdir(output_dir), datematch)
-    for game in games:
-        parse_game(os.path.join(output_dir, game), day)
-
 
 if __name__ == "__main__":
     games = gameday.parse()
