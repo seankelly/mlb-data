@@ -24,12 +24,12 @@ def connect_db(database):
     meta.reflect(bind=conn)
     return conn, meta
 
-def load_players(conn):
+def load_players(conn, meta):
     mlbamids = set()
-    player_table = gd.meta.tables['mlbam_player']
+    player_table = meta.tables['mlbam_player']
     select_ids = select([player_table.c.mlbamid],
                         player_table.c.mlbamid != None)
-    for row in gd.conn.execute(select_ids):
+    for row in conn.execute(select_ids):
         mlbamids.add(row['mlbamid'])
     return mlbamids
 
