@@ -15,4 +15,5 @@ def load_players():
 # currently isn't a way to save the parsed data to disk, so it would be wasted
 # work to add a command line interface.
 def add_to_db(options, games):
-    pass
+    if 'database' not in options or not options['database']:
+        raise ValueError("No database specified.")
