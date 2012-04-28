@@ -21,4 +21,5 @@ import argparse
 
 
 if __name__ == "__main__":
-    games = gameday.parse()
+    games, args = gameday.parse()
+    gameday.database.add_to_db(args, games)
