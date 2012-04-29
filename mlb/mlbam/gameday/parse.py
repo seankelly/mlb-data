@@ -41,7 +41,19 @@ class GamedayParser():
         game = self.game
         for el in self.game_children(etree.parse(game_xml)):
             if el.tag == 'team':
-                game['team'][el.get('type')] = el.get('id')
+                fullname = el.get('name_full')
+                location = el.get('name')
+                if fullname.startswith(location):
+                    # This is to ensure the name is the full, unabbreviated
+                    # team name. For instance, the Diamondbacks are abbreviated
+                    # as 'D-backs' when I want the full name.
+                    team_name = fullname[len(fullname)].strip()
+                else:
+                    # Just in case.
+                    team_name = el.get('name_brief').
+                game['team'][el.get('type')] = {'id': el.get('id'),
+                        'code': el.get('code'), 'name': team_name,
+                        'fullname': fullname}
             elif el.tag == 'stadium':
                 game['park'] = el.get('id')
 
