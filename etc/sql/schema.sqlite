@@ -7,10 +7,7 @@ CREATE TABLE mlbam_player (
 CREATE TABLE park (
     id integer, -- use MLB's ids
     name text,
-    location text,
-    hp_x real,  -- these are scaled for 500x500px
-    hp_y real,
-    scale real
+    location text
 );
 
 CREATE TABLE park_dimension (
