@@ -55,7 +55,8 @@ class GamedayParser():
                         'code': el.get('code'), 'name': team_name,
                         'fullname': fullname}
             elif el.tag == 'stadium':
-                game['park'] = el.get('id')
+                game['park'] = {'id': el.get('id'), 'name': el.get('name'),
+                                'location': el.get('location')}
 
     def _parse_players_xml(self):
         players_xml = os.path.join(self.directory, 'players.xml')
