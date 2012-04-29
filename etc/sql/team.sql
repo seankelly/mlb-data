@@ -28,4 +28,4 @@ INSERT INTO team VALUES (144, 'atl', 'Atlanta Braves', 'Braves');
 INSERT INTO team VALUES (145, 'cha', 'Chicago White Sox', 'White Sox');
 INSERT INTO team VALUES (146, 'flo', 'Florida Marlins', 'Marlins');
 INSERT INTO team VALUES (147, 'phi', 'New York Yankees', 'Yankees');
-INSERT INTO team VALUES (158, 'mil', 'Milwaukee Brewers', 'Brewsrs');
+INSERT INTO team VALUES (158, 'mil', 'Milwaukee Brewers', 'Brewers');
