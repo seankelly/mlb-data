@@ -51,7 +51,7 @@ class GamedayParser():
                 else:
                     # Just in case.
                     team_name = el.get('name_brief')
-                game['team'][el.get('type')] = {'id': el.get('id'),
+                game['team'][el.get('type')] = {'id': int(el.get('id')),
                         'code': el.get('code'), 'name': team_name,
                         'fullname': fullname}
             elif el.tag == 'stadium':
