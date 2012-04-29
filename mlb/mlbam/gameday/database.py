@@ -57,3 +57,25 @@ def add_players(conn, meta, players, player_list):
             plist.append({'mlbamid': id, 'namefirst': player_list[id]['first'],
                           'namelast': player_list[id]['last']})
         conn.execute(insert_players, plist)
+
+def load_parks(conn, meta):
+    parkids = set()
+    park_table = meta.tables['park']
+    select_ids = select([park_table.c.id], park_table.c.id != None)
+    for row in conn.execute(select_ids):
+        parkids.add(row['id'])
+    return parkids
+
+def add_park(conn, meta, parks, park):
+    pass
+
+def load_teams(conn, meta):
+    teamids = set()
+    team_table = meta.tables['team']
+    select_ids = select([team_table.c.id], team_table.c.id != None)
+    for row in conn.execute(select_ids):
+        teamids.add(row['id'])
+    return teamids
+
+def add_team(conn, meta, teams, team_list):
+    pass
