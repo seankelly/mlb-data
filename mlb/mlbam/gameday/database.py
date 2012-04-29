@@ -41,7 +41,7 @@ def insert_game(conn, meta, game, parks, teams, players):
         return
     add_players(conn, meta, players, game.game['player'])
     add_park(conn, meta, parks, game.game['park'])
-    add_teams(conn, meta, parks, game.game['team'])
+    add_teams(conn, meta, teams, game.game['team'])
 
 def load_players(conn, meta):
     mlbamids = set()
