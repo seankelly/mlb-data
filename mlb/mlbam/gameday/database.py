@@ -40,6 +40,7 @@ def insert_game(conn, meta, game, parks, teams, players):
     if not game.game:
         return
     add_players(conn, meta, players, game.game['player'])
+    add_park(conn, meta, parks, game.game['park'])
 
 def load_players(conn, meta):
     mlbamids = set()
@@ -69,7 +70,9 @@ def load_parks(conn, meta):
     return parkids
 
 def add_park(conn, meta, parks, park):
-    pass
+    if park['id'] not in parks:
+        insert_park = meta.tables['park'].insert()
+        conn.execute(park_table, park)
 
 def load_teams(conn, meta):
     teamids = set()
