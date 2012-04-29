@@ -15,11 +15,13 @@ def add_to_db(options, games):
 
 def insert_games(database, games):
     conn, meta = connect_db(database)
+    parks = load_parks(conn, meta)
+    teams = load_teams(conn, meta)
     players = load_players(conn, meta)
     trans = conn.begin()
     try:
         for game in games:
-            insert_game(conn, meta, game, players)
+            insert_game(conn, meta, game, parks, teams, players)
         trans.commit()
     except:
         trans.rollback()
@@ -33,7 +35,7 @@ def connect_db(database):
     meta.reflect(bind=conn)
     return conn, meta
 
-def insert_game(conn, meta, game, players):
+def insert_game(conn, meta, game, parks, teams, players):
     # Check that there's even a game to parse.
     if not game.game:
         return
