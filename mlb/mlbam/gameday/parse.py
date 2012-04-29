@@ -40,8 +40,12 @@ class GamedayParser():
     def _parse_game_xml(self):
         game_xml = os.path.join(self.directory, 'game.xml')
         game = self.game
+        info = {'day': self.day}
         for el in self.game_children(etree.parse(game_xml)):
             if el.tag == 'team':
+                league = el.get('league')
+                if league == 'NL' or league == 'AL':
+                    info['league'] = 'MLB'
                 fullname = el.get('name_full')
                 location = el.get('name')
                 if fullname.startswith(location):
@@ -58,6 +62,7 @@ class GamedayParser():
             elif el.tag == 'stadium':
                 game['park'] = {'id': int(el.get('id')), 'name': el.get('name'),
                                 'location': el.get('location')}
+        game['info'] = info
 
     def _parse_players_xml(self):
         players_xml = os.path.join(self.directory, 'players.xml')
