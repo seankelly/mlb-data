@@ -23,17 +23,18 @@ def parse_day(output_dir, day):
     games = fnmatch.filter(os.listdir(year_dir), datematch)
     for game in games:
         game_dir = os.path.join(year_dir, game)
-        parsed_games.append(GamedayParser(game_dir))
+        parsed_games.append(GamedayParser(game_dir, day))
     return parsed_games
 
 class GamedayParser():
-    def __init__(self, directory):
+    def __init__(self, directory, day):
         self.directory = directory
         self.game_children = etree.XPath('/game/*')
         self.find_players = etree.XPath('/game/team/player')
         self.find_atbats = etree.XPath('/inning/*/atbat')
         self.find_bip = etree.XPath('/hitchart/hip')
         self.game = {}
+        self.day = day
         self._parse()
 
     def _parse_game_xml(self):
