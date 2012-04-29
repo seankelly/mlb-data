@@ -56,12 +56,15 @@ class GamedayParser():
                 else:
                     # Just in case.
                     team_name = el.get('name_brief')
-                game['team'][el.get('type')] = {'id': int(el.get('id')),
+                team_type = el.get('type')
+                game['team'][team_type] = {'id': int(el.get('id')),
                         'code': el.get('code'), 'name': team_name,
                         'fullname': fullname}
+                info[team_type] = int(el.get('id'))
             elif el.tag == 'stadium':
                 game['park'] = {'id': int(el.get('id')), 'name': el.get('name'),
                                 'location': el.get('location')}
+                info['park'] = int(el.get('id'))
         game['info'] = info
 
     def _parse_players_xml(self):
