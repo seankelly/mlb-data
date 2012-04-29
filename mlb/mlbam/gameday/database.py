@@ -74,6 +74,7 @@ def add_park(conn, meta, parks, park):
     if park['id'] not in parks:
         insert_park = meta.tables['park'].insert()
         conn.execute(park_table, park)
+        parks.add(park['id'])
 
 def load_teams(conn, meta):
     teamids = set()
@@ -88,3 +89,4 @@ def add_teams(conn, meta, teams, team_list):
         if team_list[key]['id'] not in teams:
             insert_team = meta.tables['team'].insert()
             conn.execute(insert_team, team_list[key])
+            teams.add(team_list[key]['id'])
