@@ -47,7 +47,7 @@ class GamedayParser():
                     # This is to ensure the name is the full, unabbreviated
                     # team name. For instance, the Diamondbacks are abbreviated
                     # as 'D-backs' when I want the full name.
-                    team_name = fullname[len(location)].strip()
+                    team_name = fullname[len(location):len(fullname)].strip()
                 else:
                     # Just in case.
                     team_name = el.get('name_brief')
