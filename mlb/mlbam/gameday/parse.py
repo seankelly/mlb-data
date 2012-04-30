@@ -98,6 +98,10 @@ class GamedayParser():
             'px', 'type', 'sz_bot', 'pfx_z', 'vy0', 'pfx_x', 'break_length',
             'x0', 'z0', 'break_y', 'sz_top', 'type_confidence', 'y', 'x',
             'vz0', 'sv_id', 'vx0', 'des'])
+        float_fields = set(['spin_rate', 'break_angle', 'ax', 'ay', 'y0', 'az',
+            'end_speed', 'spin_dir', 'start_speed', 'pz', 'px', 'sz_bot',
+            'pfx_z', 'vy0', 'pfx_x', 'break_length', 'x0', 'z0', 'break_y',
+            'sz_top', 'type_confidence', 'y', 'x', 'vz0', 'vx0'])
         balls, strikes = 0, 0
         sequence = 1
         pitches = []
@@ -107,9 +111,13 @@ class GamedayParser():
                     strikes, 'sequence': sequence, 'batter': ab_data['batter'],
                     'pitcher': ab_data['pitcher']}
             for key in pitch_fields:
-                pitch_data[key] = pitch.get(key)
-                if pitch_data[key]:
-                    pitch_data[key] = pitch_data[key].strip()
+                value = pitch.get(key)
+                if value:
+                    if key in float_fields:
+                        value = float(value)
+                    else:
+                        value = value.strip()
+                pitch_data[key] = value
             pitches.append(pitch_data)
             sequence += 1
             # The count is the balls and strikes for when the pitch was
