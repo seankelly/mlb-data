@@ -100,6 +100,7 @@ class GamedayParser():
             'vz0', 'sv_id', 'vx0', 'des'])
         balls, strikes = 0, 0
         sequence = 1
+        pitches = []
         for pitch in atbat.getiterator('pitch'):
             enhanced = True if pitch.get('pitch_type') else False
             pitch_data = {'enhanced': enhanced, 'balls': balls, 'strikes':
@@ -109,6 +110,7 @@ class GamedayParser():
                 pitch_data[key] = pitch.get(key)
                 if pitch_data[key]:
                     pitch_data[key] = pitch_data[key].strip()
+            pitches.append(pitch_data)
             sequence += 1
             # The count is the balls and strikes for when the pitch was
             # delivered, rather than the resulting count.
@@ -119,6 +121,7 @@ class GamedayParser():
             elif (called == 'S' and (strikes < 2 or (des != 'Foul' and des !=
                   'Foul (Runner Going)'))):
                 strikes += 1
+        return pitches
 
     def _parse_inning_xml(self):
         # Keep these fields.
