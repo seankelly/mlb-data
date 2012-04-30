@@ -52,6 +52,8 @@ CREATE TABLE atbat (
 CREATE TABLE bip (
     id serial PRIMARY KEY,
     atbat integer REFERENCES atbat (id),
+    pitcher integer REFERENCES mlbam_player (mlbamid),
+    batter integer REFERENCES mlbam_player (mlbamid),
     park integer REFERENCES park (id),
     type text,
     x integer,

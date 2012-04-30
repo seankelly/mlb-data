@@ -53,11 +53,15 @@ CREATE TABLE atbat (
 CREATE TABLE bip (
     id integer PRIMARY KEY,
     atbat integer,
+    pitcher integer,
+    batter integer,
     park integer,
     type text,
     x integer,
     y integer,
     FOREIGN KEY (atbat) REFERENCES atbat (id),
+    FOREIGN KEY (pitcher) REFERENCES mlbam_player (mlbamid),
+    FOREIGN KEY (batter) REFERENCES mlbam_player (mlbamid)
     FOREIGN KEY (park) REFERENCES park (id)
 );
 
