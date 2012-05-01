@@ -43,7 +43,35 @@ def insert_game(conn, meta, game, parks, teams, players):
     add_park(conn, meta, parks, game.game['park'])
     add_teams(conn, meta, teams, game.game['team'])
     insert_game = meta.tables['game'].insert()
-    conn.execute(insert_game, game.game['info'])
+    res = conn.execute(insert_game, game.game['info'])
+    gameid = res.inserted_primary_key[0]
+    insert_ab(conn, meta, gameid, game)
+
+def insert_ab(conn, meta, gameid, game):
+    insert_atbat = meta.tables['atbat'].insert()
+    insert_bip = meta.tables['bip'].insert()
+    atbats = game.game['atbat']
+    bip = game.game['bip']
+    for ab in atbats:
+        ab_ins = ab.copy()
+        ab_ins['game'] = gameid
+        res = conn.execute(insert_atbat, ab_ins)
+        abid = res.inserted_primary_key[0]
+        if 'bip' in ab:
+            ab_bip = bip[ab['bip']]
+            conn.execute(insert_bip, ab_bip)
+        if ab['pitches']:
+            insert_pitches(conn, meta, gameid, abid, ab['pitches'])
+
+def insert_pitches(conn, meta, gameid, abid, pitches):
+    insert_pitches = meta.tables['raw_pitch'].insert()
+    db_pitches = []
+    for pitch in pitches:
+        p = pitch.copy()
+        p['game'] = gameid
+        p['atbat'] = abid
+        db_pitches.append(p)
+    conn.execute(insert_pitches, db_pitches)
 
 def load_players(conn, meta):
     mlbamids = set()
