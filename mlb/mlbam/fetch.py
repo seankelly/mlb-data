@@ -46,7 +46,7 @@ class FetchMLBAM(object):
     base_url = "http://gd2.mlb.com/components/game/"
     mlbam_leagues = set(('aaa', 'aax', 'afa', 'afx', 'mlb', 'win'))
 
-    def __init__(self, start, end, output_dir, leagues, **kwargs):
+    def __init__(self, **kwargs):
         self.start = kwargs.get('start', date.today()-timedelta(1))
         self.end = kwargs.get('end', date.today())
         self.output_dir = kwargs.get('output_dir', 'data')
