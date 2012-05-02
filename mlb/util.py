@@ -37,7 +37,8 @@ def commandline_args(desc):
     options = {}
     args_dict = args.__dict__
     for key in args_dict:
-        options[key] = map_options[key](args_dict[key])
+        if args_dict[key]:
+            options[key] = map_options[key](args_dict[key])
     return options
 
 def each_day(start_day, end_day):
