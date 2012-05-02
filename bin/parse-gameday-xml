@@ -15,10 +15,7 @@ try:
 except ImportError:
     sys.exc_clear()
 
-from sqlalchemy.sql import select
 import mlb.mlbam.gameday as gameday
-import argparse
-
 
 if __name__ == "__main__":
     games, args = gameday.parse()
