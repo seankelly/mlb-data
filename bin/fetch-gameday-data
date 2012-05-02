@@ -15,15 +15,7 @@ try:
 except ImportError:
     sys.exc_clear()
 
-from mlb.mlbam.fetch import FetchMLBAM
-import argparse
+import mlb.mlbam.fetch as fetch
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Fetch MLB Gameday data.')
-    parser.add_argument('-o', '--output_dir', metavar='DIR', help='Output directory')
-    parser.add_argument('-s', '--start', metavar='DATE', help='Start day')
-    parser.add_argument('-e', '--end', metavar='DATE', help='End day')
-    parser.add_argument('-l', '--leagues', action='append', help='Fetch these leagues')
-    args = parser.parse_args()
-    gameday_fetch = FetchMLBAM(**args.__dict__)
-    gameday_fetch.fetch()
+    fetch.fetch()

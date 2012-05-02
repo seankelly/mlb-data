@@ -14,6 +14,13 @@ import time
 from datetime import date, timedelta
 from html.parser import HTMLParser
 from random import uniform
+from ..util import commandline_args
+
+def fetch():
+    args = commandline_args('Fetch MLB Gameday data.')
+    f = FetchMLBAM(**args)
+    f.fetch()
+    return f
 
 
 class DirectoryList(HTMLParser):
@@ -39,23 +46,16 @@ class FetchMLBAM(object):
     base_url = "http://gd2.mlb.com/components/game/"
     mlbam_leagues = set(('aaa', 'aax', 'afa', 'afx', 'mlb', 'win'))
 
-    def __init__(self, start, end, output_dir, leagues):
-        if start is None:
-            start = date.today()-timedelta(1)
-        if end is None:
-            end = date.today()
-        if output_dir is None:
-            output_dir = 'data'
-        if leagues is None:
-            leagues = ('mlb',)
-        self.start = start
-        self.end = end
+    def __init__(self, start, end, output_dir, leagues, **kwargs):
+        self.start = kwargs.get('start', date.today()-timedelta(1))
+        self.end = kwargs.get('end', date.today())
+        self.output_dir = kwargs.get('output_dir', 'data')
+        leagues = kwargs.get('leagues', ('mlb',))
         valid_leagues = []
         for league in leagues:
             if type(league) == str:
                 valid_leagues.append(league)
         self.leagues = tuple(valid_leagues)
-        self.output_dir = output_dir
 
     def fetch(self):
         current_day = self.start
