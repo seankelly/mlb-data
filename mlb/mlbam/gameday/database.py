@@ -91,6 +91,7 @@ def add_players(conn, meta, players, player_list):
         for id in new_players:
             plist.append({'mlbamid': id, 'namefirst': player_list[id]['first'],
                           'namelast': player_list[id]['last']})
+            players.add(id)
         conn.execute(insert_players, plist)
 
 def load_parks(conn, meta):
