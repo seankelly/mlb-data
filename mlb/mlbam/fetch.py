@@ -59,7 +59,8 @@ class FetchMLBAM(object):
 
     def fetch(self):
         for current_day in each_day(self.start, self.end):
-            self.fetch_league_day(league, current_day)
+            for league in self.leagues:
+                self.fetch_league_day(league, current_day)
 
     def fetch_league_day(self, league, day):
         url = (self.base_url + league + '/' +
