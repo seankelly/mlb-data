@@ -2,15 +2,21 @@ import argparse
 import datetime
 
 def parse_str_date(day, default=datetime.date.today()):
-    if day:
-        try:
-            day = datetime.datetime.strptime(day, "%Y-%m-%d").date()
-        except ValueError:
-            print("Invalid date given:", day)
-            raise
-    else:
-        day = default
-    return day
+    if not day:
+        return default
+    # First, check if it's a date.
+    try:
+        if day.year and day.month and day.day:
+            return day
+    except AttributeError:
+        pass
+    # Then check if it can be parsed into a date.
+    try:
+        day = datetime.datetime.strptime(day, "%Y-%m-%d").date()
+        return day
+    except ValueError:
+        print("Invalid date given:", day)
+        raise
 
 def commandline_args(desc):
     passthrough = lambda f: f
