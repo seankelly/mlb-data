@@ -1,3 +1,4 @@
+from sqlalchemy import MetaData, create_engine
 
 def connect_db(database):
     engine = create_engine(database)
