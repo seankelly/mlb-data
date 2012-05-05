@@ -4,6 +4,7 @@ Add parsed Gameday data to the database.
 
 from sqlalchemy import MetaData, create_engine
 from sqlalchemy.sql import select
+from ...database import connect_db
 
 # No command line interface because it requires parsed Gameday data. There
 # currently isn't a way to save the parsed data to disk, so it would be wasted
@@ -27,13 +28,6 @@ def insert_games(database, games):
         trans.rollback()
         raise
     conn.close()
-
-def connect_db(database):
-    engine = create_engine(database)
-    conn = engine.connect()
-    meta = MetaData()
-    meta.reflect(bind=conn)
-    return conn, meta
 
 def insert_game(conn, meta, game, parks, teams, players):
     # Check that there's even a game to parse.
