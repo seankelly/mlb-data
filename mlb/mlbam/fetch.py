@@ -14,7 +14,7 @@ import time
 from datetime import date, timedelta
 from html.parser import HTMLParser
 from random import uniform
-from ..util import commandline_args
+from ..util import commandline_args, each_day
 
 def fetch():
     args = commandline_args('Fetch MLB Gameday data.')
@@ -58,13 +58,8 @@ class FetchMLBAM(object):
         self.leagues = tuple(valid_leagues)
 
     def fetch(self):
-        current_day = self.start
-        end_day = self.end
-        one_day = timedelta(1)
-        while current_day < end_day:
-            for league in self.leagues:
-                self.fetch_league_day(league, current_day)
-            current_day += one_day
+        for current_day in each_day(self.start, self.end):
+            self.fetch_league_day(league, current_day)
 
     def fetch_league_day(self, league, day):
         url = (self.base_url + league + '/' +
