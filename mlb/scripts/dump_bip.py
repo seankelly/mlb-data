@@ -33,8 +33,6 @@ def run():
                 park_table.c.name, park_table.c.hp_x, park_table.c.hp_y,
                 park_table.c.scale)
 
-    years_sql = select([func.distinct(text(get_year(gd.conn, 'day')))], from_obj=game_table)
-
     p = player_table.alias()
     b = player_table.alias()
     bip_sql = select([game_table.c.day.label('day'),
@@ -65,6 +63,8 @@ def run():
         park[p['id']] = park_json = p
         stadiums.append(park_json)
 
+    years_sql = select([func.distinct(text(get_year(gd.conn, 'day')))],
+                       from_obj=game_table)
     years = [int(row[0]) for row in conn.execute(years_sql)]
 
     for park_id in park.keys():
