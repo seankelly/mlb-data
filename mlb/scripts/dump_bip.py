@@ -17,7 +17,7 @@ def dump_json(filename, obj):
 
 def run():
     args = commandline_args('Dump BIP into JSON files')
-    gd.init_db()
+    conn, meta = connect_db(args['database'])
 
     park_table = meta.tables['park']
     bip_table = meta.tables['bip']
