@@ -36,4 +36,4 @@ INSERT INTO park_dimension VALUES (3289, '3289.png', '2005-01-01', '2010-12-31',
 INSERT INTO park_dimension VALUES (3309, '3309.png', '2005-01-01', '2010-12-31', 251, 408, 1.095);
 INSERT INTO park_dimension VALUES (3312, '3312.png', '2005-01-01', '2010-12-31', 252, 406, 1.136);
 INSERT INTO park_dimension VALUES (3313, '3313.png', '2005-01-01', '2010-12-31', 252, 407, 1.126);
-INSERT INTO park_dimension VALUES (4169, '4169.svg', '2005-01-01', '2010-12-31', -1, -1, -1);
+INSERT INTO park_dimension VALUES (4169, '4169.svg', '2012-01-01', NULL, -1, -1, -1);
