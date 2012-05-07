@@ -42,7 +42,7 @@ def run():
         ab_table.c.batter_stand.label('stand'), (p.c.namelast + ', ' +
             p.c.namefirst).label('pitcher'),
         ab_table.c.pitcher_throw.label('throw')], and_(park_table.c.id ==
-            bindparam('park'), text(get_year(gd.conn, 'day')) ==
+            bindparam('park'), text(get_year(conn, 'day')) ==
             bindparam('year')),
         from_obj=bip_table.join(park_table).join(ab_table).join(game_table).outerjoin(p,
             onclause=p.c.mlbamid==ab_table.c.pitcher).outerjoin(b,
@@ -63,7 +63,7 @@ def run():
         park[p['id']] = park_json = p
         stadiums.append(park_json)
 
-    years_sql = select([func.distinct(text(get_year(gd.conn, 'day')))],
+    years_sql = select([func.distinct(text(get_year(conn, 'day')))],
                        from_obj=game_table)
     years = [int(row[0]) for row in conn.execute(years_sql)]
 
