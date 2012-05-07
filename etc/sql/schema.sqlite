@@ -12,6 +12,7 @@ CREATE TABLE park (
 
 CREATE TABLE park_dimension (
     park_id integer,
+    image_file text,
     opening date,
     closing date,
     hp_x real,
