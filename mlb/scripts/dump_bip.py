@@ -29,7 +29,7 @@ def run():
     park_sql = select([park_table.c.id, park_table.c.name, park_table.c.hp_x,
         park_table.c.hp_y, park_table.c.scale,
         func.count(bip_table.c.id).label('num')],
-        from_obj=[park_table.outerjoin(bip_table)]).group_by(park_table.c.id,
+        from_obj=[park_table.join(bip_table)]).group_by(park_table.c.id,
                 park_table.c.name, park_table.c.hp_x, park_table.c.hp_y,
                 park_table.c.scale)
 
