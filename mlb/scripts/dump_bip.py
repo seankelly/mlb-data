@@ -71,7 +71,8 @@ def run():
     for park_id in park.keys():
         for year in years:
             bip_list = []
-            for bip in conn.execute(bip_sql, {'park': park_id, 'year': year}):
+            str_y = str(year)
+            for bip in conn.execute(bip_sql, {'park': park_id, 'year': str_y}):
                 bip_list.append({'x': bip['x'], 'y': bip['y'],
                     'event': bip['event'], 'type': bip['type'],
                     'pitcher': bip['pitcher'], 'throw': bip['throw'],
