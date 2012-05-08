@@ -79,10 +79,12 @@ def run():
             # No need to write empty files!
             if len(bip_list) > 0:
                 park[park_id]['years'][year] = True
-                dump_json("park-" + str(park_id) + "-" + str(year) + ".json",
-                        bip_list)
+                park_file = os.path.join(args['output_dir'],
+                        "park-" + str(park_id) + "-" + str(year) + ".json")
+                dump_json(park_file, bip_list)
 
-    dump_json("parks.json", stadiums)
+    parks_file = os.path.join(args['output_dir'], "parks.json")
+    dump_json(parks_file, stadiums)
 
 if __name__ == "main":
     run()
