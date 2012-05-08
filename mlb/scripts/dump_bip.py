@@ -46,8 +46,8 @@ def run():
         p['bip'] = p['num']
         p['years'] = {}
         del p['num']
-        park[p['id']] = park_json = p
-        stadiums.append(park_json)
+        park[p['id']] = p
+        stadiums.append(p)
 
     years_sql = select([func.distinct(text(get_year(conn, 'day')))],
                        from_obj=game_table)
