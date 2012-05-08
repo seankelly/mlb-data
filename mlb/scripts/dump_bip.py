@@ -61,9 +61,9 @@ def run():
         (b.c.namelast + ', ' + b.c.namefirst).label('batter'),
         ab_table.c.batter_stand.label('stand'), (p.c.namelast + ', ' +
             p.c.namefirst).label('pitcher'),
-        ab_table.c.pitcher_throw.label('throw')], and_(park_table.c.id ==
-            bindparam('park'), text(get_year(conn, 'day')) ==
-            bindparam('year')),
+        ab_table.c.pitcher_throw.label('throw')],
+            and_(park_table.c.id == bindparam('park'),
+                text(get_year(conn, 'day')) == bindparam('year')),
         from_obj=bip_table.join(park_table).join(ab_table).join(game_table).outerjoin(p,
             onclause=p.c.mlbamid==ab_table.c.pitcher).outerjoin(b,
                 onclause=b.c.mlbamid==ab_table.c.batter))
@@ -71,11 +71,11 @@ def run():
     for park_id in park.keys():
         for year in years:
             bip_list = []
-            for bip in conn.execute(bip_sql, { 'park': park_id, 'year': year }):
+            for bip in conn.execute(bip_sql, {'park': park_id, 'year': year}):
                 bip_list.append({'x': bip['x'], 'y': bip['y'],
                     'event': bip['event'], 'type': bip['type'],
                     'pitcher': bip['pitcher'], 'throw': bip['throw'],
-                    'batter': bip['batter'], 'stand': bip['stand']  })
+                    'batter': bip['batter'], 'stand': bip['stand']})
             # No need to write empty files!
             if len(bip_list) > 0:
                 park[park_id]['years'][year] = True
