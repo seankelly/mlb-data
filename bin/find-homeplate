@@ -1,0 +1,46 @@
+#!/usr/bin/env python
+
+from glob import glob
+from lxml import etree
+import re
+import sys
+
+def find_homeplate(el):
+    # This seems to work better. It only misses Citi Field (3289) right now.
+    return el.tag.endswith('polygon') and el.get('fill') == '#FFFFFF'
+    # This seems to be the newer version perhaps? I hope so, it's clearer.
+    #return el.tag.endswith('polygon') and el.get('id') == 'homeplate'
+
+def get_dimension(str):
+    r = re.match('^(\d+)', str)
+    dim = int(r.group(0))
+    return dim
+
+def run():
+    svg_files = sorted(glob("*.svg"))
+    for svg in svg_files:
+        svg_xml = etree.parse(svg)
+        root = svg_xml.getroot()
+        width = get_dimension(root.get('width'))
+        height = get_dimension(root.get('height'))
+        hp = list(filter(find_homeplate, svg_xml.iter()))
+        if len(hp) != 1:
+            print('Skipping {0}; found {1} matching elements'.format(svg,
+                len(hp)))
+            continue
+        homeplate = hp[0]
+        hp_x, hp_y = 0, 0
+        for points in homeplate.get('points').split(' '):
+            if not points:
+                continue
+            str_x, str_y = points.split(',')
+            x = float(str_x)
+            y = float(str_y)
+            if y > hp_y:
+                hp_y = y
+                hp_x = x
+        print('{0}: {1}, {2}'.format(svg, x/width, y/height))
+
+
+if __name__ == "__main__":
+    run()
