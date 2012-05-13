@@ -48,11 +48,11 @@ INSERT INTO park_dimension VALUES (13, '13.svg', '2011-01-01', NULL, 0.501, 0.81
 INSERT INTO park_dimension VALUES (14, '14.svg', '2011-01-01', NULL, 0.501, 0.814, 1.188);
 INSERT INTO park_dimension VALUES (15, '15.svg', '2011-01-01', NULL, 0.501, 0.814, 1.176);
 INSERT INTO park_dimension VALUES (16, '16.svg', '2011-01-01', NULL, 0.501, 0.814, 1.161);
-INSERT INTO park_dimension VALUES (17, '17.svg', '2011-01-01', NULL, 0.501, 0.814, 1);
-INSERT INTO park_dimension VALUES (19, '19.svg', '2011-01-01', NULL, 0.501, 0.814, 1);
-INSERT INTO park_dimension VALUES (22, '22.svg', '2011-01-01', NULL, 0.501, 0.814, 1);
-INSERT INTO park_dimension VALUES (31, '31.svg', '2011-01-01', NULL, 0.501, 0.814, 1);
-INSERT INTO park_dimension VALUES (32, '32.svg', '2011-01-01', NULL, 0.501, 0.814, 1);
+INSERT INTO park_dimension VALUES (17, '17.svg', '2011-01-01', NULL, 0.501, 0.814, 1.171);
+INSERT INTO park_dimension VALUES (19, '19.svg', '2011-01-01', NULL, 0.501, 0.814, 1.158);
+INSERT INTO park_dimension VALUES (22, '22.svg', '2011-01-01', NULL, 0.501, 0.814, 1.154);
+INSERT INTO park_dimension VALUES (31, '31.svg', '2011-01-01', NULL, 0.501, 0.814, 1.165);
+INSERT INTO park_dimension VALUES (32, '32.svg', '2011-01-01', NULL, 0.501, 0.814, 1.160);
 INSERT INTO park_dimension VALUES (680, '680.svg', '2011-01-01', NULL, 0.501, 0.814, 1);
 INSERT INTO park_dimension VALUES (2392, '2392.svg', '2011-01-01', NULL, 0.501, 0.814, 1);
 INSERT INTO park_dimension VALUES (2394, '2394.svg', '2011-01-01', NULL, 0.501, 0.814, 1);
