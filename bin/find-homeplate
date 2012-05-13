@@ -25,7 +25,7 @@ def get_offset(root):
     viewbox = root.get('viewBox')
     coords = viewbox.split(' ')
     x0 = abs(float(coords[0]))
-    y0 = abs(float(coords[0]))
+    y0 = abs(float(coords[1]))
     return x0, y0
 
 def run():
