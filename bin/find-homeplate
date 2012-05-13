@@ -16,6 +16,18 @@ def get_dimension(str):
     dim = int(r.group(0))
     return dim
 
+def get_offset(root):
+    """
+    Some of the parks have an offset viewBox. This makes the homeplate that is
+    drawn not relative to the assumed 0,0. Get the actual x0, y0 viewbow and
+    return the values to correct the home plate x and y coords.
+    """
+    viewbox = root.get('viewBox')
+    coords = viewbox.split(' ')
+    x0 = abs(float(coords[0]))
+    y0 = abs(float(coords[0]))
+    return x0, y0
+
 def run():
     svg_files = sorted(glob("*.svg"))
     for svg in svg_files:
@@ -23,6 +35,7 @@ def run():
         root = svg_xml.getroot()
         width = get_dimension(root.get('width'))
         height = get_dimension(root.get('height'))
+        offset_x, offset_y = get_offset(root)
         hp = list(filter(find_homeplate, svg_xml.iter()))
         if len(hp) != 1:
             print('Skipping {0}; found {1} matching elements'.format(svg,
@@ -39,7 +52,8 @@ def run():
             if y > hp_y:
                 hp_y = y
                 hp_x = x
-        print('{0}: {w}, {h}'.format(svg, w=hp_x/width, h=hp_y/height))
+        print('{0}: {w}, {h}'.format(svg, w=((hp_x + offset_x)/width),
+                                     h=((hp_y + offset_y)/height)))
 
 
 if __name__ == "__main__":
