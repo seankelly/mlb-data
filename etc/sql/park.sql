@@ -5,7 +5,7 @@ INSERT INTO park_dimension VALUES (3, '3.png', '2005-01-01', '2010-12-31', 0.497
 INSERT INTO park_dimension VALUES (4, '4.png', '2005-01-01', '2010-12-31', 0.502, 0.812, 1.146);
 INSERT INTO park_dimension VALUES (5, '5.png', '2005-01-01', '2010-12-31', 0.503, 0.814, 1.103);
 INSERT INTO park_dimension VALUES (7, '7.png', '2005-01-01', '2010-12-31', 0.502, 0.814, 1.144);
-INSERT INTO park_dimension VALUES (8, '1.png', '2005-01-01', '2010-12-31', 0.504, 0.812, 1.118);
+INSERT INTO park_dimension VALUES (8, '8.png', '2005-01-01', '2009-12-31', 0.504, 0.812, 1.118);
 INSERT INTO park_dimension VALUES (9, '9.png', '2005-01-01', '2010-12-31', 0.504, 0.814, 1.126);
 INSERT INTO park_dimension VALUES (10,'10.png', '2005-01-01', '2010-12-31', 0.498, 0.791, 1.092);
 INSERT INTO park_dimension VALUES (12, '12.png', '2005-01-01', '2010-12-31', 0.505, 0.816, 1.120);
