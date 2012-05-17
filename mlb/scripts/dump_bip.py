@@ -1,3 +1,4 @@
+from datetime import datetime
 from sqlalchemy.sql import select, bindparam, func, text, and_
 from ..util import commandline_args
 from ..database import connect_db
@@ -44,6 +45,27 @@ def run():
         p['years'] = {}
         del p['num']
         parks[p['id']] = p
+
+    # Skipping the closing year for simplicity. If a team switches parks in the
+    # middle of the year, it will be a park with a new id. I believe the only
+    # issue will be if MLBAM updates the image in the middle of the season.
+    # This might happen for Citi Field (no bases or foul lines!).
+    dimension_sql = select([park_dim_table.c.park_id,
+        park_dim_table.c.image_file, park_dim_table.c.opening,
+        park_dim_table.c.hp_x, park_dim_table.c.hp_y, park_dim_table.c.scale],
+        from_obj=park_dim_table)
+
+    for row in conn.execute(dimension_sql):
+        id = row['park_id']
+        if id not in parks:
+            continue
+        opening = row['opening']
+        images = {'file': row['image_file'], 'scale': float(row['scale']),
+                'hp_x': float(row['hp_x']), 'hp_y': float(row['hp_y']),
+                'opening': opening.year}
+        if 'images' not in parks[id]:
+            parks[id]['images'] = {}
+        parks[id]['images'][opening.year] = images
 
     years_sql = select([func.distinct(text(get_year(conn, 'day')))],
                        from_obj=game_table)
