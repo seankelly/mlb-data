@@ -28,18 +28,16 @@ def run():
 
     # Arg, postgres requires every column to be in the ORDER BY clause
     park_sql = select([park_table.c.id, park_table.c.name,
-        park_dim_table.c.hp_x, park_dim_table.c.hp_y, park_dim_table.c.scale,
         func.count(bip_table.c.id).label('num')],
-        from_obj=park_table.join(park_dim_table).join(bip_table)).group_by(
-                park_table.c.id, park_table.c.name, park_dim_table.c.hp_x,
-                park_dim_table.c.hp_y, park_dim_table.c.scale)
+        from_obj=park_table.join(bip_table)).group_by(park_table.c.id,
+                park_table.c.name)
 
     park = {}
     stadiums = []
     for row in conn.execute(park_sql):
         p = {}
         for key in row.keys():
-            if key in ['hp_x', 'hp_y', 'id', 'num']:
+            if key in set(['id', 'num']):
                 p[key] = int(row[key])
             else:
                 p[key] = str(row[key])
