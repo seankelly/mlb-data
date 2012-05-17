@@ -32,8 +32,7 @@ def run():
         from_obj=park_table.join(bip_table)).group_by(park_table.c.id,
                 park_table.c.name)
 
-    park = {}
-    stadiums = []
+    parks = {}
     for row in conn.execute(park_sql):
         p = {}
         for key in row.keys():
@@ -44,8 +43,7 @@ def run():
         p['bip'] = p['num']
         p['years'] = {}
         del p['num']
-        park[p['id']] = p
-        stadiums.append(p)
+        parks[p['id']] = p
 
     years_sql = select([func.distinct(text(get_year(conn, 'day')))],
                        from_obj=game_table)
@@ -66,7 +64,7 @@ def run():
             onclause=p.c.mlbamid==ab_table.c.pitcher).outerjoin(b,
                 onclause=b.c.mlbamid==ab_table.c.batter))
 
-    for park_id in park.keys():
+    for park_id in parks.keys():
         for year in years:
             bip_list = []
             str_y = str(year)
@@ -77,13 +75,13 @@ def run():
                     'batter': bip['batter'], 'stand': bip['stand']})
             # No need to write empty files!
             if len(bip_list) > 0:
-                park[park_id]['years'][year] = True
+                parks[park_id]['years'][year] = True
                 park_file = os.path.join(args['output_dir'],
                         "park-" + str(park_id) + "-" + str(year) + ".json")
                 dump_json(park_file, bip_list)
 
     parks_file = os.path.join(args['output_dir'], "parks.json")
-    dump_json(parks_file, stadiums)
+    dump_json(parks_file, parks)
 
 if __name__ == "main":
     run()
