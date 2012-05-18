@@ -44,7 +44,8 @@ class DirectoryList(HTMLParser):
 
 class FetchMLBAM(object):
     base_url = "http://gd2.mlb.com/components/game/"
-    mlbam_leagues = set(('aaa', 'aax', 'afa', 'afx', 'mlb', 'win'))
+    mlbam_leagues = set(('aaa', 'aax', 'afa', 'afx', 'asx', 'mlb', 'rok',
+                        'win'))
 
     def __init__(self, **kwargs):
         self.start = kwargs.get('start', date.today()-timedelta(1))
