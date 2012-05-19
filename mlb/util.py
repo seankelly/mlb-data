@@ -1,5 +1,4 @@
 from optparse import OptionParser
-import argparse
 import datetime
 
 def parse_str_date(day, default=datetime.date.today()):
