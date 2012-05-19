@@ -1,3 +1,4 @@
+from optparse import OptionParser
 import argparse
 import datetime
 
@@ -28,24 +29,24 @@ def commandline_args(desc):
         'end': parse_str_date,
     }
     yesterday = datetime.date.today() - datetime.timedelta(1)
-    parser = argparse.ArgumentParser(description=desc)
-    parser.add_argument('-o', '--output_dir', metavar='DIR',
-                        help='Output directory')
-    parser.add_argument('-s', '--start', metavar='DATE',
-                        default=yesterday, help='Start day')
-    parser.add_argument('-e', '--end', metavar='DATE',
-                        default=yesterday, help='End day')
-    parser.add_argument('-l', '--leagues', action='append',
-                        help='Fetch these leagues')
-    parser.add_argument('-d', '--database',
-                        help='Database to use')
-    args = parser.parse_args()
-    options = {}
-    args_dict = args.__dict__
-    for key in args_dict:
-        if args_dict[key]:
-            options[key] = map_options[key](args_dict[key])
-    return options
+    parser = OptionParser(description=desc)
+    parser.add_option('-o', '--output_dir', metavar='DIR',
+                      help='Output directory')
+    parser.add_option('-s', '--start', metavar='DATE',
+                      default=yesterday, help='Start day')
+    parser.add_option('-e', '--end', metavar='DATE',
+                      default=yesterday, help='End day')
+    parser.add_option('-l', '--leagues', action='append',
+                      help='Fetch these leagues')
+    parser.add_option('-d', '--database',
+                      help='Database to use')
+    options, args = parser.parse_args()
+    dict_options = {}
+    opts_dict = options.__dict__
+    for key in opts_dict:
+        if opts_dict[key]:
+            dict_options[key] = map_options[key](opts_dict[key])
+    return dict_options
 
 def each_day(start_day, end_day):
     current_day = start_day
