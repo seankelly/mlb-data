@@ -12,7 +12,10 @@ import re
 import requests
 import time
 from datetime import date, timedelta
-from html.parser import HTMLParser
+try:
+    from html.parser import HTMLParser
+except ImportError:
+    from HTMLParser import HTMLParser
 from random import uniform
 from ..util import commandline_args, each_day
 
