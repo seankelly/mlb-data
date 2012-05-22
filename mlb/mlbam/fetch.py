@@ -21,6 +21,7 @@ from ..util import commandline_args, each_day
 
 def fetch():
     args = commandline_args('Fetch MLB Gameday data.')
+    requests.defaults.defaults['max_retries'] = 3
     f = FetchMLBAM(**args)
     f.fetch()
     return f
