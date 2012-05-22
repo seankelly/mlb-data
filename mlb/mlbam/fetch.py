@@ -70,6 +70,9 @@ class FetchMLBAM(object):
         url = (self.base_url + league + '/' +
                day.strftime("year_%Y/month_%m/day_%d/"))
         day_dir = requests.get(url)
+        # If there is nothing listed, then don't bother.
+        if day_dir.status_code == 404:
+            return
         directory = DirectoryList()
         directory.feed(day_dir.text)
         directory.close()
