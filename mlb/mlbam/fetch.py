@@ -100,7 +100,7 @@ class FetchMLBAM(object):
 
     def save_game_data(self, output_dir, xml_file, file_name):
         xml_output = open(os.path.join(output_dir, file_name), 'w')
-        xml_output.write(xml_file.text)
+        xml_output.write(xml_file.content)
         xml_output.close()
 
     def scrape_game_dir(self, output_dir, url, file_re):
