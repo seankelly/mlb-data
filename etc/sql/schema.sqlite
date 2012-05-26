@@ -15,9 +15,9 @@ CREATE TABLE park_dimension (
     image_file text,
     opening date,
     closing date,
-    hp_x real,
+    hp_x real,  -- These are percentages based on image width.
     hp_y real,
-    scale real,
+    scale real,  -- This is scaled for 500x500px
     FOREIGN KEY (park_id) REFERENCES park (id)
 );
 

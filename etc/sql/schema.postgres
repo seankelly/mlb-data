@@ -8,18 +8,16 @@ CREATE TABLE park (
     id integer PRIMARY KEY, -- use MLB's ids
     name text,
     location text,
-    hp_x real,  -- these are scaled for 500x500px
-    hp_y real,
-    scale real
 );
 
 CREATE TABLE park_dimension (
     park_id integer REFERENCES park (id),
+    image_file text,
     opening date,
     closing date,
-    hp_x real,
+    hp_x real,  -- These are percentages based on image width.
     hp_y real,
-    scale real
+    scale real  -- This is scaled for 500x500px
 );
 
 CREATE TABLE team (
