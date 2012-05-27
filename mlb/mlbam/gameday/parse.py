@@ -97,8 +97,8 @@ class GamedayParser():
                 bip_x = 0
             if not y:
                 bip_y = 0
-            x = int(float(bip_x)) * 249/250)
-            y = int(float(bip_y)) * 249/250)
+            x = int(float(bip_x) * 249/250)
+            y = int(float(bip_y) * 249/250)
             # Skip the 'des' field, since it will be in the atbat XML.
             bip_data = {'x': x, 'y': y, 'park': self.game['park']['id'],
                         'type': bip.get('type')}
