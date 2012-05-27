@@ -88,8 +88,17 @@ class GamedayParser():
         xml_file = etree.parse(os.path.join(self.directory, 'inning_hit.xml'))
         BIP = []
         for bip in self.find_bip(xml_file):
-            x = int(float(bip.get('x')) * 249/250)
-            y = int(float(bip.get('y')) * 249/250)
+            bip_x = bip.get('x')
+            bip_y = bip.get('y')
+            # Errors are stored with empty x and y attributes. Mark them as
+            # zero instead so they will still be added. They will then need to
+            # be filtered out when dumping.
+            if not x:
+                bip_x = 0
+            if not y:
+                bip_y = 0
+            x = int(float(bip_x)) * 249/250)
+            y = int(float(bip_y)) * 249/250)
             # Skip the 'des' field, since it will be in the atbat XML.
             bip_data = {'x': x, 'y': y, 'park': self.game['park']['id'],
                         'type': bip.get('type')}
