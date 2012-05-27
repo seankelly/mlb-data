@@ -93,9 +93,9 @@ class GamedayParser():
             # Errors are stored with empty x and y attributes. Mark them as
             # zero instead so they will still be added. They will then need to
             # be filtered out when dumping.
-            if not x:
+            if not bip_x:
                 bip_x = 0
-            if not y:
+            if not bip_x:
                 bip_y = 0
             x = int(float(bip_x) * 249/250)
             y = int(float(bip_y) * 249/250)
