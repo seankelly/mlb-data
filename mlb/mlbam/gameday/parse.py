@@ -48,14 +48,20 @@ class GamedayParser():
                     info['league'] = 'MLB'
                 fullname = el.get('name_full')
                 location = el.get('name')
-                if fullname.startswith(location):
-                    # This is to ensure the name is the full, unabbreviated
-                    # team name. For instance, the Diamondbacks are abbreviated
-                    # as 'D-backs' when I want the full name.
-                    team_name = fullname[len(location):len(fullname)].strip()
+                # In old-style game.xml files, the 'name_full' and 'name_brief'
+                # attributes do not exist. Since there is no way to get the
+                # team name, just stick with None.
+                if fullname:
+                    if fullname.startswith(location):
+                        # This is to ensure the name is the full, unabbreviated
+                        # team name. For instance, the Diamondbacks are
+                        # abbreviated as 'D-backs' when I want the full name.
+                        team_name = fullname[len(location):len(fullname)].strip()
+                    else:
+                        # Just in case.
+                        team_name = el.get('name_brief')
                 else:
-                    # Just in case.
-                    team_name = el.get('name_brief')
+                    team_name = None
                 team_type = el.get('type')
                 game['team'][team_type] = {'id': int(el.get('id')),
                         'code': el.get('code'), 'name': team_name,
