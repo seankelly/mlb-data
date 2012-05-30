@@ -8,13 +8,13 @@ from ...database import connect_db
 # No command line interface because it requires parsed Gameday data. There
 # currently isn't a way to save the parsed data to disk, so it would be wasted
 # work to add a command line interface.
-def add_to_db(options, games):
+def add_to_db(conn, meta, games):
     if 'database' not in options or not options['database']:
         raise ValueError("No database specified.")
-    insert_games(options['database'], games)
+    conn, meta = connect_db(options['database'])
+    insert_games(conn, meta, games)
 
-def insert_games(database, games):
-    conn, meta = connect_db(database)
+def insert_games(conn, meta, games):
     parks = load_parks(conn, meta)
     teams = load_teams(conn, meta)
     players = load_players(conn, meta)

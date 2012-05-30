@@ -15,8 +15,7 @@ try:
 except ImportError:
     sys.exc_clear()
 
-import mlb.mlbam.gameday as gameday
+from mlb.scripts.parse_gameday_xml import run
 
 if __name__ == "__main__":
-    games, args = gameday.parse()
-    gameday.add_to_db(args, games)
+    run()
