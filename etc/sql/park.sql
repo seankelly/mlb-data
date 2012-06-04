@@ -26,7 +26,7 @@ INSERT INTO park_dimension VALUES (2392, '2392.png', '2005-01-01', '2010-12-31',
 INSERT INTO park_dimension VALUES (2394, '2394.png', '2005-01-01', '2010-12-31', 0.507, 0.816, 1.158);
 INSERT INTO park_dimension VALUES (2395, '2395.png', '2005-01-01', '2010-12-31', 0.505, 0.810, 1.124);
 INSERT INTO park_dimension VALUES (2397, '2397.png', '2005-01-01', '2010-12-31', 0.504, 0.812, 1.136);
-INSERT INTO park_dimension VALUES (2504, '2507.png', '2005-01-01', '2010-12-31', 0.502, 0.798, 1.198);
+INSERT INTO park_dimension VALUES (2504, '2504.png', '2005-01-01', '2010-12-31', 0.502, 0.798, 1.198);
 INSERT INTO park_dimension VALUES (2535, '2535.png', '2005-01-01', '2010-12-31', 0.504, 0.797, 1.177);
 INSERT INTO park_dimension VALUES (2602, '2602.png', '2005-01-01', '2010-12-31', 0.504, 0.804, 1.182);
 INSERT INTO park_dimension VALUES (2680, '2680.png', '2005-01-01', '2010-12-31', 0.505, 0.814, 1.148);
