@@ -1,3 +1,4 @@
+import os.path
 import mlb.mlbam.gameday as gameday
 from mlb.database import connect_db
 from mlb.util import commandline_args, each_day
