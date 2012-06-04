@@ -1,6 +1,6 @@
 import mlb.mlbam.gameday as gameday
-from ..database import connect_db
-from ...util import commandline_args, each_day
+from mlb.database import connect_db
+from mlb.util import commandline_args, each_day
 
 def run():
     parsed_games = []
