@@ -5,7 +5,7 @@ from mlb.util import commandline_args, each_day
 def run():
     parsed_games = []
     args = commandline_args('Parse Gameday XML files')
-    conn, meta = connect_db(options['database'])
+    conn, meta = connect_db(args['database'])
     for league in args['leagues']:
         dir = os.path.join(args['output_dir'], league)
         for day in each_day(args['start'], args['end']):
