@@ -52,7 +52,9 @@ def run():
     # This might happen for Citi Field (no bases or foul lines!).
     dimension_sql = select([park_dim_table.c.park_id,
         park_dim_table.c.image_file, park_dim_table.c.opening,
-        park_dim_table.c.hp_x, park_dim_table.c.hp_y, park_dim_table.c.scale],
+        park_dim_table.c.hp_x, park_dim_table.c.hp_y,
+        park_dim_table.c.image_hp_x, park_dim_table.c.image_hp_y,
+        park_dim_table.c.scale],
         from_obj=park_dim_table)
 
     for row in conn.execute(dimension_sql):
@@ -62,7 +64,8 @@ def run():
         opening = row['opening']
         images = {'file': row['image_file'], 'scale': float(row['scale']),
                 'hp_x': float(row['hp_x']), 'hp_y': float(row['hp_y']),
-                'opening': opening.year}
+                'image_hp_x': float(row['image_hp_x']), 'image_hp_y':
+                float(row['image_hp_y']), 'opening': opening.year}
         if 'images' not in parks[id]:
             parks[id]['images'] = {}
         parks[id]['images'][opening.year] = images
