@@ -17,6 +17,8 @@ CREATE TABLE park_dimension (
     closing date,
     hp_x real,  -- These are percentages based on image width.
     hp_y real,
+    image_hp_x real,  -- These are percentages based on image width.
+    image_hp_y real,  -- Some of the parks are offset, so need to account for that.
     scale real  -- This is scaled for 500x500px
 );
 
