@@ -25,7 +25,12 @@ class GamedayParser():
         self.find_bip = etree.XPath('/hitchart/hip')
         self.game = {}
         self.day = day
-        self._parse()
+        try:
+            self._parse()
+        except:
+            game_dir = os.path.basename(directory)
+            print('Error parsing ' + game_dir)
+            raise
 
     def _parse_game_xml(self):
         game_xml = os.path.join(self.directory, 'game.xml')
@@ -147,20 +152,25 @@ class GamedayParser():
         # Skip inning_hit.xml. It is special and needs different processing.
         xml_files = fnmatch.filter(os.listdir(self.directory), 'inning_[!h]*.xml')
         for inning in range(1, len(xml_files) + 1):
-            xml_file = os.path.join(self.directory, 'inning_' + str(inning) + '.xml')
-            inning_atbats = self.find_atbats(etree.parse(xml_file))
-            for atbat in inning_atbats:
-                ab_data = {'inning': inning}
-                for field in ab_fields:
-                    key = ab_fields[field]
-                    if key != 'pitcher' and key != 'batter':
-                        ab_data[key] = atbat.get(field)
-                        if ab_data[key]:
-                            ab_data[key] = ab_data[key].strip()
-                    else:
-                        ab_data[key] = int(atbat.get(field))
-                ab_data['pitches'] = self._parse_pitches(atbat, ab_data)
-                atbats.append(ab_data)
+            inning_xml_file = 'inning_' + str(inning) + '.xml'
+            try:
+                xml_file = os.path.join(self.directory, inning_xml_file)
+                inning_atbats = self.find_atbats(etree.parse(xml_file))
+                for atbat in inning_atbats:
+                    ab_data = {'inning': inning}
+                    for field in ab_fields:
+                        key = ab_fields[field]
+                        if key != 'pitcher' and key != 'batter':
+                            ab_data[key] = atbat.get(field)
+                            if ab_data[key]:
+                                ab_data[key] = ab_data[key].strip()
+                        else:
+                            ab_data[key] = int(atbat.get(field))
+                    ab_data['pitches'] = self._parse_pitches(atbat, ab_data)
+                    atbats.append(ab_data)
+            except:
+                print('Parsing error with ' + inning_xml_file)
+                raise
         self.game['atbat'] = atbats
 
     def _match_bip(self):
