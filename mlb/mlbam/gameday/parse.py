@@ -124,7 +124,10 @@ class GamedayParser():
                 value = pitch.get(key)
                 if value:
                     if key in float_fields:
-                        value = float(value)
+                        try:
+                            value = float(value)
+                        except UnicodeEncodeError:
+                            value = 0
                     else:
                         value = value.strip()
                 pitch_data[key] = value
