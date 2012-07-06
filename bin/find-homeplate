@@ -52,8 +52,10 @@ def run():
             if y > hp_y:
                 hp_y = y
                 hp_x = x
-        print('{0}: {w}, {h}'.format(svg, w=((hp_x + offset_x)/width),
-                                     h=((hp_y + offset_y)/height)))
+        print('{0}: {w1}, {h1}, {w2}, {h2},'.format(svg,
+            w1=((hp_x)/width), h1=((hp_y)/height)),
+            w2=((hp_x + offset)/width), h2=((hp_y + offset)/height)),
+        )
 
 
 if __name__ == "__main__":
