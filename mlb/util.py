@@ -37,6 +37,8 @@ def commandline_args(desc):
                       default=yesterday, help='End day')
     parser.add_option('-l', '--leagues', action='append',
                       help='Fetch these leagues')
+    parser.add_option('-f', '--file',
+                      help='HDF5 file to use')
     parser.add_option('-d', '--database',
                       help='Database to use')
     options, args = parser.parse_args()
