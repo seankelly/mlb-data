@@ -19,11 +19,7 @@ def parse_str_date(day, default=datetime.date.today()):
         raise
 
 def commandline_args(desc):
-    passthrough = lambda f: f
     map_options = {
-        'output_dir': passthrough,
-        'leagues': passthrough,
-        'database': passthrough,
         'start': parse_str_date,
         'end': parse_str_date,
     }
@@ -46,7 +42,10 @@ def commandline_args(desc):
     opts_dict = options.__dict__
     for key in opts_dict:
         if opts_dict[key]:
-            dict_options[key] = map_options[key](opts_dict[key])
+            if key not in map_options:
+                dict_options[key] = opts_dict[key]
+            else:
+                dict_options[key] = map_options[key](opts_dict[key])
     return dict_options
 
 def each_day(start_day, end_day):
