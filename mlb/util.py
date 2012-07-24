@@ -46,7 +46,7 @@ def commandline_args(desc):
                 dict_options[key] = opts_dict[key]
             else:
                 dict_options[key] = map_options[key](opts_dict[key])
-    return dict_options
+    return dict_options, args
 
 def each_day(start_day, end_day):
     current_day = start_day
