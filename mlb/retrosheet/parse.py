@@ -8,7 +8,7 @@ import os
 import re
 import subprocess
 
-def game_info(files):
+def game_info(event_files):
     """
     Parse the event files to create game summaries.
     """
@@ -19,7 +19,7 @@ def game_info(files):
     # Need to get the year to tell cwgame what year roster to look up.
     get_year = re.compile('^(\d+)')
     games = 0
-    for f in files:
+    for f in event_files:
         file_dir, base_file = os.path.split(f)
         year = get_year.match(base_file)
         os.chdir(file_dir)
