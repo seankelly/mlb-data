@@ -1,6 +1,6 @@
-from ..database import connect_db
-from ...util import commandline_args
+from mlb.retrosheet.parse import parse_game_info
+from ..util import commandline_args
 
 def run():
-    args = commandline_args('Parse Retrosheet game log files')
-    conn, meta = connect_db(options['database'])
+    args, extra_args = commandline_args('Parse Retrosheet extended game description')
+    parse_game_info(extra_args)
