@@ -4,6 +4,7 @@ All Retrosheet parsing requires Chadwick.
 http://chadwick.sourceforge.net
 """
 
+import csv
 import os
 import re
 import subprocess
@@ -34,3 +35,8 @@ def game_info(event_files):
             info[year].append(game)
         os.chdir(start_cwd)
     return info
+
+def parse_game_info(hdf5_file, event_files):
+    csv_info = game_info(event_files)
+    for year in csv_info:
+        info = csv.reader(csv_info[year])
