@@ -41,7 +41,13 @@ def game_info(event_files):
 def parse_game_info(hdf5_file, event_files):
     h5_file = h5py.File(hdf5_file)
     init_hdf5(h5_file)
+    # All Retrosheet data is for MLB, so create/get that group.
+    mlb_group = h5_file.require_group('/games/mlb')
     csv_info = game_info(event_files)
     for year in csv_info:
         info = csv.reader(csv_info[year])
+        year_group = mlb_group.require_group(year)
+        for game in info:
+            gameid = game[0]
+            game_group = year_group.require_group(gameid)
     h5_file.close()
