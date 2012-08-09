@@ -6,10 +6,12 @@ http://chadwick.sourceforge.net
 
 import csv
 import h5py
+import numpy as np
 import os
 import re
 import subprocess
 from ..hdf5 import init_hdf5
+from .types import cwgame_game_dtype
 
 def game_info(event_files):
     """
@@ -44,10 +46,13 @@ def parse_game_info(hdf5_file, event_files):
     # All Retrosheet data is for MLB, so create/get that group.
     mlb_group = h5_file.require_group('/games/mlb')
     csv_info = game_info(event_files)
+    game_ds_dtype = cwgame_game_dtype()
     for year in csv_info:
         info = csv.reader(csv_info[year])
         year_group = mlb_group.require_group(year)
         for game in info:
             gameid = game[0]
             game_group = year_group.require_group(gameid)
+            np_game = np.array(tuple(game), dtype=game_ds_dtype)
+            ds = game_group.create_dataset('game', data=np_game)
     h5_file.close()
