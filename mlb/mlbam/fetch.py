@@ -20,9 +20,9 @@ from random import uniform
 from ..util import commandline_args, each_day
 
 def fetch():
-    args = commandline_args('Fetch MLB Gameday data.')
+    options, args = commandline_args('Fetch MLB Gameday data.')
     requests.defaults.defaults['max_retries'] = 3
-    f = FetchMLBAM(**args)
+    f = FetchMLBAM(**options)
     f.fetch()
     return f
 
