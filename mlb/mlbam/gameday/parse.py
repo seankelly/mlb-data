@@ -80,6 +80,7 @@ class GamedayParser():
             }
 
     def _parse_inning_hit_xml(self):
+        BIP = []
         try:
             filename = os.path.join(self.directory, 'inning_hit.xml')
             xml_file = etree.parse(filename)
@@ -87,8 +88,8 @@ class GamedayParser():
             # The most likely problem is the file being empty. Other parsing
             # errors could happen though, so catch them all, print a message
             # that there was a problem, and abort parsing the hit data.
+            self.game['bip'] = BIP
             return
-        BIP = []
         for bip in self.find_bip(xml_file):
             bip_x = bip.get('x')
             bip_y = bip.get('y')
