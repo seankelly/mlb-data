@@ -7,7 +7,7 @@ CREATE TABLE mlbam_player (
 CREATE TABLE park (
     id integer PRIMARY KEY, -- use MLB's ids
     name text,
-    location text,
+    location text
 );
 
 CREATE TABLE park_dimension (
