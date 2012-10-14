@@ -26,7 +26,6 @@ def insert_games(conn, meta, games):
     except:
         trans.rollback()
         raise
-    conn.close()
 
 def insert_game(conn, meta, game, parks, teams, players):
     # Check that there's even a game to parse.
