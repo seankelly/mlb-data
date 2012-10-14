@@ -13,10 +13,9 @@ def run():
         for day in each_day(options['start'], options['end']):
             parsed_games.extend(parse_day(dir, day))
         # Since I'm running this on a memory constrained system, flush the
-        # games to a database periodically. 300 games is a little over three
-        # weeks during the middle of the season. The system can handle a full
-        # month, but I get the feeling it's swapping when it hits 400 games.
-        if len(parsed_games) > 300:
+        # games to a database periodically. Currently trying for every 150
+        # games, since 300 was about twice the memory I wanted to use.
+        if len(parsed_games) > 150:
             db.insert_games(conn, meta, parsed_games)
             parsed_games = []
     # And insert any remaining games.
