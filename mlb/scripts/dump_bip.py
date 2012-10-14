@@ -17,8 +17,8 @@ def dump_json(filename, obj):
     json_file.close()
 
 def run():
-    args = commandline_args('Dump BIP into JSON files')
-    conn, meta = connect_db(args['database'])
+    options, args = commandline_args('Dump BIP into JSON files')
+    conn, meta = connect_db(options['database'])
 
     park_table = meta.tables['park']
     park_dim_table = meta.tables['park_dimension']
@@ -101,11 +101,11 @@ def run():
             # No need to write empty files!
             if len(bip_list) > 0:
                 parks[park_id]['years'][year] = True
-                park_file = os.path.join(args['output_dir'],
+                park_file = os.path.join(options['output_dir'],
                         "park-" + str(park_id) + "-" + str(year) + ".json")
                 dump_json(park_file, bip_list)
 
-    parks_file = os.path.join(args['output_dir'], "parks.json")
+    parks_file = os.path.join(options['output_dir'], "parks.json")
     dump_json(parks_file, parks)
 
 if __name__ == "main":
