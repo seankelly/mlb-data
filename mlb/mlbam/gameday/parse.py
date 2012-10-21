@@ -182,12 +182,16 @@ class GamedayParser():
         for bip_idx, bip in enumerate(self.game['bip']):
             while ab_idx < ab_max:
                 ab = self.game['atbat'][ab_idx]
-                ab_idx += 1
                 if (bip['pitcher'] == ab['pitcher'] and
                         bip['batter'] == ab['batter'] and
                         bip['inning'] == ab['inning']):
-                    ab['bip'] = bip_idx
+                    if 'bip' not in ab:
+                        ab['bip'] = [bip_idx]
+                    else:
+                        ab['bip'].append(bip_idx)
                     break
+                else:
+                    ab_idx += 1
 
     def _parse(self):
         game_xml = os.path.join(self.directory, 'game.xml')
