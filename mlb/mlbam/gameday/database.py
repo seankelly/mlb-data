@@ -50,8 +50,11 @@ def insert_ab(conn, meta, gameid, game):
         res = conn.execute(insert_atbat, ab_ins)
         abid = res.inserted_primary_key[0]
         if 'bip' in ab:
-            ab_bip = bip[ab['bip']].copy()
-            ab_bip['atbat'] = abid
+            ab_bip = []
+            for bip_idx in ab['bip']:
+                b = bip[bip_idx].copy()
+                b['atbat'] = abid
+                ab_bip.append(b)
             conn.execute(insert_bip, ab_bip)
         if ab['pitches']:
             insert_pitches(conn, meta, gameid, abid, ab['pitches'])
