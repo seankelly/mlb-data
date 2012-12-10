@@ -31,7 +31,7 @@ def game_info(event_files):
         if year not in info:
             info[year] = []
         os.chdir(file_dir)
-        cwgame = ['cwgame', '-y', year, base_file]
+        cwgame = ['cwgame', '-q', '-y', year, base_file]
         p = subprocess.Popen(cwgame, stdout=subprocess.PIPE,
                                      stderr=subprocess.PIPE)
         # Ignore stderr. I don't want it echoed or merged with stdout.
