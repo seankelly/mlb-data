@@ -51,7 +51,7 @@ def cwgame_game_dtype():
     ]
     return np.dtype(standard_headers)
 
-def cwevent_event_dtype():
+def cwevent_dtype():
     # From cwevent 0.6.0:
     #   -f flist  give list of fields to output
     #               Default is 0-6,8-9,12-13,16-17,26-40,43-45,51,58-61

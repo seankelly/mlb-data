@@ -11,7 +11,7 @@ import os
 import re
 import subprocess
 from ..hdf5 import init_hdf5
-from .types import cwgame_game_dtype, cwgame_event_dtype
+from .types import cwgame_game_dtype, cwevent_dtype
 
 def game_info(event_files):
     """
