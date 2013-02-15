@@ -82,10 +82,15 @@ def parse_pbp_files(event_files):
         cwgame = ['cwgame', '-q', '-y', year, base_file]
         # Same as cwgame, except need to explicitly ask for all of the fields.
         cwevent = ['cwevent', '-q', '-y', year, '-f', '0-96', base_file]
+        # Keep stderr separate from stdout. It will be ignored.
         game_proc = subprocess.Popen(cwgame, stdout=subprocess.PIPE,
                                      stderr=subprocess.PIPE)
         event_proc = subprocess.Popen(cwevent, stdout=subprocess.PIPE,
                                       stderr=subprocess.PIPE)
         # Iterate over each game in from cwgame (one per line) and match up
         # with the games from cwevent (many per game).
+        game_csv = csv.reader(game_proc.stdout.readlines())
+        event_csv = csv.reader(event_proc.stdout.readlines())
+        for game in game_csv:
+            gameid = game[0]
         os.chdir(start_cwd)
