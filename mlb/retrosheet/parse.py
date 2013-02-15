@@ -56,3 +56,36 @@ def parse_game_info(hdf5_file, event_files):
             np_game = np.array(tuple(game), dtype=game_ds_dtype)
             ds = game_group.create_dataset('game', data=np_game)
     h5_file.close()
+
+def event_info(h5_file, event_files):
+    # Passed an already open HDF5 file, so assume it's been set up in the
+    # correct form already.
+    mlb_group = h5_file.require_group('/games/mlb')
+    events = parse_pbp_files(event_files)
+    event_ds_type = cwevent_dtype()
+    for game_events in events:
+        (year, gameid, event_data) = game_events
+
+def parse_pbp_files(event_files):
+    """
+    Parse event files to get the game and event information.
+    """
+    get_year = re.compile('^(\d+)')
+    start_cwd = os.getcwd()
+    for f in event_files:
+        file_dir, base_file = os.path.split(f)
+        Y = get_year.match(base_file)
+        year = Y.group(1)
+        if year not in info:
+            info[year] = []
+        os.chdir(file_dir)
+        cwgame = ['cwgame', '-q', '-y', year, base_file]
+        # Same as cwgame, except need to explicitly ask for all of the fields.
+        cwevent = ['cwevent', '-q', '-y', year, '-f', '0-96', base_file]
+        game_proc = subprocess.Popen(cwgame, stdout=subprocess.PIPE,
+                                     stderr=subprocess.PIPE)
+        event_proc = subprocess.Popen(cwevent, stdout=subprocess.PIPE,
+                                      stderr=subprocess.PIPE)
+        # Iterate over each game in from cwgame (one per line) and match up
+        # with the games from cwevent (many per game).
+        os.chdir(start_cwd)
