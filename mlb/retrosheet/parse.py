@@ -64,7 +64,7 @@ def event_info(h5_file, event_files):
     events = parse_pbp_files(event_files)
     event_ds_type = cwevent_dtype()
     for game_events in events:
-        (year, gameid, event_data) = game_events
+        (year, gameid, game_data, event_data) = game_events
 
 def parse_pbp_files(event_files):
     """
