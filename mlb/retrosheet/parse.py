@@ -76,7 +76,8 @@ def get_info(h5_file, event_files):
         np_game = np.array(game_data, dtype=game_ds_dtype)
         game_ds = game_group.create_dataset('game', data=np_game)
         np_events = np.array(event_data, dtype=event_ds_type)
-        event_ds = game_group.create_dataset('events', data=np_events)
+        event_ds = game_group.create_dataset('events', data=np_events,
+                                             compression='gzip')
 
 def parse_pbp_files(event_files):
     """
