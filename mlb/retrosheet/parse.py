@@ -99,14 +99,14 @@ def parse_pbp_files(event_files):
             gameid = game[0]
             for event in event_csv:
                 if event[0] == gameid:
-                    events.append(event)
+                    events.append(tuple(event))
                 else:
                     break
-            game_data = (year, gameid, game, events)
+            game_data = (year, gameid, tuple(game), events)
             yield game_data
             # Reset events and append the event that caused the for loop to
             # break, assuming it exists.
             events = []
             if event:
-                events.append(event)
+                events.append(tuple(event))
         os.chdir(start_cwd)
