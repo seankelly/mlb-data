@@ -68,8 +68,15 @@ def get_info(h5_file, event_files):
     # correct form already.
     mlb_group = h5_file.require_group('/games/mlb')
     event_ds_type = cwevent_dtype()
+    game_ds_dtype = cwgame_game_dtype()
     for game_events in parse_pbp_files(event_files):
         (year, gameid, game_data, event_data) = game_events
+        year_group = mlb_group.require_group(year)
+        game_group = year_group.require_group(gameid)
+        np_game = np.array(game_data, dtype=game_ds_dtype)
+        game_ds = game_group.create_dataset('game', data=np_game)
+        np_events = np.array(event_data, dtype=event_ds_type)
+        event_ds = game_group.create_dataset('events', data=np_events)
 
 def parse_pbp_files(event_files):
     """
