@@ -89,9 +89,9 @@ def cwevent_dtype():
         ('PR_RUN3_FL', 'a1'), ('REMOVED_FOR_PR_RUN1_ID', 'a8'),
         ('REMOVED_FOR_PR_RUN2_ID', 'a8'), ('REMOVED_FOR_PR_RUN3_ID', 'a8'),
         ('REMOVED_FOR_PH_BAT_ID', 'a8'), ('REMOVED_FOR_PH_BAT_FLD_CD', 'a8'),
-        ('PO1_FLD_CD', 'a8'), ('PO2_FLD_CD', 'a8'),
-        ('PO3_FLD_CD', 'a8'), ('ASS1_FLD_CD', 'a8'), ('ASS2_FLD_CD', 'a8'),
-        ('ASS3_FLD_CD', 'a8'), ('ASS4_FLD_CD', 'a8'), ('ASS5_FLD_CD', 'a8'),
+        ('PO1_FLD_CD', 'i1'), ('PO2_FLD_CD', 'i1'),
+        ('PO3_FLD_CD', 'i1'), ('ASS1_FLD_CD', 'i1'), ('ASS2_FLD_CD', 'i1'),
+        ('ASS3_FLD_CD', 'i1'), ('ASS4_FLD_CD', 'i1'), ('ASS5_FLD_CD', 'i1'),
         ('EVENT_ID', 'i1'),
     ]
 
