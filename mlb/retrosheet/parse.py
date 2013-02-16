@@ -57,13 +57,18 @@ def parse_game_info(hdf5_file, event_files):
             ds = game_group.create_dataset('game', data=np_game)
     h5_file.close()
 
-def event_info(h5_file, event_files):
+def parse_retrosheet(hdf5_file, event_files):
+    h5_file = h5py.File(hdf5_file)
+    init_hdf5(h5_file)
+    get_info(h5_file, event_files)
+    h5_file.close()
+
+def get_info(h5_file, event_files):
     # Passed an already open HDF5 file, so assume it's been set up in the
     # correct form already.
     mlb_group = h5_file.require_group('/games/mlb')
-    events = parse_pbp_files(event_files)
     event_ds_type = cwevent_dtype()
-    for game_events in events:
+    for game_events in parse_pbp_files(event_files):
         (year, gameid, game_data, event_data) = game_events
 
 def parse_pbp_files(event_files):
@@ -76,8 +81,6 @@ def parse_pbp_files(event_files):
         file_dir, base_file = os.path.split(f)
         Y = get_year.match(base_file)
         year = Y.group(1)
-        if year not in info:
-            info[year] = []
         os.chdir(file_dir)
         cwgame = ['cwgame', '-q', '-y', year, base_file]
         # Same as cwgame, except need to explicitly ask for all of the fields.
@@ -91,6 +94,19 @@ def parse_pbp_files(event_files):
         # with the games from cwevent (many per game).
         game_csv = csv.reader(game_proc.stdout.readlines())
         event_csv = csv.reader(event_proc.stdout.readlines())
+        events = []
         for game in game_csv:
             gameid = game[0]
+            for event in event_csv:
+                if event[0] == gameid:
+                    events.append(event)
+                else:
+                    break
+            game_data = (year, gameid, game, events)
+            yield game_data
+            # Reset events and append the event that caused the for loop to
+            # break, assuming it exists.
+            events = []
+            if event:
+                events.append(event)
         os.chdir(start_cwd)
