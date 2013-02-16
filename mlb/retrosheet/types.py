@@ -56,7 +56,7 @@ def cwevent_dtype():
     #   -f flist  give list of fields to output
     #               Default is 0-6,8-9,12-13,16-17,26-40,43-45,51,58-61
     standard_headers = [
-        ('GAME_ID', 'a8'), ('AWAY_TEAM_ID', 'a3'), ('INN_CT', 'i4'),
+        ('GAME_ID', 'a13'), ('AWAY_TEAM_ID', 'a3'), ('INN_CT', 'i4'),
         ('BAT_HOME_ID', 'a8'), ('OUTS_CT', 'i4'), ('BALLS_CT', 'i4'),
         ('STRIKES_CT', 'i4'), ('PITCH_SEQ_TX', 'a32'), ('AWAY_SCORE_CT', 'i4'),
         ('HOME_SCORE_CT', 'i4'), ('BAT_ID', 'a8'), ('BAT_HAND_CD', 'a1'),
