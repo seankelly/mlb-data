@@ -1,0 +1,12 @@
+#!/usr/bin/env python
+
+import sys
+try:
+    import preamble
+except ImportError:
+    sys.exc_clear()
+
+from mlb.scripts.summarize_retrosheet import run
+
+if __name__ == "__main__":
+    run()
