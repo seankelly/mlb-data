@@ -2,7 +2,8 @@
 Summarize Retrosheet stats into game and season summaries, and splits.
 """
 
-from datetime import datetime
+from datetime import date
+import h5py
 
 def summarize_stats(args):
     hdf5_file = args['file']
@@ -13,4 +14,19 @@ def summarize_stats(args):
     h5_file.close()
 
 def summarize_games(h5_file, start, end, leagues=('mlb',)):
-    pass
+    def game_matches(gameid):
+        game_date = [int(gameid[3:7]), int(gameid[7:9]), int(gameid[9:11])]
+        d = date(*game_date)
+        return start <= d <= end
+
+    start_year = start.year
+    end_year = end.year
+    for league in leagues:
+        for year in range(start_year, end_year+1):
+            # Get all games in this league's year that fit between the start
+            # and end dates.
+            path = '/games/{0}/{1}'.format(league, year)
+            if path not in h5_file:
+                continue
+            games = h5_file[path]
+            matching_games = filter(game_matches, games.keys())
