@@ -30,3 +30,11 @@ def summarize_games(h5_file, start, end, leagues=('mlb',)):
                 continue
             games = h5_file[path]
             matching_games = filter(game_matches, games.keys())
+            game_groups = map(lambda g: h5_file[path + '/' + g], matching_games)
+            summarize_years_games(h5_file, game_groups)
+
+def summarize_years_games(h5_file, games):
+    players = {}
+    for game in games:
+        for event in game['events']:
+            pass
