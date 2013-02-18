@@ -37,6 +37,17 @@ def summarize_years_games(h5_file, games):
     players = {}
     for game in games:
         for event in game['events']:
+            involved = players_involved(event)
             batter = event[12]
             pitcher = event[16]
             event_type = event[34]
+
+def players_involved(event):
+    players = {
+        'batter': event[12],
+        'pitcher': event[16],
+    }
+    for pos in range(2, 10):
+        # Catcher, position 2, is at index 18.
+        players[pos] = event[16+pos]
+    return players
