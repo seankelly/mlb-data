@@ -38,8 +38,6 @@ def summarize_years_games(h5_file, games):
     for game in games:
         for event in game['events']:
             involved = players_involved(event)
-            batter = event[12]
-            pitcher = event[16]
             event_type = event[34]
 
 def players_involved(event):
