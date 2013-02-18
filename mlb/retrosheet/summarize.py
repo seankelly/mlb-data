@@ -46,6 +46,7 @@ def players_involved(event):
         'pitcher': event[16],
     }
     for pos in range(2, 10):
-        # Catcher, position 2, is at index 18.
+        # Catcher, position 2, is at index 18. It goes in order through the
+        # right fielder.
         players[pos] = event[16+pos]
     return players
