@@ -35,7 +35,7 @@ def summarize_games(h5_file, start, end, leagues=('mlb',)):
             summarize_years_games(h5_file, game_groups)
 
 def summarize_years_games(h5_file, games):
-    players = d = defaultdict(
+    players = defaultdict(
         lambda: {'offense': defaultdict(int), 'defense': defaultdict(int)}
     )
     for game in games:
