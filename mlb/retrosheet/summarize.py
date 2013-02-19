@@ -108,8 +108,8 @@ def pickoff(stat):
                     orig_player = event[index]
                 else:
                     break
-        players[involved['batter']]['offense'][stat] += 1
-        players[involved[orig_player]]['defense'][stat] += 1
+            players[involved['batter']]['offense'][stat] += 1
+            players[involved[orig_player]]['defense'][stat] += 1
     return handle_event
 
 event_types = {
