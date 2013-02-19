@@ -46,7 +46,7 @@ def summarize_years_games(h5_file, games):
 def players_involved(event):
     players = {
         'batter': event[12],
-        'pitcher': event[16],
+        1: event[16],
     }
     for pos in range(2, 10):
         # Catcher, position 2, is at index 18. It goes in order through the
@@ -62,7 +62,7 @@ def simple(stat):
     Most plays involve stats for just the batter and pitcher.
     """
     def handle_event(players, involved, event):
-        players[involved['pitcher']]['defense'][stat] += 1
+        players[involved[1]]['defense'][stat] += 1
         players[involved['batter']]['offense'][stat] += 1
     return handle_event
 
@@ -73,15 +73,15 @@ def baserunning(stat, offset):
     def handle_event(players, involved, event):
         if event[offset]:
             players[involved['base1']]['offense'][stat] += 1
-            players[involved['pitcher']]['defense'][stat] += 1
+            players[involved[1]]['defense'][stat] += 1
             players[involved[2]]['defense'][stat] += 1
         if event[offset+1]:
             players[involved['base2']]['offense'][stat] += 1
-            players[involved['pitcher']]['defense'][stat] += 1
+            players[involved[1]]['defense'][stat] += 1
             players[involved[2]]['defense'][stat] += 1
         if event[offset+2]:
             players[involved['base3']]['offense'][stat] += 1
-            players[involved['pitcher']]['defense'][stat] += 1
+            players[involved[1]]['defense'][stat] += 1
             players[involved[2]]['defense'][stat] += 1
     return handle_event
 
@@ -91,7 +91,7 @@ def pitching(stat):
     and catcher.
     """
     def handle_event(players, involved, event):
-        players[involved['pitcher']]['defense'][stat] += 1
+        players[involved[1]]['defense'][stat] += 1
         players[involved[2]]['defense'][stat] += 1
     return handle_event
 
