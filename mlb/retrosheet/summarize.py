@@ -59,28 +59,36 @@ def simple(stat):
     """
     Most plays involve stats for just the batter and pitcher.
     """
-    def handle_bip(players, involved):
+    def handle_event(players, involved, event):
         players[involved['pitcher']][stat] += 1
         players[involved['batter']][stat] += 1
-    return handle_bip
+    return handle_event
 
-def baserunning(stat):
+def baserunning(stat, offset):
     """
     For base-running, need to credit the runner and maybe catcher.
     """
-    def handle_bip(players, involved):
-        players[involved['pitcher']][stat] += 1
-        players[involved['batter']][stat] += 1
-    return handle_bip
+    def handle_event(players, involved, event):
+        # Pitcher always gets charged.
+        if event[offset]:
+            players[involved['base1']][stat] += 1
+            players[involved['pitcher']][stat] += 1
+        if event[offset+1]:
+            players[involved['base2']][stat] += 1
+            players[involved['pitcher']][stat] += 1
+        if event[offset+2]:
+            players[involved['base3']][stat] += 1
+            players[involved['pitcher']][stat] += 1
+    return handle_event
 
 event_types = {
     0: None, # Unknown (obsolete)
     1: None, # None (obsolete)
     2: simple('O'), # Generic out
     3: simple('K'),
-    4: None, # Stolen base
+    4: baserunning('SB', 66), # Stolen base
     5: None, # Defensive indifference
-    6: None, # Caught stealing
+    6: baserunning('CS', 69), # Caught stealing
     7: None, # Pickoff error (obsolete)
     8: None, # Pickoff
     9: None, # Wild pitch
@@ -110,4 +118,4 @@ def allot_event_stats(players, event, involved):
     event_type = event[34]
     allot = event_types[event_type]
     if allot:
-        allot(players, involved)
+        allot(players, involved, event)
