@@ -49,4 +49,7 @@ def players_involved(event):
         # Catcher, position 2, is at index 18. It goes in order through the
         # right fielder.
         players[pos] = event[16+pos]
+    for pos in range(1, 4):
+        # Account for the three runners. They are at indices 26-28.
+        players['base' + str(pos)] = event[pos+25]
     return players
