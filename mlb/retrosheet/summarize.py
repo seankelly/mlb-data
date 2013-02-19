@@ -55,6 +55,52 @@ def players_involved(event):
         players['base' + str(pos)] = event[pos+25]
     return players
 
+def simple(stat):
+    """
+    Most plays involve stats for just the batter and pitcher.
+    """
+    def handle_bip(players, involved):
+        players[involved['pitcher']][stat] += 1
+        players[involved['batter']][stat] += 1
+    return handle_bip
+
+def baserunning(stat):
+    """
+    For base-running, need to credit the runner and maybe catcher.
+    """
+    def handle_bip(players, involved):
+        players[involved['pitcher']][stat] += 1
+        players[involved['batter']][stat] += 1
+    return handle_bip
+
+event_types = {
+    0: None, # Unknown (obsolete)
+    1: None, # None (obsolete)
+    2: None, # Generic out
+    3: simple('K'),
+    4: None, # Stolen base
+    5: None, # Defensive indifference
+    6: None, # Caught stealing
+    7: None, # Pickoff error (obsolete)
+    8: None, # Pickoff
+    9: None, # Wild pitch
+    10: None, # Passed ball
+    11: None, # Balk
+    12: None, # Other advance/out advancing
+    13: None, # Foul error
+    14: simple('BB'),
+    15: simple('IBB'),
+    16: simple('IBB'),
+    17: None, # Interference
+    18: None, # Error
+    19: None, # Fielder's choice
+    20: simple('1B'),
+    21: simple('2B'),
+    22: simple('3B'),
+    23: simple('HR'),
+    24: None, # Missing play (obsolete)
+}
+
 def allot_event_stats(players, event, involved):
     """
     Credit/debit the events that happen to the appropriate players.
