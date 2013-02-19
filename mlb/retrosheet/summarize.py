@@ -40,8 +40,7 @@ def summarize_years_games(h5_file, games):
     )
     for game in games:
         for event in game['events']:
-            involved = players_involved(event)
-            allot_event_stats(players, event, involved)
+            allot_event_stats(players, event)
 
 def players_involved(event):
     players = {
@@ -140,7 +139,7 @@ event_types = {
     24: None, # Missing play (obsolete)
 }
 
-def allot_event_stats(players, event, involved):
+def allot_event_stats(players, event):
     """
     Credit/debit the events that happen to the appropriate players.
     The players dict is the overall dict that contains what happens for the
@@ -149,4 +148,5 @@ def allot_event_stats(players, event, involved):
     event_type = event[34]
     allot = event_types[event_type]
     if allot:
+        involved = players_involved(event)
         allot(players, involved, event)
