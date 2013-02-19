@@ -35,7 +35,9 @@ def summarize_games(h5_file, start, end, leagues=('mlb',)):
             summarize_years_games(h5_file, game_groups)
 
 def summarize_years_games(h5_file, games):
-    players = defaultdict(lambda: defaultdict(int))
+    players = d = defaultdict(
+        lambda: {'offense': defaultdict(int), 'defense': defaultdict(int)}
+    )
     for game in games:
         for event in game['events']:
             involved = players_involved(event)
@@ -60,8 +62,8 @@ def simple(stat):
     Most plays involve stats for just the batter and pitcher.
     """
     def handle_event(players, involved, event):
-        players[involved['pitcher']][stat] += 1
-        players[involved['batter']][stat] += 1
+        players[involved['pitcher']]['defense'][stat] += 1
+        players[involved['batter']]['offense'][stat] += 1
     return handle_event
 
 def baserunning(stat, offset):
@@ -70,17 +72,17 @@ def baserunning(stat, offset):
     """
     def handle_event(players, involved, event):
         if event[offset]:
-            players[involved['base1']][stat] += 1
-            players[involved['pitcher']][stat] += 1
-            players[involved[2]][stat] += 1
+            players[involved['base1']]['offense'][stat] += 1
+            players[involved['pitcher']]['defense'][stat] += 1
+            players[involved[2]]['defense'][stat] += 1
         if event[offset+1]:
-            players[involved['base2']][stat] += 1
-            players[involved['pitcher']][stat] += 1
-            players[involved[2]][stat] += 1
+            players[involved['base2']]['offense'][stat] += 1
+            players[involved['pitcher']]['defense'][stat] += 1
+            players[involved[2]]['defense'][stat] += 1
         if event[offset+2]:
-            players[involved['base3']][stat] += 1
-            players[involved['pitcher']][stat] += 1
-            players[involved[2]][stat] += 1
+            players[involved['base3']]['offense'][stat] += 1
+            players[involved['pitcher']]['defense'][stat] += 1
+            players[involved[2]]['defense'][stat] += 1
     return handle_event
 
 event_types = {
