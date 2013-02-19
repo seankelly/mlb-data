@@ -85,6 +85,16 @@ def baserunning(stat, offset):
             players[involved[2]]['defense'][stat] += 1
     return handle_event
 
+def pitching(stat):
+    """
+    For handling events where stats are primarily marked against the pitcher
+    and catcher.
+    """
+    def handle_event(players, involved, event):
+        players[involved['pitcher']]['defense'][stat] += 1
+        players[involved[2]]['defense'][stat] += 1
+    return handle_event
+
 event_types = {
     0: None, # Unknown (obsolete)
     1: None, # None (obsolete)
@@ -95,8 +105,8 @@ event_types = {
     6: baserunning('CS', 69), # Caught stealing
     7: None, # Pickoff error (obsolete)
     8: None, # Pickoff
-    9: None, # Wild pitch
-    10: None, # Passed ball
+    9: pitching('WP'), # Wild pitch
+    10: pitching('PB'), # Passed ball
     11: None, # Balk
     12: None, # Other advance/out advancing
     13: None, # Foul error
