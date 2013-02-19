@@ -32,7 +32,7 @@ def summarize_games(h5_file, start, end, leagues=('mlb',)):
             games = h5_file[path]
             matching_games = filter(game_matches, games.keys())
             game_groups = map(lambda g: h5_file[path + '/' + g], matching_games)
-            summarize_years_games(h5_file, game_groups)
+            affected_players = summarize_years_games(h5_file, game_groups)
 
 def summarize_years_games(h5_file, games):
     players = defaultdict(
@@ -41,6 +41,7 @@ def summarize_years_games(h5_file, games):
     for game in games:
         for event in game['events']:
             allot_event_stats(players, event)
+    return players
 
 def players_involved(event):
     players = {
