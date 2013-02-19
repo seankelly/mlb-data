@@ -95,6 +95,23 @@ def pitching(stat):
         players[involved[2]]['defense'][stat] += 1
     return handle_event
 
+def pickoff(stat):
+    def handle_event(players, involved, event):
+        if event[88] != 0:
+            # Find the originating assist and credit that player for the
+            # pickoff.
+            # Start by assuming the player that made the putout originated the
+            # pickoff.
+            orig_player = event[88]
+            for index in range(91, 96):
+                if event[index] != 0:
+                    orig_player = event[index]
+                else:
+                    break
+        players[involved['batter']]['offense'][stat] += 1
+        players[involved[orig_player]]['defense'][stat] += 1
+    return handle_event
+
 event_types = {
     0: None, # Unknown (obsolete)
     1: None, # None (obsolete)
@@ -104,7 +121,7 @@ event_types = {
     5: None, # Defensive indifference
     6: baserunning('CS', 69), # Caught stealing
     7: None, # Pickoff error (obsolete)
-    8: None, # Pickoff
+    8: pickoff('PO'), # Pickoff
     9: pitching('WP'), # Wild pitch
     10: pitching('PB'), # Passed ball
     11: None, # Balk
