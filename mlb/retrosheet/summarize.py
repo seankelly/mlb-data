@@ -76,7 +76,7 @@ def baserunning(stat):
 event_types = {
     0: None, # Unknown (obsolete)
     1: None, # None (obsolete)
-    2: None, # Generic out
+    2: simple('O'), # Generic out
     3: simple('K'),
     4: None, # Stolen base
     5: None, # Defensive indifference
