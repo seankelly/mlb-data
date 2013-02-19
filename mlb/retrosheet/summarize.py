@@ -39,6 +39,7 @@ def summarize_years_games(h5_file, games):
         for event in game['events']:
             involved = players_involved(event)
             event_type = event[34]
+            allot_event_stats(players, event, involved)
 
 def players_involved(event):
     players = {
@@ -53,3 +54,10 @@ def players_involved(event):
         # Account for the three runners. They are at indices 26-28.
         players['base' + str(pos)] = event[pos+25]
     return players
+
+def allot_event_stats(players, event, involved):
+    """
+    Credit/debit the events that happen to the appropriate players.
+    The players dict is the overall dict that contains what happens for the
+    given players in a year.
+    """
