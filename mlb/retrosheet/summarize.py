@@ -69,16 +69,18 @@ def baserunning(stat, offset):
     For base-running, need to credit the runner and maybe catcher.
     """
     def handle_event(players, involved, event):
-        # Pitcher always gets charged.
         if event[offset]:
             players[involved['base1']][stat] += 1
             players[involved['pitcher']][stat] += 1
+            players[involved[2]][stat] += 1
         if event[offset+1]:
             players[involved['base2']][stat] += 1
             players[involved['pitcher']][stat] += 1
+            players[involved[2]][stat] += 1
         if event[offset+2]:
             players[involved['base3']][stat] += 1
             players[involved['pitcher']][stat] += 1
+            players[involved[2]][stat] += 1
     return handle_event
 
 event_types = {
