@@ -39,7 +39,6 @@ def summarize_years_games(h5_file, games):
     for game in games:
         for event in game['events']:
             involved = players_involved(event)
-            event_type = event[34]
             allot_event_stats(players, event, involved)
 
 def players_involved(event):
@@ -108,3 +107,7 @@ def allot_event_stats(players, event, involved):
     The players dict is the overall dict that contains what happens for the
     given players in a year.
     """
+    event_type = event[34]
+    allot = event_types[event_type]
+    if allot:
+        allot(players, involved)
