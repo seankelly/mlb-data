@@ -37,6 +37,8 @@ def get_stats():
         ('CS', 'i2'),
         ('PO', 'i2'),
         # Fielding stats.
+        ('WP', 'i2'),
+        ('PB', 'i2'),
     ]
 
     return np.dtype(offense), np.dtype(defense)
