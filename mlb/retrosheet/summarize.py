@@ -4,7 +4,9 @@ Summarize Retrosheet stats into game and season summaries, and splits.
 
 from collections import defaultdict
 from datetime import date
+from .stats import get_stats
 import h5py
+import numpy as np
 
 def summarize_stats(args):
     hdf5_file = args['file']
@@ -35,8 +37,12 @@ def summarize_games(h5_file, start, end, leagues=('mlb',)):
             affected_players = summarize_years_games(h5_file, game_groups)
 
 def summarize_years_games(h5_file, games):
+    stats = get_stats()
     players = defaultdict(
-        lambda: {'offense': defaultdict(int), 'defense': defaultdict(int)}
+        lambda: {
+            'offense': np.array((0,)*len(stats[0]), dtype=stats[0]),
+            'defense': np.array((0,)*len(stats[1]), dtype=stats[1]),
+        }
     )
     for game in games:
         for event in game['events']:
