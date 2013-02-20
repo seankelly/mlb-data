@@ -129,7 +129,7 @@ event_types = {
     13: None, # Foul error
     14: simple('BB'),
     15: simple('IBB'),
-    16: simple('IBB'),
+    16: simple('HBP'),
     17: None, # Interference
     18: None, # Error
     19: None, # Fielder's choice
