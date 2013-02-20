@@ -35,6 +35,7 @@ def summarize_games(h5_file, start, end, leagues=('mlb',)):
             matching_games = filter(game_matches, games.keys())
             game_groups = map(lambda g: h5_file[path + '/' + g], matching_games)
             affected_players = summarize_years_games(h5_file, game_groups)
+            merge_players(h5_file, year, affected_players)
 
 def summarize_years_games(h5_file, games):
     stats = get_stats()
@@ -48,6 +49,21 @@ def summarize_years_games(h5_file, games):
         for event in game['events']:
             allot_event_stats(players, event)
     return players
+
+def merge_players(h5_file, year, players):
+    for playerid in players:
+        stats = players[playerid]
+        player_season = '/stats/{0}/{1}'.format(playerid, year)
+        # If there are already stats for this player's season, add the existing
+        # stats to the new stats and store that.
+        if player_season in h5_file:
+            existing_stats = h5_file[player_season]
+            stats['offense'] += existing_stats['offense']
+            stats['defense'] += existing_stats['defense']
+        else:
+            season_group = h5_file.create_group(player_season)
+            season_group.create_dataset('offense', data=stats['offense'])
+            season_group.create_dataset('defense', data=stats['defense'])
 
 def players_involved(event):
     players = {
