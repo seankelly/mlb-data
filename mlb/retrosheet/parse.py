@@ -65,6 +65,7 @@ def parse_pbp_files(event_files):
         event_csv = csv.reader(event_proc.stdout.readlines())
         events = []
         for game in game_csv:
+            sanitize_game_fields(game)
             gameid = game[0]
             for event in event_csv:
                 sanitize_event_fields(event)
@@ -80,6 +81,13 @@ def parse_pbp_files(event_files):
             if event:
                 events.append(tuple(event))
         os.chdir(start_cwd)
+
+def sanitize_game_fields(game):
+    for index in [5]:
+        if game[index] == 'T':
+            game[index] = True
+        elif game[index] == 'F':
+            game[index] = False
 
 # Fix event to mark all flag fields as True or False.
 def sanitize_event_fields(event):
