@@ -67,6 +67,12 @@ def parse_pbp_files(event_files):
         for game in game_csv:
             gameid = game[0]
             for event in event_csv:
+                # Fix event to mark all flag fields as True or False.
+                for index in [30, 31, 35, 36, 37, 38, 39, 41, 42, 44, 45, 48, 49, 66, 67, 68, 69, 70, 71, 72, 73, 74, 78, 79, 80, 81, 82]:
+                    if event[index] == 'T':
+                        event[index] = True
+                    elif event[index] == 'F':
+                        event[index] = False
                 if event[0] == gameid:
                     events.append(tuple(event))
                 else:
