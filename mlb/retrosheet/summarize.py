@@ -138,7 +138,7 @@ event_types = {
     0: None, # Unknown (obsolete)
     1: None, # None (obsolete)
     2: simple('O'), # Generic out
-    3: simple('K'),
+    3: simple('K'), # Strikeout
     4: baserunning('SB', 66), # Stolen base
     5: None, # Defensive indifference
     6: baserunning('CS', 69), # Caught stealing
@@ -149,16 +149,16 @@ event_types = {
     11: None, # Balk
     12: None, # Other advance/out advancing
     13: None, # Foul error
-    14: simple('BB'),
-    15: simple('IBB'),
-    16: simple('HBP'),
+    14: simple('BB'), # Unintentional walk
+    15: simple('IBB'), # Intentional walk
+    16: simple('HBP'), # Hit by pitch
     17: None, # Interference
     18: None, # Error
     19: None, # Fielder's choice
-    20: simple('1B'),
-    21: simple('2B'),
-    22: simple('3B'),
-    23: simple('HR'),
+    20: simple('1B'), # Single
+    21: simple('2B'), # Double
+    22: simple('3B'), # Triple
+    23: simple('HR'), # Home run
     24: None, # Missing play (obsolete)
 }
 
