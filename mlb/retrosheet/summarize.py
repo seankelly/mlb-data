@@ -4,7 +4,7 @@ Summarize Retrosheet stats into game and season summaries, and splits.
 
 from collections import defaultdict
 from datetime import date
-from .stats import get_stats
+from .stats import get_stats_mapping
 import h5py
 import numpy as np
 
@@ -17,6 +17,7 @@ def summarize_stats(args):
     h5_file.close()
 
 def summarize_games(h5_file, start, end, leagues=('mlb',)):
+    populate_stats_map()
     def game_matches(gameid):
         game_date = [int(gameid[3:7]), int(gameid[7:9]), int(gameid[9:11])]
         d = date(*game_date)
@@ -38,11 +39,10 @@ def summarize_games(h5_file, start, end, leagues=('mlb',)):
             merge_players(h5_file, year, affected_players)
 
 def summarize_years_games(h5_file, games):
-    stats = get_stats()
     players = defaultdict(
         lambda: {
-            'offense': np.array((0,)*len(stats[0]), dtype=stats[0]),
-            'defense': np.array((0,)*len(stats[1]), dtype=stats[1]),
+            'offense': np.zeros(shape=len(stat_map['off']), dtype='i2'),
+            'defense': np.zeros(shape=len(stat_map['def']), dtype='i2'),
         }
     )
     for game in games:
@@ -84,8 +84,8 @@ def simple(stat):
     Most plays involve stats for just the batter and pitcher.
     """
     def handle_event(players, involved, event):
-        players[involved[1]]['defense'][stat] += 1
-        players[involved['batter']]['offense'][stat] += 1
+        players[involved[1]]['defense'][stat_map['def'][stat]] += 1
+        players[involved['batter']]['offense'][stat_map['off'][stat]] += 1
     return handle_event
 
 def baserunning(stat, offset):
@@ -93,18 +93,22 @@ def baserunning(stat, offset):
     For base-running, need to credit the runner and maybe catcher.
     """
     def handle_event(players, involved, event):
+        off_idx = stat_map['off'][stat]
+        def_idx = stat_map['def'][stat]
+        pitcher = players[involved[1]]['defense']
+        catcher = players[involved[2]]['offense']
         if event[offset]:
-            players[involved['base1']]['offense'][stat] += 1
-            players[involved[1]]['defense'][stat] += 1
-            players[involved[2]]['defense'][stat] += 1
+            players[involved['base1']]['offense'][off_idx] += 1
+            pitcher[def_idx] += 1
+            catcher[def_idx] += 1
         if event[offset+1]:
-            players[involved['base2']]['offense'][stat] += 1
-            players[involved[1]]['defense'][stat] += 1
-            players[involved[2]]['defense'][stat] += 1
+            players[involved['base2']]['offense'][off_idx] += 1
+            pitcher[def_idx] += 1
+            catcher[def_idx] += 1
         if event[offset+2]:
-            players[involved['base3']]['offense'][stat] += 1
-            players[involved[1]]['defense'][stat] += 1
-            players[involved[2]]['defense'][stat] += 1
+            players[involved['base3']]['offense'][off_idx] += 1
+            pitcher[def_idx] += 1
+            catcher[def_idx] += 1
     return handle_event
 
 def pitching(stat):
@@ -113,8 +117,8 @@ def pitching(stat):
     and catcher.
     """
     def handle_event(players, involved, event):
-        players[involved[1]]['defense'][stat] += 1
-        players[involved[2]]['defense'][stat] += 1
+        players[involved[1]]['defense'][stat_map['def'][stat]] += 1
+        players[involved[2]]['defense'][stat_map['def'][stat]] += 1
     return handle_event
 
 def pickoff(stat):
@@ -130,9 +134,11 @@ def pickoff(stat):
                     orig_player = event[index]
                 else:
                     break
-            players[involved['batter']]['offense'][stat] += 1
-            players[involved[orig_player]]['defense'][stat] += 1
+            players[involved['batter']]['offense'][stat_map['off'][stat]] += 1
+            players[involved[orig_player]]['defense'][stat_map['def'][stat]] += 1
     return handle_event
+
+stat_map = {'off': {}, 'def': {}}
 
 event_types = {
     0: None, # Unknown (obsolete)
@@ -173,3 +179,10 @@ def allot_event_stats(players, event):
     if allot:
         involved = players_involved(event)
         allot(players, involved, event)
+
+def populate_stats_map():
+    offense, defense = get_stats_mapping()
+    for stat in offense:
+        stat_map['off'][stat] = offense[stat]
+    for stat in defense:
+        stat_map['def'][stat] = defense[stat]
