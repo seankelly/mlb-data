@@ -99,7 +99,7 @@ def baserunning(stat, offset):
         off_idx = stat_map['off'][stat]
         def_idx = stat_map['def'][stat]
         pitcher = players[involved[1]]['defense']
-        catcher = players[involved[2]]['offense']
+        catcher = players[involved[2]]['defense']
         if event[offset]:
             players[involved['base1']]['offense'][off_idx] += 1
             pitcher[def_idx] += 1
