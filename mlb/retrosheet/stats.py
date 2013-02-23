@@ -5,40 +5,22 @@ easier to incrementally add stats for the players.
 
 import numpy as np
 
+def get_stats_mapping():
+    offense_stats = ['1B', '2B', '3B', 'HR', 'K', 'BB', 'IBB', 'HBP', 'O', 'SB', 'CS', 'PO',]
+    defense_stats = ['1B', '2B', '3B', 'HR', 'K', 'BB', 'IBB', 'HBP', 'O', 'SB', 'CS', 'PO', 'WP', 'PB',]
+    offense_map = {}
+    defense_map = {}
+    for index, stat in enumerate(offense_stats):
+        offense_map[stat] = index
+    for index, stat in enumerate(defense_stats):
+        defense_map[stat] = index
+    return offense_map, defense_map
+
 def get_stats():
-    offense = [
-        ('1B', 'i2'),
-        ('2B', 'i2'),
-        ('3B', 'i2'),
-        ('HR', 'i2'),
-        ('K', 'i2'),
-        ('BB', 'i2'),
-        ('IBB', 'i2'),
-        ('HBP', 'i2'),
-        ('O', 'i2'),
-        ('SB', 'i2'),
-        ('CS', 'i2'),
-        ('PO', 'i2'),
-    ]
+    offense_map, defense_map = get_stats_mapping()
+    offense = ['i2']*len(offense_map)
     # Pitching and general defense merged together for now. Future obvious
     # optimization will be to split these.
-    defense = [
-        # Matching opposites of offensive stats.
-        ('1B', 'i2'),
-        ('2B', 'i2'),
-        ('3B', 'i2'),
-        ('HR', 'i2'),
-        ('K', 'i2'),
-        ('BB', 'i2'),
-        ('IBB', 'i2'),
-        ('HBP', 'i2'),
-        ('O', 'i2'),
-        ('SB', 'i2'),
-        ('CS', 'i2'),
-        ('PO', 'i2'),
-        # Fielding stats.
-        ('WP', 'i2'),
-        ('PB', 'i2'),
-    ]
+    defense = ['i2']*len(defense_map)
 
     return np.dtype(offense), np.dtype(defense)
