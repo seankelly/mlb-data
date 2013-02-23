@@ -87,18 +87,20 @@ def simple(stat):
     """
     Most plays involve stats for just the batter and pitcher.
     """
+    off_idx = stat_map['off'][stat]
+    def_idx = stat_map['def'][stat]
     def handle_event(players, involved, event):
-        players[involved[1]]['defense'][stat_map['def'][stat]] += 1
-        players[involved['batter']]['offense'][stat_map['off'][stat]] += 1
+        players[involved[1]]['defense'][off_idx] += 1
+        players[involved['batter']]['offense'][def_idx] += 1
     return handle_event
 
 def baserunning(stat, offset):
     """
     For base-running, need to credit the runner and maybe catcher.
     """
+    off_idx = stat_map['off'][stat]
+    def_idx = stat_map['def'][stat]
     def handle_event(players, involved, event):
-        off_idx = stat_map['off'][stat]
-        def_idx = stat_map['def'][stat]
         pitcher = players[involved[1]]['defense']
         catcher = players[involved[2]]['defense']
         if event[offset]:
@@ -120,12 +122,15 @@ def pitching(stat):
     For handling events where stats are primarily marked against the pitcher
     and catcher.
     """
+    def_idx = stat_map['def'][stat]
     def handle_event(players, involved, event):
-        players[involved[1]]['defense'][stat_map['def'][stat]] += 1
-        players[involved[2]]['defense'][stat_map['def'][stat]] += 1
+        players[involved[1]]['defense'][def_idx] += 1
+        players[involved[2]]['defense'][def_idx] += 1
     return handle_event
 
 def pickoff(stat):
+    off_idx = stat_map['off'][stat]
+    def_idx = stat_map['def'][stat]
     def handle_event(players, involved, event):
         if event[88] != 0:
             # Find the originating assist and credit that player for the
