@@ -18,6 +18,7 @@ def summarize_stats(args):
 
 def summarize_games(h5_file, start, end, leagues=('mlb',)):
     populate_stats_map()
+    populate_event_types()
     def game_matches(gameid):
         game_date = [int(gameid[3:7]), int(gameid[7:9]), int(gameid[9:11])]
         d = date(*game_date)
@@ -137,39 +138,12 @@ def pickoff(stat):
                     orig_player = event[index]
                 else:
                     break
-            players[involved['batter']]['offense'][stat_map['off'][stat]] += 1
-            players[involved[orig_player]]['defense'][stat_map['def'][stat]] += 1
+            players[involved['batter']]['offense'][off_idx] += 1
+            players[involved[orig_player]]['defense'][def_idx] += 1
     return handle_event
 
 stat_map = {'off': {}, 'def': {}}
-
-event_types = {
-    0: None, # Unknown (obsolete)
-    1: None, # None (obsolete)
-    2: simple('O'), # Generic out
-    3: simple('K'), # Strikeout
-    4: baserunning('SB', 66), # Stolen base
-    5: None, # Defensive indifference
-    6: baserunning('CS', 69), # Caught stealing
-    7: None, # Pickoff error (obsolete)
-    8: pickoff('PO'), # Pickoff
-    9: pitching('WP'), # Wild pitch
-    10: pitching('PB'), # Passed ball
-    11: None, # Balk
-    12: None, # Other advance/out advancing
-    13: None, # Foul error
-    14: simple('BB'), # Unintentional walk
-    15: simple('IBB'), # Intentional walk
-    16: simple('HBP'), # Hit by pitch
-    17: None, # Interference
-    18: None, # Error
-    19: None, # Fielder's choice
-    20: simple('1B'), # Single
-    21: simple('2B'), # Double
-    22: simple('3B'), # Triple
-    23: simple('HR'), # Home run
-    24: None, # Missing play (obsolete)
-}
+event_types = {}
 
 def allot_event_stats(players, event):
     """
@@ -189,3 +163,33 @@ def populate_stats_map():
         stat_map['off'][stat] = offense[stat]
     for stat in defense:
         stat_map['def'][stat] = defense[stat]
+
+def populate_event_types():
+    global event_types
+    event_types = {
+        0: None, # Unknown (obsolete)
+        1: None, # None (obsolete)
+        2: simple('O'), # Generic out
+        3: simple('K'), # Strikeout
+        4: baserunning('SB', 66), # Stolen base
+        5: None, # Defensive indifference
+        6: baserunning('CS', 69), # Caught stealing
+        7: None, # Pickoff error (obsolete)
+        8: pickoff('PO'), # Pickoff
+        9: pitching('WP'), # Wild pitch
+        10: pitching('PB'), # Passed ball
+        11: None, # Balk
+        12: None, # Other advance/out advancing
+        13: None, # Foul error
+        14: simple('BB'), # Unintentional walk
+        15: simple('IBB'), # Intentional walk
+        16: simple('HBP'), # Hit by pitch
+        17: None, # Interference
+        18: None, # Error
+        19: None, # Fielder's choice
+        20: simple('1B'), # Single
+        21: simple('2B'), # Double
+        22: simple('3B'), # Triple
+        23: simple('HR'), # Home run
+        24: None, # Missing play (obsolete)
+    }
