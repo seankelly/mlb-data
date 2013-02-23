@@ -56,14 +56,17 @@ def merge_players(h5_file, year, players):
         player_season = '/stats/{0}/{1}'.format(playerid, year)
         # If there are already stats for this player's season, add the existing
         # stats to the new stats and store that.
+        offense = stats['offense']
+        defense = stats['defense']
         if player_season in h5_file:
-            existing_stats = h5_file[player_season]
-            stats['offense'] += existing_stats['offense']
-            stats['defense'] += existing_stats['defense']
+            season_group = h5_file[player_season]
+            offense += np.array(season_group['offense'], dtype='i2')
+            defense += np.array(season_group['defense'], dtype='i2')
+            del season_group['offense'], season_group['defense']
         else:
             season_group = h5_file.create_group(player_season)
-            season_group.create_dataset('offense', data=stats['offense'])
-            season_group.create_dataset('defense', data=stats['defense'])
+        season_group.create_dataset('offense', data=stats['offense'])
+        season_group.create_dataset('defense', data=stats['defense'])
 
 def players_involved(event):
     players = {
