@@ -90,8 +90,8 @@ def simple(stat):
     off_idx = stat_map['off'][stat]
     def_idx = stat_map['def'][stat]
     def handle_event(players, involved, event):
-        players[involved[1]]['defense'][off_idx] += 1
-        players[involved['batter']]['offense'][def_idx] += 1
+        players[involved[1]]['defense'][def_idx] += 1
+        players[involved['batter']]['offense'][off_idx] += 1
     return handle_event
 
 def baserunning(stat, offset):
