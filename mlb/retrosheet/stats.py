@@ -18,9 +18,9 @@ def get_stats_mapping():
 
 def get_stats():
     offense_map, defense_map = get_stats_mapping()
-    offense = ['i2']*len(offense_map)
+    offense = tuple(['i2']*len(offense_map))
     # Pitching and general defense merged together for now. Future obvious
     # optimization will be to split these.
-    defense = ['i2']*len(defense_map)
+    defense = tuple(['i2']*len(defense_map))
 
-    return np.dtype(offense), np.dtype(defense)
+    return np.dtype('i2'), np.dtype('i2')
