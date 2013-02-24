@@ -89,6 +89,8 @@ def simple(stat):
     """
     off_idx = stat_map['off'][stat]
     pa_idx = stat_map['off']['PA']
+    run_idx = stat_map['off']['R']
+    rbi_idx = stat_map['off']['RBI']
     # At bats only count for certain events.
     if stat not in ['BB', 'IBB', 'HBP']:
         ab_idx = stat_map['off']['AB']
@@ -101,6 +103,17 @@ def simple(stat):
         players[involved['batter']]['offense'][pa_idx] += 1
         if ab_idx >= 0:
             players[involved['batter']]['offense'][ab_idx] += 1
+        # Check if any runners scored on the event and credit them with a run
+        # scored and the batter with RBI(s).
+        if event[59] >= 4:
+            players[involved['batter']]['offense'][rbi_idx] += 1
+            players[involved['base1']]['offense'][run_idx] += 1
+        if event[60] >= 4:
+            players[involved['batter']]['offense'][rbi_idx] += 1
+            players[involved['base2']]['offense'][run_idx] += 1
+        if event[61] >= 4:
+            players[involved['batter']]['offense'][rbi_idx] += 1
+            players[involved['base3']]['offense'][run_idx] += 1
     return handle_event
 
 def baserunning(stat, offset):
