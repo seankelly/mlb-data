@@ -203,7 +203,7 @@ def populate_event_types():
         15: simple('IBB'), # Intentional walk
         16: simple('HBP'), # Hit by pitch
         17: None, # Interference
-        18: None, # Error
+        18: error('E'), # Error
         19: None, # Fielder's choice
         20: simple('1B'), # Single
         21: simple('2B'), # Double
