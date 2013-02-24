@@ -117,6 +117,19 @@ def baserunning(stat, offset):
             catcher[def_idx] += 1
     return handle_event
 
+def error(stat):
+    def_idx = stat_map['def'][stat]
+    def handle_event(players, involved, event):
+        # 52 is first player with error, 54 is second player, and 56 is third
+        # player with error.
+        if event[52] != 0:
+            players[involved[event[52]]]['defense'][def_idx] += 1
+        if event[54] != 0:
+            players[involved[event[54]]]['defense'][def_idx] += 1
+        if event[56] != 0:
+            players[involved[event[56]]]['defense'][def_idx] += 1
+    return handle_event
+
 def pitching(stat):
     """
     For handling events where stats are primarily marked against the pitcher
