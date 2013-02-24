@@ -88,10 +88,19 @@ def simple(stat):
     Most plays involve stats for just the batter and pitcher.
     """
     off_idx = stat_map['off'][stat]
+    pa_idx = stat_map['off']['PA']
+    # At bats only count for certain events.
+    if stat not in ['BB', 'IBB', 'HBP']:
+        ab_idx = stat_map['off']['AB']
+    else:
+        ab_idx = -1
     def_idx = stat_map['def'][stat]
     def handle_event(players, involved, event):
         players[involved[1]]['defense'][def_idx] += 1
         players[involved['batter']]['offense'][off_idx] += 1
+        players[involved['batter']]['offense'][pa_idx] += 1
+        if ab_idx >= 0:
+            players[involved['batter']]['offense'][ab_idx] += 1
     return handle_event
 
 def baserunning(stat, offset):
