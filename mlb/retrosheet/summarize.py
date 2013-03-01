@@ -101,7 +101,9 @@ def simple(stat):
         players[involved[1]]['defense'][def_idx] += 1
         players[involved['batter']]['offense'][off_idx] += 1
         players[involved['batter']]['offense'][pa_idx] += 1
-        if ab_idx >= 0:
+        # event[38] is the sacrifice hit flag and event[39] is the sacrifice
+        # fly flag.
+        if ab_idx >= 0 and not event[38] and not event[39]:
             players[involved['batter']]['offense'][ab_idx] += 1
         # Check if any runners scored on the event and credit them with a run
         # scored and the batter with RBI(s).
