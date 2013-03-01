@@ -138,7 +138,13 @@ def baserunning(stat, offset):
 
 def error(stat):
     def_idx = stat_map['def'][stat]
+    pa_idx = stat_map['off']['PA']
+    ab_idx = stat_map['off']['AB']
     def handle_event(players, involved, event):
+        if event[36]:
+            # If it's an at bat, then it's also a plate appearance.
+            players[involved['batter']]['offense'][pa_idx] += 1
+            players[involved['batter']]['offense'][ab_idx] += 1
         # 52 is first player with error, 54 is second player, and 56 is third
         # player with error.
         if event[52] != 0:
