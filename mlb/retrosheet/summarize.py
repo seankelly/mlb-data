@@ -102,14 +102,14 @@ def simple(stat):
         # trying to apply historical rules since Chadwick uses modern rules.
         if event[36]:
             players[involved['batter']]['offense'][ab_idx] += 1
+        # Field 43 is the RBI on play.
+        if event[43] > 0:
+            players[involved['batter']]['offense'][rbi_idx] += event[43]
         if event[59] >= 4:
-            players[involved['batter']]['offense'][rbi_idx] += 1
             players[involved['base1']]['offense'][run_idx] += 1
         if event[60] >= 4:
-            players[involved['batter']]['offense'][rbi_idx] += 1
             players[involved['base2']]['offense'][run_idx] += 1
         if event[61] >= 4:
-            players[involved['batter']]['offense'][rbi_idx] += 1
             players[involved['base3']]['offense'][run_idx] += 1
     return handle_event
 
