@@ -91,22 +91,17 @@ def simple(stat):
     pa_idx = stat_map['off']['PA']
     run_idx = stat_map['off']['R']
     rbi_idx = stat_map['off']['RBI']
-    # At bats only count for certain events.
-    if stat not in ['BB', 'IBB', 'HBP']:
-        ab_idx = stat_map['off']['AB']
-    else:
-        ab_idx = -1
+    ab_idx = stat_map['off']['AB']
     def_idx = stat_map['def'][stat]
     def handle_event(players, involved, event):
         players[involved[1]]['defense'][def_idx] += 1
         players[involved['batter']]['offense'][off_idx] += 1
         players[involved['batter']]['offense'][pa_idx] += 1
-        # event[38] is the sacrifice hit flag and event[39] is the sacrifice
-        # fly flag.
-        if ab_idx >= 0 and not event[38] and not event[39]:
+        # Field 36 indicates whether the event counts as an official at bat.
+        # Use that instead of trying to calculate it. The one downside is if
+        # trying to apply historical rules since Chadwick uses modern rules.
+        if event[36]:
             players[involved['batter']]['offense'][ab_idx] += 1
-        # Check if any runners scored on the event and credit them with a run
-        # scored and the batter with RBI(s).
         if event[59] >= 4:
             players[involved['batter']]['offense'][rbi_idx] += 1
             players[involved['base1']]['offense'][run_idx] += 1
