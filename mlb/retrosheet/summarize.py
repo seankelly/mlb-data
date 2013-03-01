@@ -92,6 +92,8 @@ def simple(stat):
     run_idx = stat_map['off']['R']
     rbi_idx = stat_map['off']['RBI']
     ab_idx = stat_map['off']['AB']
+    sh_idx = stat_map['off']['SH']
+    sf_idx = stat_map['off']['SF']
     def_idx = stat_map['def'][stat]
     def handle_event(players, involved, event):
         players[involved[1]]['defense'][def_idx] += 1
@@ -102,6 +104,10 @@ def simple(stat):
         # trying to apply historical rules since Chadwick uses modern rules.
         if event[36]:
             players[involved['batter']]['offense'][ab_idx] += 1
+        if event[38]:
+            players[involved['batter']]['offense'][sh_idx] += 1
+        if event[39]:
+            players[involved['batter']]['offense'][sf_idx] += 1
         # Field 43 is the RBI on play.
         if event[43] > 0:
             players[involved['batter']]['offense'][rbi_idx] += event[43]
