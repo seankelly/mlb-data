@@ -169,9 +169,21 @@ def pitching(stat):
     and catcher.
     """
     def_idx = stat_map['def'][stat]
+    rbi_idx = stat_map['off']['RBI']
+    run_idx = stat_map['off']['R']
     def handle_event(players, involved, event):
         players[involved[1]]['defense'][def_idx] += 1
         players[involved[2]]['defense'][def_idx] += 1
+        if event[43] > 0:
+            players[involved['batter']]['offense'][rbi_idx] += event[43]
+        if event[58] >= 4:
+            players[involved['batter']]['offense'][run_idx] += 1
+        if event[59] >= 4:
+            players[involved['base1']]['offense'][run_idx] += 1
+        if event[60] >= 4:
+            players[involved['base2']]['offense'][run_idx] += 1
+        if event[61] >= 4:
+            players[involved['base3']]['offense'][run_idx] += 1
     return handle_event
 
 def pickoff(stat):
