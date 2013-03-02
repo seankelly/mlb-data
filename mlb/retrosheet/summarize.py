@@ -249,7 +249,7 @@ def populate_event_types():
         16: simple('HBP'), # Hit by pitch
         17: None, # Interference
         18: error('E'), # Error
-        19: None, # Fielder's choice
+        19: simple('O'), # Fielder's choice
         20: simple('1B'), # Single
         21: simple('2B'), # Double
         22: simple('3B'), # Triple
