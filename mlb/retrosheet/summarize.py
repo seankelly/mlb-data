@@ -122,43 +122,6 @@ def players_involved(event):
         players['base' + str(pos)] = event[pos+25]
     return players
 
-def simple(stat):
-    """
-    Most plays involve stats for just the batter and pitcher.
-    """
-    off_idx = stat_map['off'][stat]
-    pa_idx = stat_map['off']['PA']
-    run_idx = stat_map['off']['R']
-    rbi_idx = stat_map['off']['RBI']
-    ab_idx = stat_map['off']['AB']
-    sh_idx = stat_map['off']['SH']
-    sf_idx = stat_map['off']['SF']
-    def_idx = stat_map['def'][stat]
-    def handle_event(players, involved, event):
-        players[involved[1]]['defense'][def_idx] += 1
-        players[involved['batter']]['offense'][off_idx] += 1
-        players[involved['batter']]['offense'][pa_idx] += 1
-        # Field 36 indicates whether the event counts as an official at bat.
-        # Use that instead of trying to calculate it. The one downside is if
-        # trying to apply historical rules since Chadwick uses modern rules.
-        if event[36]:
-            players[involved['batter']]['offense'][ab_idx] += 1
-        if event[38]:
-            players[involved['batter']]['offense'][sh_idx] += 1
-        if event[39]:
-            players[involved['batter']]['offense'][sf_idx] += 1
-        # Field 43 is the RBI on play.
-        if event[43] > 0:
-            players[involved['batter']]['offense'][rbi_idx] += event[43]
-        if event[58] >= 4:
-            players[involved['batter']]['offense'][run_idx] += 1
-        if event[59] >= 4:
-            players[involved['base1']]['offense'][run_idx] += 1
-        if event[60] >= 4:
-            players[involved['base2']]['offense'][run_idx] += 1
-        if event[61] >= 4:
-            players[involved['base3']]['offense'][run_idx] += 1
-    return handle_event
 
 def baserunning(stat, offset):
     """
