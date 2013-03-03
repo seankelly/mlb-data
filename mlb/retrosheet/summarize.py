@@ -55,7 +55,6 @@ def summarize_years_games(h5_file, games):
     for game in games:
         for event in game['events']:
             involved = players_involved(event)
-
             stat = event_types[event[34]]
             if event[34] in pitcher_stats:
                 players[involved[1]]['defense'][stat_map[1][stat]] += 1
