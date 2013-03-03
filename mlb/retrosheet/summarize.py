@@ -46,6 +46,7 @@ def summarize_years_games(h5_file, games):
             'defense': np.zeros(shape=len(stat_map[1]), dtype='i2'),
         }
     )
+    pitcher_stats = set([3, 9, 10, 14, 15, 16, 20, 21, 22, 23])
     baserunning = [
         ['SB', [66, 67, 68]],
         ['CS', [69, 70, 71]],
@@ -55,12 +56,13 @@ def summarize_years_games(h5_file, games):
         for event in game['events']:
             involved = players_involved(event)
 
-            #players[involved[1]]['defense'][def_idx] += 1
+            stat = event_types[event[34]]
+            if event[34] in pitcher_stats:
+                players[involved[1]]['defense'][stat_map[1][stat]] += 1
             #players[involved['batter']]['offense'][off_idx] += 1
             # Field 36 indicates whether the event counts as an official at bat.
             # Use that instead of trying to calculate it. The one downside is if
             # trying to apply historical rules since Chadwick uses modern rules.
-            stat = event_types[event[34]]
             if stat and stat in stat_map[0]:
                 players[involved['batter']]['offense'][stat_map[0][stat]] += 1
             if event[36]:
