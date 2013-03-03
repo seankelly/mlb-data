@@ -93,6 +93,14 @@ def summarize_years_games(h5_file, games):
             # Pitcher accounting.
             if event[34] in pitcher_stats:
                 players[involved[1]]['defense'][stat_map[1][stat]] += 1
+
+            # Defense accounting.
+            if event[52] != 0:
+                players[involved[event[52]]]['defense'][def_idx] += 1
+            if event[54] != 0:
+                players[involved[event[54]]]['defense'][def_idx] += 1
+            if event[56] != 0:
+                players[involved[event[56]]]['defense'][def_idx] += 1
     return players
 
 def merge_players(h5_file, year, players):
