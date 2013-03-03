@@ -226,11 +226,11 @@ def populate_event_types():
         1: None, # None (obsolete)
         2: 'O', # Generic out
         3: 'K', # Strikeout
-        4: 'SB', # Stolen base
+        4: None, #'SB', # Stolen base
         5: None, # Defensive indifference
-        6: 'CS', # Caught stealing
+        6: None, #'CS', # Caught stealing
         7: None, # Pickoff error (obsolete
-        8: 'PO', # Pickoff
+        8: None, #'PO', # Pickoff
         9: 'WP', # Wild pitch
         10: 'PB', # Passed ball
         11: None, # Balk
