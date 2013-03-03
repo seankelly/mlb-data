@@ -56,8 +56,7 @@ def summarize_years_games(h5_file, games):
         for event in game['events']:
             involved = players_involved(event)
             stat = event_types[event[34]]
-            if event[34] in pitcher_stats:
-                players[involved[1]]['defense'][stat_map[1][stat]] += 1
+            # Batter accounting.
             if stat and stat in stat_map[0]:
                 players[involved['batter']]['offense'][stat_map[0][stat]] += 1
             # Field 36 indicates whether the event counts as an official at bat.
@@ -77,6 +76,9 @@ def summarize_years_games(h5_file, games):
             # Field 43 is the RBI on play.
             if event[43] > 0:
                 players[involved['batter']]['offense'][stat_map[0]['RBI']] += event[43]
+
+            # Base running accounting. The batter is included when calculating
+            # scoring a run.
             for idx in [58, 59, 60, 61]:
                 if event[idx] >= 4:
                     base = 'base' + str(idx-58)
@@ -87,6 +89,10 @@ def summarize_years_games(h5_file, games):
                     if event[idx]:
                         base = 'base' + str(idx-offset+1)
                         players[involved[base]]['offense'][stat_map[0][br_stat]] += 1
+
+            # Pitcher accounting.
+            if event[34] in pitcher_stats:
+                players[involved[1]]['defense'][stat_map[1][stat]] += 1
     return players
 
 def merge_players(h5_file, year, players):
