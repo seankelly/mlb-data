@@ -46,6 +46,11 @@ def summarize_years_games(h5_file, games):
             'defense': np.zeros(shape=len(stat_map[1]), dtype='i2'),
         }
     )
+    baserunning = [
+        ['SB', [66, 67, 68]],
+        ['CS', [69, 70, 71]],
+        ['PO', [72, 73, 74]],
+    ]
     for game in games:
         for event in game['events']:
             involved = players_involved(event)
@@ -76,6 +81,12 @@ def summarize_years_games(h5_file, games):
                 if event[idx] >= 4:
                     base = 'base' + str(idx-58)
                     players[involved[base]]['offense'][stat_map[0]['R']] += 1
+            for br_stat, offsets in baserunning:
+                offset = offsets[0]
+                for idx in offsets:
+                    if event[idx]:
+                        base = 'base' + str(idx-offset+1)
+                        players[involved[base]]['offense'][stat_map[0][br_stat]] += 1
     return players
 
 def merge_players(h5_file, year, players):
