@@ -55,6 +55,9 @@ def summarize_years_games(h5_file, games):
             # Field 36 indicates whether the event counts as an official at bat.
             # Use that instead of trying to calculate it. The one downside is if
             # trying to apply historical rules since Chadwick uses modern rules.
+            stat = event_types[event[34]]
+            if stat and stat in stat_map[0]:
+                players[involved['batter']]['offense'][stat_map[0][stat]] += 1
             if event[36]:
                 players[involved['batter']]['offense'][stat_map[0]['PA']] += 1
                 players[involved['batter']]['offense'][stat_map[0]['AB']] += 1
