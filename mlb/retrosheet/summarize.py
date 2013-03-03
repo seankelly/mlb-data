@@ -102,6 +102,7 @@ def merge_players(h5_file, year, players):
 def players_involved(event):
     players = {
         'batter': event[12],
+        'base0': event[12],
         1: event[16],
     }
     for pos in range(2, 10):
