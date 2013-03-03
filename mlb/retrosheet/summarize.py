@@ -74,8 +74,7 @@ def summarize_years_games(h5_file, games):
             elif 14 <= event[34] <= 16:
                 players[involved['batter']]['offense'][stat_map[0]['PA']] += 1
             # Field 43 is the RBI on play.
-            if event[43] > 0:
-                players[involved['batter']]['offense'][stat_map[0]['RBI']] += event[43]
+            players[involved['batter']]['offense'][stat_map[0]['RBI']] += event[43]
 
             # Base running accounting. The batter is included when calculating
             # scoring a run.
