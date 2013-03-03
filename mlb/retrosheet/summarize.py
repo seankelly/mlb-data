@@ -124,29 +124,6 @@ def players_involved(event):
     return players
 
 
-def baserunning(stat, offset):
-    """
-    For base-running, need to credit the runner and maybe catcher.
-    """
-    off_idx = stat_map['off'][stat]
-    def_idx = stat_map['def'][stat]
-    def handle_event(players, involved, event):
-        pitcher = players[involved[1]]['defense']
-        catcher = players[involved[2]]['defense']
-        if event[offset]:
-            players[involved['base1']]['offense'][off_idx] += 1
-            pitcher[def_idx] += 1
-            catcher[def_idx] += 1
-        if event[offset+1]:
-            players[involved['base2']]['offense'][off_idx] += 1
-            pitcher[def_idx] += 1
-            catcher[def_idx] += 1
-        if event[offset+2]:
-            players[involved['base3']]['offense'][off_idx] += 1
-            pitcher[def_idx] += 1
-            catcher[def_idx] += 1
-    return handle_event
-
 def error(stat):
     def_idx = stat_map['def'][stat]
     pa_idx = stat_map['off']['PA']
