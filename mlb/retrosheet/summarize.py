@@ -82,6 +82,14 @@ def summarize_years_games(h5_file, games):
                 if event[idx] >= 4:
                     base = 'base' + str(idx-58)
                     players[involved[base]]['offense'][stat_map[0]['R']] += 1
+                    if idx > 58:
+                        charged_pitcher = event[75+idx-59]
+                    else:
+                        charged_pitcher = involved[1]
+                    players[charged_pitcher]['defense'][stat_map[1]['R']] += 1
+                    # Code of 5 means the run is unearned.
+                    if event[idx] != 5:
+                        players[charged_pitcher]['defense'][stat_map[1]['ER']] += 1
             for br_stat, offsets in baserunning:
                 offset = offsets[0]
                 for idx in offsets:

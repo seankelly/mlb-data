@@ -7,7 +7,7 @@ import numpy as np
 
 def get_stats_mapping():
     offense_stats = ['PA', 'AB', 'R', '1B', '2B', '3B', 'HR', 'ROE', 'RBI', 'K', 'BB', 'IBB', 'HBP', 'O', 'SF', 'SH', 'SB', 'CS', 'PO',]
-    defense_stats = ['1B', '2B', '3B', 'HR', 'K', 'BB', 'IBB', 'HBP', 'O', 'SB', 'CS', 'PO', 'WP', 'PB', 'E']
+    defense_stats = ['O', 'R', 'ER', 'K', 'BB', 'IBB', 'HBP', 'SB', 'CS', 'PO', 'WP', 'PB', 'E', '1B', '2B', '3B', 'HR']
     offense_map = {}
     defense_map = {}
     for index, stat in enumerate(offense_stats):
