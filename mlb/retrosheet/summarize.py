@@ -232,27 +232,27 @@ def populate_event_types():
     event_types = {
         0: None, # Unknown (obsolete)
         1: None, # None (obsolete)
-        2: simple('O'), # Generic out
-        3: simple('K'), # Strikeout
-        4: baserunning('SB', 66), # Stolen base
+        2: 'O', # Generic out
+        3: 'K', # Strikeout
+        4: 'SB', # Stolen base
         5: None, # Defensive indifference
-        6: baserunning('CS', 69), # Caught stealing
-        7: None, # Pickoff error (obsolete)
-        8: pickoff('PO'), # Pickoff
-        9: pitching('WP'), # Wild pitch
-        10: pitching('PB'), # Passed ball
+        6: 'CS', # Caught stealing
+        7: None, # Pickoff error (obsolete
+        8: 'PO', # Pickoff
+        9: 'WP', # Wild pitch
+        10: 'PB', # Passed ball
         11: None, # Balk
         12: None, # Other advance/out advancing
         13: None, # Foul error
-        14: simple('BB'), # Unintentional walk
-        15: simple('IBB'), # Intentional walk
-        16: simple('HBP'), # Hit by pitch
+        14: 'BB', # Unintentional walk
+        15: 'IBB', # Intentional walk
+        16: 'HBP', # Hit by pitch
         17: None, # Interference
-        18: error('E'), # Error
-        19: simple('O'), # Fielder's choice
-        20: simple('1B'), # Single
-        21: simple('2B'), # Double
-        22: simple('3B'), # Triple
-        23: simple('HR'), # Home run
+        18: 'E', # Error
+        19: 'O', # Fielder's choice
+        20: '1B', # Single
+        21: '2B', # Double
+        22: '3B', # Triple
+        23: 'HR', # Home run
         24: None, # Missing play (obsolete)
     }
