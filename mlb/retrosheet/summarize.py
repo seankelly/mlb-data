@@ -42,8 +42,8 @@ def summarize_games(h5_file, start, end, leagues=('mlb',)):
 def summarize_years_games(h5_file, games):
     players = defaultdict(
         lambda: {
-            'offense': np.zeros(shape=len(stat_map['off']), dtype='i2'),
-            'defense': np.zeros(shape=len(stat_map['def']), dtype='i2'),
+            'offense': np.zeros(shape=len(stat_map[0]), dtype='i2'),
+            'defense': np.zeros(shape=len(stat_map[1]), dtype='i2'),
         }
     )
     pa_idx = stat_map['off']['PA']
@@ -235,15 +235,15 @@ def pickoff(stat):
             players[involved[orig_player]]['defense'][def_idx] += 1
     return handle_event
 
-stat_map = {'off': {}, 'def': {}}
+stat_map = [{}, {}]
 event_types = {}
 
 def populate_stats_map():
     offense, defense = get_stats_mapping()
     for stat in offense:
-        stat_map['off'][stat] = offense[stat]
+        stat_map[0][stat] = offense[stat]
     for stat in defense:
-        stat_map['def'][stat] = defense[stat]
+        stat_map[1][stat] = defense[stat]
 
 def populate_event_types():
     global event_types
