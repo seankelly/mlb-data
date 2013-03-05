@@ -43,10 +43,11 @@ def summarize_years_games(h5_file, games):
     players = defaultdict(
         lambda: {
             'offense': np.zeros(shape=len(stat_map[0]), dtype='i2'),
-            'defense': np.zeros(shape=len(stat_map[1]), dtype='i2'),
+            'pitching': np.zeros(shape=len(stat_map[1]), dtype='i2'),
+            'fielding': np.zeros(shape=len(stat_map[1]), dtype='i2'),
         }
     )
-    pitcher_stats = set([3, 9, 10, 14, 15, 16, 20, 21, 22, 23])
+    pitcher_stats = set([3, 9, 14, 15, 16, 20, 21, 22, 23])
     baserunning = [
         ['SB', [66, 67, 68]],
         ['CS', [69, 70, 71]],
@@ -86,10 +87,10 @@ def summarize_years_games(h5_file, games):
                         charged_pitcher = event[75+idx-59]
                     else:
                         charged_pitcher = involved[1]
-                    players[charged_pitcher]['defense'][stat_map[1]['R']] += 1
+                    players[charged_pitcher]['pitching'][stat_map[1]['R']] += 1
                     # Code of 5 means the run is unearned.
                     if event[idx] != 5:
-                        players[charged_pitcher]['defense'][stat_map[1]['ER']] += 1
+                        players[charged_pitcher]['pitching'][stat_map[1]['ER']] += 1
             for br_stat, offsets in baserunning:
                 offset = offsets[0]
                 for idx in offsets:
@@ -99,18 +100,18 @@ def summarize_years_games(h5_file, games):
 
             # Pitcher accounting.
             if event[34] in pitcher_stats:
-                players[involved[1]]['defense'][stat_map[1][stat]] += 1
+                players[involved[1]]['pitching'][stat_map[1][stat]] += 1
             # Field 40 is number of outs in the event. None of the other stats
             # affect the 'O' field for the pitcher.
-            players[involved[1]]['defense'][stat_map[1]['O']] += event[40]
+            players[involved[1]]['pitching'][stat_map[1]['O']] += event[40]
 
             # Defense accounting.
             if event[52] != 0:
-                players[involved[event[52]]]['defense'][stat_map[1]['E']] += 1
+                players[involved[event[52]]]['fielding'][stat_map[2]['E']] += 1
             if event[54] != 0:
-                players[involved[event[54]]]['defense'][stat_map[1]['E']] += 1
+                players[involved[event[54]]]['fielding'][stat_map[2]['E']] += 1
             if event[56] != 0:
-                players[involved[event[56]]]['defense'][stat_map[1]['E']] += 1
+                players[involved[event[56]]]['fielding'][stat_map[2]['E']] += 1
     return players
 
 def merge_players(h5_file, year, players):
@@ -120,16 +121,19 @@ def merge_players(h5_file, year, players):
         # If there are already stats for this player's season, add the existing
         # stats to the new stats and store that.
         offense = stats['offense']
-        defense = stats['defense']
+        pitching = stats['pitching']
+        fielding = stats['fielding']
         if player_season in h5_file:
             season_group = h5_file[player_season]
             offense += np.array(season_group['offense'], dtype='i2')
-            defense += np.array(season_group['defense'], dtype='i2')
-            del season_group['offense'], season_group['defense']
+            pitching += np.array(season_group['pitching'], dtype='i2')
+            fielding += np.array(season_group['fielding'], dtype='i2')
+            del season_group['offense'], season_group['pitching'], season_group['fielding']
         else:
             season_group = h5_file.create_group(player_season)
         season_group.create_dataset('offense', data=stats['offense'])
-        season_group.create_dataset('defense', data=stats['defense'])
+        season_group.create_dataset('pitching', data=stats['pitching'])
+        season_group.create_dataset('fielding', data=stats['fielding'])
 
 def players_involved(event):
     players = {
