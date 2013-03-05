@@ -166,15 +166,14 @@ def pickoff(stat):
             players[involved[orig_player]]['defense'][def_idx] += 1
     return handle_event
 
-stat_map = [{}, {}]
+stat_map = [{}, {}, {}]
 event_types = {}
 
 def populate_stats_map():
-    offense, defense = get_stats_mapping()
-    for stat in offense:
-        stat_map[0][stat] = offense[stat]
-    for stat in defense:
-        stat_map[1][stat] = defense[stat]
+    stats = get_stats_mapping()
+    for i, what in enumerate(['offense', 'pitching', 'fielding']):
+        for index, stat in enumerate(stats[what]):
+            stat_map[i][stat] = index
 
 def populate_event_types():
     global event_types
