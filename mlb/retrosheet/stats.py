@@ -13,7 +13,7 @@ def get_stats_mapping():
     fielding_map = {}
     stats = {
         'offense': ['PA', 'AB', 'R', '1B', '2B', '3B', 'HR', 'ROE', 'RBI', 'K', 'BB', 'IBB', 'HBP', 'O', 'SF', 'SH', 'SB', 'CS', 'PO',],
-        'pitching': ['O', 'R', 'ER', 'K', 'BB', 'IBB', 'HBP', 'SB', 'CS', 'PO', 'WP', 'PB', 'E', '1B', '2B', '3B', 'HR'],
+        'pitching': ['Year', 'G', 'GS', 'GF', 'CG', 'SHO', 'W', 'L', 'S', 'O', 'R', 'ER', 'K', 'BB', 'IBB', 'HBP', 'SB', 'CS', 'WP', '1B', '2B', '3B', 'HR', 'GDP', 'ROE',],
         'fielding': ['Year', 'Pos', 'Ch', 'PO', 'A', 'E', 'DP', 'SB', 'CS', 'WP', 'PB', 'Pickoff',],
     }
     stat_map = {}
