@@ -176,7 +176,7 @@ event_types = {}
 def populate_stats_map():
     stats = get_stats_mapping()
     for i, what in enumerate(['offense', 'pitching', 'fielding']):
-        for index, stat in enumerate(stats[what]):
+        for stat, index in stats[what].iteritems():
             stat_map[i][stat] = index
 
 def populate_event_types():
