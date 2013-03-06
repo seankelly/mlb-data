@@ -47,7 +47,7 @@ def summarize_years_games(h5_file, games):
             'fielding': np.zeros(shape=len(stat_map[1]), dtype='i2'),
         }
     )
-    pitcher_stats = set([3, 9, 14, 15, 16, 20, 21, 22, 23])
+    pitcher_stats = set([3, 9, 11, 14, 15, 16, 20, 21, 22, 23])
     baserunning = [
         ['SB', [66, 67, 68]],
         ['CS', [69, 70, 71]],
@@ -193,7 +193,7 @@ def populate_event_types():
         8: None, #'PO', # Pickoff
         9: 'WP', # Wild pitch
         10: 'PB', # Passed ball
-        11: None, # Balk
+        11: 'BK', # Balk
         12: None, # Other advance/out advancing
         13: None, # Foul error
         14: 'BB', # Unintentional walk
