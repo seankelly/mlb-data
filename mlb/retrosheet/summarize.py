@@ -112,6 +112,14 @@ def summarize_years_games(h5_file, games):
                 players[involved[event[54]]]['fielding'][stat_map[2]['E']] += 1
             if event[56] != 0:
                 players[involved[event[56]]]['fielding'][stat_map[2]['E']] += 1
+            # Record who got the putout.
+            for idx in xrange(88, 91):
+                if event[idx] != 0:
+                    players[involved[event[idx]]]['fielding'][stat_map[2]['PO']] += 1
+            # Record all of the assists, if any.
+            for idx in xrange(91, 96):
+                if event[idx] != 0:
+                    players[involved[event[idx]]]['fielding'][stat_map[2]['A']] += 1
     return players
 
 def merge_players(h5_file, year, players):
