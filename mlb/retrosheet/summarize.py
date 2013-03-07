@@ -108,6 +108,11 @@ def summarize_years_games(h5_file, games):
                 players[involved[pos]]['fielding'][stat_map[2]['O']] += event[40]
 
             # Defense accounting.
+            # Track WP and PB for catchers.
+            if event[44]:
+                players[involved[2]]['fielding'][stat_map[2]['WP']] += 1
+            if event[45]:
+                players[involved[2]]['fielding'][stat_map[2]['PB']] += 1
             if event[52] != 0:
                 players[involved[event[52]]]['fielding'][stat_map[2]['E']] += 1
             if event[54] != 0:
