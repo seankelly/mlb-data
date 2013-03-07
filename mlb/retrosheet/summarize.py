@@ -112,7 +112,7 @@ def summarize_years_games(h5_file, games):
                 players[involved[event[54]]]['fielding'][stat_map[2]['E']] += 1
             if event[56] != 0:
                 players[involved[event[56]]]['fielding'][stat_map[2]['E']] += 1
-            # Record who got the putout.
+            # Record who got the putouts.
             for idx in xrange(88, 91):
                 if event[idx] != 0:
                     players[involved[event[idx]]]['fielding'][stat_map[2]['PO']] += 1
