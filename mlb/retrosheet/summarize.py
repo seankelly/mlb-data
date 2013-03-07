@@ -116,6 +116,10 @@ def summarize_years_games(h5_file, games):
             for idx in xrange(88, 91):
                 if event[idx] != 0:
                     players[involved[event[idx]]]['fielding'][stat_map[2]['PO']] += 1
+                    # Fields 41 and 42 are the double play and triple play
+                    # turned flags.
+                    if event[41] or event[42]:
+                        players[involved[event[idx]]]['fielding'][stat_map[2]['DP']] += 1
             # Record all of the assists, if any.
             for idx in xrange(91, 96):
                 if event[idx] != 0:
