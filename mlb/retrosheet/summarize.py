@@ -104,6 +104,8 @@ def summarize_years_games(h5_file, games):
             # Field 40 is number of outs in the event. None of the other stats
             # affect the 'O' field for the pitcher.
             players[involved[1]]['pitching'][stat_map[1]['O']] += event[40]
+            for pos in xrange(2, 10):
+                players[involved[pos]]['fielding'][stat_map[2]['O']] += event[40]
 
             # Defense accounting.
             if event[52] != 0:
