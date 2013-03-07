@@ -44,7 +44,7 @@ def summarize_years_games(h5_file, games):
         lambda: {
             'offense': np.zeros(shape=len(stat_map[0]), dtype='i2'),
             'pitching': np.zeros(shape=len(stat_map[1]), dtype='i2'),
-            'fielding': np.zeros(shape=len(stat_map[1]), dtype='i2'),
+            'fielding': np.zeros(shape=len(stat_map[2]), dtype='i2'),
         }
     )
     pitcher_stats = set([3, 9, 11, 14, 15, 16, 20, 21, 22, 23])
