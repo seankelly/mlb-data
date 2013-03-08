@@ -44,7 +44,7 @@ def summarize_years_games(h5_file, games):
         lambda: {
             'offense': np.zeros(shape=len(stat_map[0]), dtype='i2'),
             'pitching': np.zeros(shape=len(stat_map[1]), dtype='i2'),
-            'fielding': np.zeros(shape=len(stat_map[2]), dtype='i2'),
+            'fielding': defaultdict(lambda: np.zeros(shape=len(stat_map[2]), dtype='i2')),
         }
     )
     pitcher_stats = set([3, 9, 11, 14, 15, 16, 20, 21, 22, 23])
@@ -105,32 +105,32 @@ def summarize_years_games(h5_file, games):
             # affect the 'O' field for the pitcher.
             players[involved[1]]['pitching'][stat_map[1]['O']] += event[40]
             for pos in xrange(2, 10):
-                players[involved[pos]]['fielding'][stat_map[2]['O']] += event[40]
+                players[involved[pos]]['fielding'][pos][stat_map[2]['O']] += event[40]
 
             # Defense accounting.
             # Track WP and PB for catchers.
             if event[44]:
-                players[involved[2]]['fielding'][stat_map[2]['WP']] += 1
+                players[involved[2]]['fielding'][2][stat_map[2]['WP']] += 1
             if event[45]:
-                players[involved[2]]['fielding'][stat_map[2]['PB']] += 1
+                players[involved[2]]['fielding'][2][stat_map[2]['PB']] += 1
             if event[52] != 0:
-                players[involved[event[52]]]['fielding'][stat_map[2]['E']] += 1
+                players[involved[event[52]]]['fielding'][event[52]][stat_map[2]['E']] += 1
             if event[54] != 0:
-                players[involved[event[54]]]['fielding'][stat_map[2]['E']] += 1
+                players[involved[event[54]]]['fielding'][event[54]][stat_map[2]['E']] += 1
             if event[56] != 0:
-                players[involved[event[56]]]['fielding'][stat_map[2]['E']] += 1
+                players[involved[event[56]]]['fielding'][event[56]][stat_map[2]['E']] += 1
             # Record who got the putouts.
             for idx in xrange(88, 91):
                 if event[idx] != 0:
-                    players[involved[event[idx]]]['fielding'][stat_map[2]['PO']] += 1
+                    players[involved[event[idx]]]['fielding'][event[idx]][stat_map[2]['PO']] += 1
                     # Fields 41 and 42 are the double play and triple play
                     # turned flags.
                     if event[41] or event[42]:
-                        players[involved[event[idx]]]['fielding'][stat_map[2]['DP']] += 1
+                        players[involved[event[idx]]]['fielding'][event[idx]][stat_map[2]['DP']] += 1
             # Record all of the assists, if any.
             for idx in xrange(91, 96):
                 if event[idx] != 0:
-                    players[involved[event[idx]]]['fielding'][stat_map[2]['A']] += 1
+                    players[involved[event[idx]]]['fielding'][event[idx]][stat_map[2]['A']] += 1
     return players
 
 def merge_players(h5_file, year, players):
