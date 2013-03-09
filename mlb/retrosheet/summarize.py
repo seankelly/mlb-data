@@ -140,24 +140,19 @@ def merge_players(h5_file, year, players):
         player_season = '/stats/{0}/{1}'.format(playerid, year)
         # If there are already stats for this player's season, add the existing
         # stats to the new stats and store that.
-        offense = stats['offense']
-        pitching = stats['pitching']
-        fielding = stats['fielding']
         if player_season in h5_file:
             season_group = h5_file[player_season]
-            offense += np.array(season_group['offense'], dtype='i2')
-            pitching += np.array(season_group['pitching'], dtype='i2')
-            fielding = merge_fielding(season_group['fielding'], stats['fielding'])
+            stats['offense'] += np.array(season_group['offense'], dtype='i2')
+            stats['pitching'] += np.array(season_group['pitching'], dtype='i2')
+            stats['fielding'] = merge_fielding(season_group['fielding'], stats['fielding'])
             del season_group['offense'], season_group['pitching'], season_group['fielding']
         else:
             season_group = h5_file.create_group(player_season)
-            fielding = merge_fielding({}, stats['fielding'])
-        season_group.create_dataset('fielding', data=fielding)
-        # Don't write offense of pitching data if there isn't any.
-        if np.sum(offense) != 0:
-            season_group.create_dataset('offense', data=offense)
-        if np.sum(pitching) != 0:
-            season_group.create_dataset('pitching', data=pitching)
+            stats['fielding'] = merge_fielding({}, stats['fielding'])
+        # Don't write stats if they're all zero.
+        for k in stats:
+            if np.sum(stats[k]) != 0:
+                season_group.create_dataset(k, data=stats[k])
 
 def merge_fielding(existing_stats, fielding):
     """
