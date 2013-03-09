@@ -173,7 +173,7 @@ def merge_fielding(existing_stats, fielding):
         if pos in old:
             merged[i] += old[pos]
         if pos in fielding:
-                merged[i] += fielding[pos]
+            merged[i] += fielding[pos]
         merged[i][stat_map[2]['Pos']] = pos
     return merged
 
