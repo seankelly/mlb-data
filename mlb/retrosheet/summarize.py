@@ -152,9 +152,12 @@ def merge_players(h5_file, year, players):
         else:
             season_group = h5_file.create_group(player_season)
             fielding = merge_fielding({}, stats['fielding'])
-        season_group.create_dataset('offense', data=offense)
-        season_group.create_dataset('pitching', data=pitching)
         season_group.create_dataset('fielding', data=fielding)
+        # Don't write offense of pitching data if there isn't any.
+        if np.sum(offense) != 0:
+            season_group.create_dataset('offense', data=offense)
+        if np.sum(pitching) != 0:
+            season_group.create_dataset('pitching', data=pitching)
 
 def merge_fielding(existing_stats, fielding):
     """
