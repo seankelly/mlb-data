@@ -4,6 +4,7 @@ Summarize Retrosheet stats into game and season summaries, and splits.
 
 from collections import defaultdict
 from datetime import date
+from itertools import chain
 from .stats import get_stats_mapping
 import h5py
 import numpy as np
@@ -146,13 +147,35 @@ def merge_players(h5_file, year, players):
             season_group = h5_file[player_season]
             offense += np.array(season_group['offense'], dtype='i2')
             pitching += np.array(season_group['pitching'], dtype='i2')
-            fielding += np.array(season_group['fielding'], dtype='i2')
+            fielding = merge_fielding(season_group['fielding'], stats['fielding'])
             del season_group['offense'], season_group['pitching'], season_group['fielding']
         else:
             season_group = h5_file.create_group(player_season)
-        season_group.create_dataset('offense', data=stats['offense'])
-        season_group.create_dataset('pitching', data=stats['pitching'])
-        season_group.create_dataset('fielding', data=stats['fielding'])
+            fielding = merge_fielding({}, stats['fielding'])
+        season_group.create_dataset('offense', data=offense)
+        season_group.create_dataset('pitching', data=pitching)
+        season_group.create_dataset('fielding', data=fielding)
+
+def merge_fielding(existing_stats, fielding):
+    """
+    Merge an existing multi-dimension array in existing_stats of fielding data
+    with a dict representation of the new fielding data in fielding.
+    """
+    # Expand the existing fielding data into a dict representation to make it
+    # easier to merge the two.
+    old = {}
+    for pos in existing_stats:
+        old[pos[stat_map[2]['Pos']]] = pos
+    positions = set(chain(fielding.keys(), old.keys()))
+    merged = np.zeros(shape=(len(positions), len(stat_map[2])), dtype='i2')
+    ordered_pos = sorted(list(positions))
+    for i, pos in enumerate(ordered_pos):
+        if pos in old:
+            merged[i] += old[pos]
+        if pos in fielding:
+                merged[i] += fielding[pos]
+        merged[i][stat_map[2]['Pos']] = pos
+    return merged
 
 def players_involved(event):
     players = {
