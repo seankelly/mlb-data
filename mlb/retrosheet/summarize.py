@@ -47,18 +47,18 @@ def summarize_years_games(h5_file, path, games):
             'fielding': defaultdict(lambda: np.zeros(shape=len(stat_map[2]), dtype='i2')),
         }
     )
-    pitcher_stats = set([3, 9, 11, 14, 15, 16, 20, 21, 22, 23])
-    baserunning = [
-        ['SB', [66, 67, 68]],
-        ['CS', [69, 70, 71]],
-        ['PO', [72, 73, 74]],
-    ]
     for game in games:
         h5_game = h5_file[path + '/' + game]
         summarize_game_events(players, h5_game['events'])
     return players
 
 def summarize_game_events(players, events):
+    pitcher_stats = set([3, 9, 11, 14, 15, 16, 20, 21, 22, 23])
+    baserunning = [
+        ['SB', [66, 67, 68]],
+        ['CS', [69, 70, 71]],
+        ['PO', [72, 73, 74]],
+    ]
     for event in events:
         involved = players_involved(event)
         stat = event_types[event[34]]
