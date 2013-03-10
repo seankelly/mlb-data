@@ -175,6 +175,16 @@ def summarize_game_events(players, events):
             if event[idx] != 0:
                 pos = event[idx]
                 players[involved[pos]]['fielding'][pos][stat_map[2]['A']] += 1
+    # To end this long, long function, credit each player with a game played at
+    # the appropriate position(s).
+    # Iterate in a specific order.
+    for idx, what in enumerate(['offense', 'pitching']):
+        for player in appeared[what]:
+            players[player][what][stat_map[idx]['G']] += 1
+    # Fielding requires indexing position, so put in a different loop.
+    for pos in xrange(1, 10):
+        for player in appeared['fielding'][pos]:
+            players[player]['fielding'][pos][stat_map[2]['G']] += 1
 
 def merge_players(h5_file, year, players):
     for playerid in players:
