@@ -83,10 +83,18 @@ def summarize_game_events(players, events):
         ['CS', [69, 70, 71]],
         ['PO', [72, 73, 74]],
     ]
+    # Keep track of all players that appear in this game.
+    appeared = {
+        'offense': set(),
+        'pitching': set(),
+        # Ignored zero spot.
+        'fielding': [set() for x in xrange(10)],
+    }
     for event in events:
         involved = players_involved(event)
         stat = event_types[event[34]]
         # Batter accounting.
+        appeared['offense'].add(involved['batter'])
         if stat and stat in stat_map[0]:
             players[involved['batter']]['offense'][stat_map[0][stat]] += 1
         # Field 36 indicates whether the event counts as an official at bat.
@@ -132,9 +140,12 @@ def summarize_game_events(players, events):
             players[involved[1]]['pitching'][stat_map[1][stat]] += 1
         # Field 40 is number of outs in the event. None of the other stats
         # affect the 'O' field for the pitcher.
+        appeared['pitching'].add(involved[1])
         players[involved[1]]['pitching'][stat_map[1]['O']] += event[40]
         for pos in xrange(2, 10):
-            players[involved[pos]]['fielding'][pos][stat_map[2]['O']] += event[40]
+            p = involved[pos]
+            appeared['fielding'][pos].add(p)
+            players[p]['fielding'][pos][stat_map[2]['O']] += event[40]
 
         # Defense accounting.
         # Track WP and PB for catchers.
