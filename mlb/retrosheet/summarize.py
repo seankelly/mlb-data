@@ -36,11 +36,10 @@ def summarize_games(h5_file, start, end, leagues=('mlb',)):
                 continue
             games = h5_file[path]
             matching_games = filter(game_matches, games.keys())
-            game_groups = map(lambda g: h5_file[path + '/' + g], matching_games)
-            affected_players = summarize_years_games(h5_file, game_groups)
+            affected_players = summarize_years_games(h5_file, path, matching_games)
             merge_players(h5_file, year, affected_players)
 
-def summarize_years_games(h5_file, games):
+def summarize_years_games(h5_file, path, games):
     players = defaultdict(
         lambda: {
             'offense': np.zeros(shape=len(stat_map[0]), dtype='i2'),
@@ -55,7 +54,8 @@ def summarize_years_games(h5_file, games):
         ['PO', [72, 73, 74]],
     ]
     for game in games:
-        for event in game['events']:
+        h5_game = h5_file[path + '/' + game]
+        for event in h5_game['events']:
             involved = players_involved(event)
             stat = event_types[event[34]]
             # Batter accounting.
