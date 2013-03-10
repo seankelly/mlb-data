@@ -58,15 +58,23 @@ def summarize_game_info(players, game):
     Summarize data created by cwgame.
     """
     np_game = np.array(game)
+    g = np_game[()]
     # Credit pitcher win, loss, and save.
-    players[np_game[()][42]]['pitching'][stat_map[1]['W']] += 1
-    players[np_game[()][43]]['pitching'][stat_map[1]['L']] += 1
-    players[np_game[()][44]]['pitching'][stat_map[1]['S']] += 1
+    players[g[42]]['pitching'][stat_map[1]['W']] += 1
+    players[g[43]]['pitching'][stat_map[1]['L']] += 1
+    players[g[44]]['pitching'][stat_map[1]['S']] += 1
     # Credit game starters and finishers.
-    players[np_game[()][10]]['pitching'][stat_map[1]['GS']] += 1
-    players[np_game[()][11]]['pitching'][stat_map[1]['GS']] += 1
-    players[np_game[()][82]]['pitching'][stat_map[1]['GF']] += 1
-    players[np_game[()][83]]['pitching'][stat_map[1]['GF']] += 1
+    players[g[10]]['pitching'][stat_map[1]['GS']] += 1
+    players[g[11]]['pitching'][stat_map[1]['GS']] += 1
+    # If there's no finishing pitcher, then it's a complete game.
+    for gf_idx, gs_idx, other_score in [[82, 10, 35], [83, 11, 34]]:
+        if g[gf_idx] != '':
+            players[g[gf_idx]]['pitching'][stat_map[1]['GF']] += 1
+        else:
+            players[g[gs_idx]]['pitching'][stat_map[1]['CG']] += 1
+            # Check if it's a shutout.
+            if g[other_score] == 0:
+                players[g[gs_idx]]['pitching'][stat_map[1]['SHO']] += 1
 
 def summarize_game_events(players, events):
     pitcher_stats = set([3, 9, 11, 14, 15, 16, 20, 21, 22, 23])
