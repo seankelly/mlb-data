@@ -118,12 +118,13 @@ def summarize_game_events(players, events):
             players[involved[2]]['fielding'][2][stat_map[2]['WP']] += 1
         if event[45]:
             players[involved[2]]['fielding'][2][stat_map[2]['PB']] += 1
+        error_idx = stat_map[2]['E']
         if event[52] != 0:
-            players[involved[event[52]]]['fielding'][event[52]][stat_map[2]['E']] += 1
+            players[involved[event[52]]]['fielding'][event[52]][error_idx] += 1
         if event[54] != 0:
-            players[involved[event[54]]]['fielding'][event[54]][stat_map[2]['E']] += 1
+            players[involved[event[54]]]['fielding'][event[54]][error_idx] += 1
         if event[56] != 0:
-            players[involved[event[56]]]['fielding'][event[56]][stat_map[2]['E']] += 1
+            players[involved[event[56]]]['fielding'][event[56]][error_idx] += 1
         # Record who got the putouts.
         for idx in xrange(88, 91):
             if event[idx] != 0:
