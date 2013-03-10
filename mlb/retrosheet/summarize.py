@@ -68,7 +68,7 @@ def summarize_game_info(players, game):
     players[g[11]]['pitching'][stat_map[1]['GS']] += 1
     # If there's no finishing pitcher, then it's a complete game.
     for gf_idx, gs_idx, other_score in [[82, 10, 35], [83, 11, 34]]:
-        if g[gf_idx] != '':
+        if g[gf_idx]:
             players[g[gf_idx]]['pitching'][stat_map[1]['GF']] += 1
         else:
             players[g[gs_idx]]['pitching'][stat_map[1]['CG']] += 1
