@@ -55,84 +55,87 @@ def summarize_years_games(h5_file, path, games):
     ]
     for game in games:
         h5_game = h5_file[path + '/' + game]
-        for event in h5_game['events']:
-            involved = players_involved(event)
-            stat = event_types[event[34]]
-            # Batter accounting.
-            if stat and stat in stat_map[0]:
-                players[involved['batter']]['offense'][stat_map[0][stat]] += 1
-            # Field 36 indicates whether the event counts as an official at bat.
-            # Use that instead of trying to calculate it. The one downside is if
-            # trying to apply historical rules since Chadwick uses modern rules.
-            if event[36]:
-                players[involved['batter']]['offense'][stat_map[0]['PA']] += 1
-                players[involved['batter']]['offense'][stat_map[0]['AB']] += 1
-            elif event[38]:
-                players[involved['batter']]['offense'][stat_map[0]['PA']] += 1
-                players[involved['batter']]['offense'][stat_map[0]['SH']] += 1
-            elif event[39]:
-                players[involved['batter']]['offense'][stat_map[0]['PA']] += 1
-                players[involved['batter']]['offense'][stat_map[0]['SF']] += 1
-            elif 14 <= event[34] <= 16:
-                players[involved['batter']]['offense'][stat_map[0]['PA']] += 1
-            # Field 43 is the RBI on play.
-            players[involved['batter']]['offense'][stat_map[0]['RBI']] += event[43]
-
-            # Base running accounting. The batter is included when calculating
-            # scoring a run.
-            for idx in [58, 59, 60, 61]:
-                if event[idx] >= 4:
-                    base = 'base' + str(idx-58)
-                    players[involved[base]]['offense'][stat_map[0]['R']] += 1
-                    if idx > 58:
-                        charged_pitcher = event[75+idx-59]
-                    else:
-                        charged_pitcher = involved[1]
-                    players[charged_pitcher]['pitching'][stat_map[1]['R']] += 1
-                    # Code of 5 means the run is unearned.
-                    if event[idx] != 5:
-                        players[charged_pitcher]['pitching'][stat_map[1]['ER']] += 1
-            for br_stat, offsets in baserunning:
-                offset = offsets[0]
-                for idx in offsets:
-                    if event[idx]:
-                        base = 'base' + str(idx-offset+1)
-                        players[involved[base]]['offense'][stat_map[0][br_stat]] += 1
-
-            # Pitcher accounting.
-            if event[34] in pitcher_stats:
-                players[involved[1]]['pitching'][stat_map[1][stat]] += 1
-            # Field 40 is number of outs in the event. None of the other stats
-            # affect the 'O' field for the pitcher.
-            players[involved[1]]['pitching'][stat_map[1]['O']] += event[40]
-            for pos in xrange(2, 10):
-                players[involved[pos]]['fielding'][pos][stat_map[2]['O']] += event[40]
-
-            # Defense accounting.
-            # Track WP and PB for catchers.
-            if event[44]:
-                players[involved[2]]['fielding'][2][stat_map[2]['WP']] += 1
-            if event[45]:
-                players[involved[2]]['fielding'][2][stat_map[2]['PB']] += 1
-            if event[52] != 0:
-                players[involved[event[52]]]['fielding'][event[52]][stat_map[2]['E']] += 1
-            if event[54] != 0:
-                players[involved[event[54]]]['fielding'][event[54]][stat_map[2]['E']] += 1
-            if event[56] != 0:
-                players[involved[event[56]]]['fielding'][event[56]][stat_map[2]['E']] += 1
-            # Record who got the putouts.
-            for idx in xrange(88, 91):
-                if event[idx] != 0:
-                    players[involved[event[idx]]]['fielding'][event[idx]][stat_map[2]['PO']] += 1
-                    # Fields 41 and 42 are the double play and triple play
-                    # turned flags.
-                    if event[41] or event[42]:
-                        players[involved[event[idx]]]['fielding'][event[idx]][stat_map[2]['DP']] += 1
-            # Record all of the assists, if any.
-            for idx in xrange(91, 96):
-                if event[idx] != 0:
-                    players[involved[event[idx]]]['fielding'][event[idx]][stat_map[2]['A']] += 1
+        summarize_game_events(players, h5_game['events'])
     return players
+
+def summarize_game_events(players, events):
+    for event in events:
+        involved = players_involved(event)
+        stat = event_types[event[34]]
+        # Batter accounting.
+        if stat and stat in stat_map[0]:
+            players[involved['batter']]['offense'][stat_map[0][stat]] += 1
+        # Field 36 indicates whether the event counts as an official at bat.
+        # Use that instead of trying to calculate it. The one downside is if
+        # trying to apply historical rules since Chadwick uses modern rules.
+        if event[36]:
+            players[involved['batter']]['offense'][stat_map[0]['PA']] += 1
+            players[involved['batter']]['offense'][stat_map[0]['AB']] += 1
+        elif event[38]:
+            players[involved['batter']]['offense'][stat_map[0]['PA']] += 1
+            players[involved['batter']]['offense'][stat_map[0]['SH']] += 1
+        elif event[39]:
+            players[involved['batter']]['offense'][stat_map[0]['PA']] += 1
+            players[involved['batter']]['offense'][stat_map[0]['SF']] += 1
+        elif 14 <= event[34] <= 16:
+            players[involved['batter']]['offense'][stat_map[0]['PA']] += 1
+        # Field 43 is the RBI on play.
+        players[involved['batter']]['offense'][stat_map[0]['RBI']] += event[43]
+
+        # Base running accounting. The batter is included when calculating
+        # scoring a run.
+        for idx in [58, 59, 60, 61]:
+            if event[idx] >= 4:
+                base = 'base' + str(idx-58)
+                players[involved[base]]['offense'][stat_map[0]['R']] += 1
+                if idx > 58:
+                    charged_pitcher = event[75+idx-59]
+                else:
+                    charged_pitcher = involved[1]
+                players[charged_pitcher]['pitching'][stat_map[1]['R']] += 1
+                # Code of 5 means the run is unearned.
+                if event[idx] != 5:
+                    players[charged_pitcher]['pitching'][stat_map[1]['ER']] += 1
+        for br_stat, offsets in baserunning:
+            offset = offsets[0]
+            for idx in offsets:
+                if event[idx]:
+                    base = 'base' + str(idx-offset+1)
+                    players[involved[base]]['offense'][stat_map[0][br_stat]] += 1
+
+        # Pitcher accounting.
+        if event[34] in pitcher_stats:
+            players[involved[1]]['pitching'][stat_map[1][stat]] += 1
+        # Field 40 is number of outs in the event. None of the other stats
+        # affect the 'O' field for the pitcher.
+        players[involved[1]]['pitching'][stat_map[1]['O']] += event[40]
+        for pos in xrange(2, 10):
+            players[involved[pos]]['fielding'][pos][stat_map[2]['O']] += event[40]
+
+        # Defense accounting.
+        # Track WP and PB for catchers.
+        if event[44]:
+            players[involved[2]]['fielding'][2][stat_map[2]['WP']] += 1
+        if event[45]:
+            players[involved[2]]['fielding'][2][stat_map[2]['PB']] += 1
+        if event[52] != 0:
+            players[involved[event[52]]]['fielding'][event[52]][stat_map[2]['E']] += 1
+        if event[54] != 0:
+            players[involved[event[54]]]['fielding'][event[54]][stat_map[2]['E']] += 1
+        if event[56] != 0:
+            players[involved[event[56]]]['fielding'][event[56]][stat_map[2]['E']] += 1
+        # Record who got the putouts.
+        for idx in xrange(88, 91):
+            if event[idx] != 0:
+                players[involved[event[idx]]]['fielding'][event[idx]][stat_map[2]['PO']] += 1
+                # Fields 41 and 42 are the double play and triple play
+                # turned flags.
+                if event[41] or event[42]:
+                    players[involved[event[idx]]]['fielding'][event[idx]][stat_map[2]['DP']] += 1
+        # Record all of the assists, if any.
+        for idx in xrange(91, 96):
+            if event[idx] != 0:
+                players[involved[event[idx]]]['fielding'][event[idx]][stat_map[2]['A']] += 1
 
 def merge_players(h5_file, year, players):
     for playerid in players:
