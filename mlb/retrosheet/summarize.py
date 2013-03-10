@@ -128,11 +128,12 @@ def summarize_game_events(players, events):
         # Record who got the putouts.
         for idx in xrange(88, 91):
             if event[idx] != 0:
-                players[involved[event[idx]]]['fielding'][event[idx]][stat_map[2]['PO']] += 1
+                player = involved[event[idx]]
+                players[player]['fielding'][event[idx]][stat_map[2]['PO']] += 1
                 # Fields 41 and 42 are the double play and triple play
                 # turned flags.
                 if event[41] or event[42]:
-                    players[involved[event[idx]]]['fielding'][event[idx]][stat_map[2]['DP']] += 1
+                    players[player]['fielding'][event[idx]][stat_map[2]['DP']] += 1
         # Record all of the assists, if any.
         for idx in xrange(91, 96):
             if event[idx] != 0:
