@@ -59,6 +59,13 @@ def summarize_game_info(players, game):
     """
     np_game = np.array(game)
     g = np_game[()]
+    # Credit non-pitchers with a game started.
+    for idx in range(46, 81, 2):
+        pos = g[idx+1]
+        if pos == 1:
+            continue
+        players[g[idx]]['offense'][stat_map[0]['GS']] += 1
+        players[g[idx]]['fielding'][pos][stat_map[2]['GS']] += 1
     # Credit pitcher win, loss, and save.
     players[g[42]]['pitching'][stat_map[1]['W']] += 1
     players[g[43]]['pitching'][stat_map[1]['L']] += 1
