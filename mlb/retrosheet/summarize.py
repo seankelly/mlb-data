@@ -94,14 +94,19 @@ def summarize_game_events(players, events):
     appeared = {
         'offense': set(),
         'pitching': set(),
-        # Ignored zero spot.
-        'fielding': [set() for x in xrange(10)],
+        # Ignore the zero spot.
+        'fielding': [set() for x in xrange(11)],
     }
     for event in events:
         involved = players_involved(event)
         stat = event_types[event[34]]
         # Batter accounting.
         appeared['offense'].add(involved['batter'])
+        # Add the batter for the defensive position. This is the only way to
+        # acount for the DH.
+        # 11 is the PH position.
+        if event[32] <= 10:
+            appeared['fielding'][event[32]].add(involved['batter'])
         if stat and stat in stat_map[0]:
             players[involved['batter']]['offense'][stat_map[0][stat]] += 1
         # Field 36 indicates whether the event counts as an official at bat.
@@ -189,7 +194,7 @@ def summarize_game_events(players, events):
         for player in appeared[what]:
             players[player][what][stat_map[idx]['G']] += 1
     # Fielding requires indexing position, so put in a different loop.
-    for pos in xrange(1, 10):
+    for pos in xrange(1, 11):
         for player in appeared['fielding'][pos]:
             players[player]['fielding'][pos][stat_map[2]['G']] += 1
 
