@@ -12,4 +12,4 @@ def run():
         dir = os.path.join(options['output_dir'], league)
         for day in each_day(options['start'], options['end']):
             parsed_games = parse_day(dir, day)
-            db.insert_games(conn, meta, parsed_games)
+            d.add_games(parsed_games)
