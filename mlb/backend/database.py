@@ -19,7 +19,7 @@ class DB():
         self.conn = conn
         return conn, meta
 
-    def add_games(self, league, games):
+    def add_games(self, games):
         self.load_parks()
         self.load_teams()
         self.load_players()
@@ -44,7 +44,7 @@ class DB():
         gameid = res.inserted_primary_key[0]
         self.insert_ab(gameid, game)
 
-    def insert_ab(gameid, game):
+    def insert_ab(self, gameid, game):
         insert_atbat = self.meta.tables['atbat'].insert()
         insert_bip = self.meta.tables['bip'].insert()
         atbats = game.game['atbat']
@@ -64,7 +64,7 @@ class DB():
             if ab['pitches']:
                 self.insert_pitches(gameid, abid, ab['pitches'])
 
-    def insert_pitches(gameid, abid, pitches):
+    def insert_pitches(self, gameid, abid, pitches):
         insert_pitches = self.meta.tables['raw_pitch'].insert()
         db_pitches = []
         for pitch in pitches:
@@ -75,15 +75,15 @@ class DB():
         self.conn.execute(insert_pitches, db_pitches)
 
     def add_players(self, players):
-        new_players = set(self.players) - players
+        new_players = set(players) - self.players
         if new_players:
             insert_players = self.meta.tables['mlbam_player'].insert()
             plist = []
             for id in new_players:
                 plist.append({'mlbamid': id,
-                    'namefirst': player_list[id]['first'],
-                    'namelast': player_list[id]['last']})
-                players.add(id)
+                    'namefirst': players[id]['first'],
+                    'namelast': players[id]['last']})
+                self.players.add(id)
             self.conn.execute(insert_players, plist)
 
     def load_players(self):
@@ -112,10 +112,10 @@ class DB():
 
     def add_teams(self, teams):
         for key in ['home', 'away']:
-            if team_list[key]['id'] not in teams:
+            if teams[key]['id'] not in teams:
                 insert_team = self.meta.tables['team'].insert()
-                self.conn.execute(insert_team, team_list[key])
-                teams.add(team_list[key]['id'])
+                self.conn.execute(insert_team, teams[key])
+                self.teams.add(teams[key]['id'])
 
     def load_teams(self):
         teamids = set()
