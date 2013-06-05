@@ -1,7 +1,7 @@
 from datetime import datetime
 from sqlalchemy.sql import select, bindparam, func, text, and_
-from ..util import commandline_args
-from ..database import connect_db
+from mlb.util import commandline_args
+from mlb.backend.database import DB
 import json
 import os
 
@@ -18,7 +18,8 @@ def dump_json(filename, obj):
 
 def run():
     options, args = commandline_args('Dump BIP into JSON files')
-    conn, meta = connect_db(options['database'])
+    d = DB()
+    conn, meta = d.connect(options['database'])
 
     park_table = meta.tables['park']
     park_dim_table = meta.tables['park_dimension']

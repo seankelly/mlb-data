@@ -5,7 +5,7 @@ from sqlalchemy import MetaData, create_engine
 from sqlalchemy.sql import select
 
 
-class SQL():
+class DB():
     def __init__(self):
         self.parks = None
         self.players = None
