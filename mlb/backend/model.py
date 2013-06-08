@@ -3,6 +3,13 @@ import sqlalchemy as sa
 class Model():
     metadata = sa.MetaData()
 
+    mlbam_player = sa.Table('mlbam_player', metadata,
+        # Use MLBAM's player ids.
+        sa.Column('mlbamid', sa.Integer, primary_key=True),
+        sa.Column('namefirst', sa.Text),
+        sa.Column('namelast', sa.Text)
+    )
+
     park = sa.Table('park', metadata,
         # Use MLBAM's ids.
         sa.Column('id', sa.Integer, primary_key=True),
