@@ -90,9 +90,10 @@ class Model():
         sa.Column('enhanced', sa.Boolean),
         sa.Column('inning', sa.Integer),
         sa.Column('sequence', sa.Integer),
-        # Count data.
-        sa.Column('balls', sa.Integer),
-        sa.Column('strikes', sa.Integer),
+        # Count data. Constrain the balls and strikes to legal (in MLB at
+        # least) values.
+        sa.Column('balls', sa.Integer, sa.CheckConstraint('balls < 4')),
+        sa.Column('strikes', sa.Integer, sa.CheckConstraint('strikes < 3')),
         sa.Column('des', sa.Text),
         sa.Column('px', sa.Float),
         sa.Column('pz', sa.Float),
