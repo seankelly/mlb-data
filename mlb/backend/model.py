@@ -31,7 +31,8 @@ class Model():
     )
 
     game = sa.Table('game', metadata,
-        sa.Column('id', sa.Integer, primary_key=True),
+        sa.Column('id', sa.Integer, sa.Sequence('game_id_seq'),
+            primary_key=True),
         sa.Column('league', sa.Text),
         sa.Column('home', sa.Integer),
         sa.Column('away', sa.Integer),
@@ -40,7 +41,8 @@ class Model():
     )
 
     atbat = sa.Table('atbat', metadata,
-        sa.Column('id ', sa.Integer, primary_key=True)
+        sa.Column('id ', sa.Integer, sa.Sequence('atbat_id_seq'),
+            primary_key=True)
         sa.Column('game', sa.Integer),
         sa.Column('pitcher', sa.Integer),
         sa.Column('batter', sa.Integer),
@@ -51,7 +53,8 @@ class Model():
     )
 
     bip = sa.Table('bip', metadata,
-        sa.Column('id', sa.Integer, primary_key=True),
+        sa.Column('id', sa.Integer, sa.Sequence('bip_id_seq'),
+            primary_key=True),
         sa.Column('atbat', sa.Integer),
         sa.Column('pitcher', sa.Integer),
         sa.Column('batter', sa.Integer),
@@ -62,7 +65,8 @@ class Model():
     )
 
     raw_pitch = sa.Table('raw_pitch', metadata,
-        sa.Column('id', sa.Integer, primary_key=True),
+        sa.Column('id', sa.Integer, sa.Sequence('raw_pitch_id_seq'),
+            primary_key=True),
         sa.Column('atbat', sa.Integer),
         sa.Column('game', sa.Integer),
         sa.Column('pitcher', sa.Integer),
