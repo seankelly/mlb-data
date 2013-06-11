@@ -50,7 +50,7 @@ class Model():
 
     atbat = sa.Table('atbat', metadata,
         sa.Column('id ', sa.Integer, sa.Sequence('atbat_id_seq'),
-            primary_key=True)
+            primary_key=True),
         sa.Column('game', sa.Integer, sa.ForeignKey('game.id'), nullable=False),
         sa.Column('pitcher', sa.Integer,
             sa.ForeignKey('mlbam_player.mlbam_player'), nullable=False),
