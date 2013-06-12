@@ -1,5 +1,4 @@
-*.pyc
+*.py[cod]
 *.db
-*.swp
 data/
 graphs/
