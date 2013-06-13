@@ -113,7 +113,7 @@ class DB():
 
     def add_teams(self, teams):
         for key in ['home', 'away']:
-            if teams[key]['id'] not in teams:
+            if teams[key]['id'] not in self.teams:
                 insert_team = self.meta.tables['team'].insert()
                 self.conn.execute(insert_team, teams[key])
                 self.teams.add(teams[key]['id'])
