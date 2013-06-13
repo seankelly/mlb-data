@@ -3,21 +3,22 @@ Add parsed Gameday data to the database.
 '''
 from sqlalchemy import MetaData, create_engine
 from sqlalchemy.sql import select
+from mlb.backend.model import Model
 
 
 class DB():
     def __init__(self):
+        self.model = Model()
         self.parks = None
         self.players = None
 
     def connect(self, database):
         engine = create_engine(database)
         conn = engine.connect()
-        meta = MetaData()
-        meta.reflect(bind=conn)
-        self.meta = meta
+        self.model.metadata.create_all(engine)
+        self.meta = self.model.metadata
         self.conn = conn
-        return conn, meta
+        return conn, self.meta
 
     def add_games(self, games):
         self.load_parks()
