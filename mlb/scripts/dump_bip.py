@@ -21,12 +21,12 @@ def run():
     d = DB()
     conn, meta = d.connect(options['database'])
 
-    park_table = meta.tables['park']
-    park_dim_table = meta.tables['park_dimension']
-    bip_table = meta.tables['bip']
-    game_table = meta.tables['game']
-    player_table = meta.tables['mlbam_player']
-    ab_table = meta.tables['atbat']
+    park_table = d.model.park
+    park_dim_table = d.model.park_dimension
+    bip_table = d.model.bip
+    game_table = d.model.game
+    player_table = d.model.mlbam_player
+    ab_table = d.model.atbat
 
     # Arg, postgres requires every column to be in the ORDER BY clause
     park_sql = select([park_table.c.id, park_table.c.name,
