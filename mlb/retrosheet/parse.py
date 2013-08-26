@@ -16,11 +16,11 @@ class RetrosheetParser():
         self.process()
 
     def process(self):
-        for game_events in self.each_php_file():
+        for game_events in self.each_pbp_file():
             (year, gameid, game_data, event_data) = game_events
 
     #def parse_pbp_files(event_files):
-    def each_php_file(self):
+    def each_pbp_file(self):
         """
         Parse event files to get the game and event information.
         """
