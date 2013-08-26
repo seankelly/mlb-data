@@ -205,10 +205,3 @@ class GamedayParser():
         self._parse_inning_hit_xml()
         self._parse_inning_xml()
         self._match_bip()
-
-
-def load_players():
-    player_table = gd.meta.tables['mlbam_player']
-    select_ids = select([player_table.c.mlbamid], player_table.c.mlbamid != None)
-    for row in gd.conn.execute(select_ids):
-        mlbamids.add(row['mlbamid'])
