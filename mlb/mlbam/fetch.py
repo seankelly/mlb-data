@@ -17,7 +17,7 @@ try:
 except ImportError:
     from HTMLParser import HTMLParser
 from random import uniform
-from ..util import commandline_args, each_day
+from mlb.util import commandline_args, each_day
 
 def fetch():
     options, args = commandline_args('Fetch MLB Gameday data.')
