@@ -13,11 +13,14 @@ import subprocess
 class RetrosheetParser():
     def __init__(self, event_files):
         self.event_files = event_files
-        self.process()
+        self.games = []
+
+    def __iter__(self):
+        return self.each_pbp_file()
 
     def process(self):
         for game_events in self.each_pbp_file():
-            (year, gameid, game_data, event_data) = game_events
+            self.games.append(game_events)
 
     #def parse_pbp_files(event_files):
     def each_pbp_file(self):
