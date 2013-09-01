@@ -10,6 +10,11 @@ import re
 import subprocess
 
 
+def parse_files(files):
+    retrogames = RetrosheetParser(files)
+    retrogames.process()
+    return retrogames.games
+
 class RetrosheetParser():
     def __init__(self, event_files):
         self.event_files = event_files
