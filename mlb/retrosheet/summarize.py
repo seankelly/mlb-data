@@ -5,7 +5,7 @@ Summarize Retrosheet stats into game and season summaries, and splits.
 from collections import defaultdict
 from datetime import date
 from itertools import chain
-from .stats import get_stats_mapping
+from mlb.retrosheet.stats import get_stats_mapping
 import h5py
 import numpy as np
 
