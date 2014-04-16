@@ -1,7 +1,7 @@
 """
-All Retrosheet parsing requires Chadwick.
+Code for interfacing with Chadwick utilities.
 
-http://chadwick.sourceforge.net
+Chadwick can be found at: http://chadwick.sourceforge.net.
 """
 
 import csv
@@ -10,24 +10,25 @@ import re
 import subprocess
 
 
-def parse_files(files):
-    retrogames = RetrosheetParser(files)
-    retrogames.process()
-    return retrogames.games
+class Games():
+    pass
 
-class RetrosheetParser():
+class Events():
     def __init__(self, event_files):
         self.event_files = event_files
         self.games = []
 
     def __iter__(self):
+        """
+        Yields one game's events.
+        """
         return self.each_pbp_file()
 
+    # This method needs to go.
     def process(self):
         for game_events in self.each_pbp_file():
             self.games.append(game_events)
 
-    #def parse_pbp_files(event_files):
     def each_pbp_file(self):
         """
         Parse event files to get the game and event information.
@@ -75,17 +76,17 @@ class RetrosheetParser():
                     events.append(tuple(event))
             os.chdir(start_cwd)
 
+    def sanitize_fields(self, l, fields):
+        for index in fields:
+            if l[index] == 'T':
+                l[index] = True
+            elif l[index] == 'F':
+                l[index] = False
+        return l
+
     def sanitize_game_fields(self, game):
-        for index in [5]:
-            if game[index] == 'T':
-                game[index] = True
-            elif game[index] == 'F':
-                game[index] = False
+        return self.sanitize_fields(game, [5])
 
     # Fix event to mark all flag fields as True or False.
     def sanitize_event_fields(self, event):
-        for index in [30, 31, 35, 36, 37, 38, 39, 41, 42, 44, 45, 48, 49, 66, 67, 68, 69, 70, 71, 72, 73, 74, 78, 79, 80, 81, 82]:
-            if event[index] == 'T':
-                event[index] = True
-            elif event[index] == 'F':
-                event[index] = False
+        return self.sanitize_fields(event, [30, 31, 35, 36, 37, 38, 39, 41, 42, 44, 45, 48, 49, 66, 67, 68, 69, 70, 71, 72, 73, 74, 78, 79, 80, 81, 82])
