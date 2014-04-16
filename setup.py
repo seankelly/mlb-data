@@ -18,5 +18,5 @@ setup(name='mlb-data',
             'bin/parse-retrosheet-games',
             'bin/summarize-retrosheet',
         ],
-    requires=['sqlalchemy', 'requests', 'lxml'],
+    install_requires=['lxml', 'numpy', 'requests', 'sqlalchemy'],
     )
