@@ -7,12 +7,6 @@ Usage:
     python dump-bip.py -o path/to/output/ -d 'sqlite:///pfx.db'
 '''
 
-import sys
-try:
-    import preamble
-except ImportError:
-    sys.exc_clear()
-
 from mlb.scripts import dump_bip
 
 dump_bip.run()

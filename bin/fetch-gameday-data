@@ -9,12 +9,6 @@ Usage:
 With no start or end days specified, it will fetch the previous day's data.
 '''
 
-import sys
-try:
-    import preamble
-except ImportError:
-    sys.exc_clear()
-
 import mlb.mlbam.fetch as fetch
 
 if __name__ == "__main__":
