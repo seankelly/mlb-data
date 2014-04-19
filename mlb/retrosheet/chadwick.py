@@ -10,24 +10,15 @@ import re
 import subprocess
 
 
-class Games():
-    pass
-
-class Events():
+class Chadwick():
     def __init__(self, event_files):
         self.event_files = event_files
-        self.games = []
 
     def __iter__(self):
         """
         Yields one game's events.
         """
         return self.each_pbp_file()
-
-    # This method needs to go.
-    def process(self):
-        for game_events in self.each_pbp_file():
-            self.games.append(game_events)
 
     def each_pbp_file(self):
         """
