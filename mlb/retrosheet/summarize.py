@@ -31,33 +31,33 @@ class SeasonSummary():
             'pitching': set(['G', 'GS', 'GF', 'CG', 'SHO', 'W', 'L', 'S', 'O', 'R', 'ER', 'K', 'BB', 'IBB', 'HBP', 'BK', 'SB', 'CS', 'WP', '1B', '2B', '3B', 'HR', 'GDP', 'ROE',]),
             'fielding': set(['G', 'GS', 'Pos', 'O', 'Ch', 'PO', 'A', 'E', 'DP', 'SB', 'CS', 'WP', 'PB', 'Pickoff',]),
         }
-        self.event_types = {
-            0: None, # Unknown (obsolete)
-            1: None, # None (obsolete)
-            2: 'O', # Generic out
-            3: 'K', # Strikeout
-            4: None, #'SB', # Stolen base
-            5: None, # Defensive indifference
-            6: None, #'CS', # Caught stealing
-            7: None, # Pickoff error (obsolete)
-            8: None, #'PO', # Pickoff
-            9: 'WP', # Wild pitch
-            10: 'PB', # Passed ball
-            11: 'BK', # Balk
-            12: None, # Other advance/out advancing
-            13: None, # Foul error
-            14: 'BB', # Unintentional walk
-            15: 'IBB', # Intentional walk
-            16: 'HBP', # Hit by pitch
-            17: None, # Interference
-            18: 'E', # Error
-            19: 'O', # Fielder's choice
-            20: '1B', # Single
-            21: '2B', # Double
-            22: '3B', # Triple
-            23: 'HR', # Home run
-            24: None, # Missing play (obsolete)
-        }
+        self.event_types = [
+            None, # 0: Unknown (obsolete)
+            None, # 1: None (obsolete)
+            'O', # 2: Generic out
+            'K', # 3: Strikeout
+            None, # 4: 'SB', # Stolen base
+            None, # 5: Defensive indifference
+            None, # 6: 'CS', # Caught stealing
+            None, # 7: Pickoff error (obsolete)
+            None, # 8: 'PO', # Pickoff
+            'WP', # 9: Wild pitch
+            'PB', # 10: Passed ball
+            'BK', # 11: Balk
+            None, # 12: Other advance/out advancing
+            None, # 13: Foul error
+            'BB', # 14: Unintentional walk
+            'IBB', # 15: Intentional walk
+            'HBP', # 16: Hit by pitch
+            None, # 17: Interference
+            'E', # 18: Error
+            'O', # 19: Fielder's choice
+            '1B', # 20: Single
+            '2B', # 21: Double
+            '3B', # 22: Triple
+            'HR', # 23: Home run
+            None, # 24: Missing play (obsolete)
+        ]
 
     def process(self, game):
         """
