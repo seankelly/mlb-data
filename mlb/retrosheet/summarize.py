@@ -65,6 +65,7 @@ class SeasonSummary():
         """
         year, gameid, game_info, events = game
         self.summarize_game_info(game_info)
+        self.summarize_game_events(events)
 
     def summarize_game_info(self, game_info):
         """
