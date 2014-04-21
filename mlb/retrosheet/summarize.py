@@ -59,14 +59,14 @@ class SeasonSummary():
             24: None, # Missing play (obsolete)
         }
 
-    def process(game):
+    def process(self, game):
         """
         Process a game's worth of events.
         """
         year, gameid, game_info, events = game
         self.summarize_game_info(game_info)
 
-    def summarize_game_info(self, players, game_info):
+    def summarize_game_info(self, game_info):
         """
         Summarize information about one game from cwgame.
         """
@@ -108,7 +108,7 @@ class SeasonSummary():
             self._summarize_event_batter(event, appeared, involved)
             self._summarize_event_baserunning(event, involved)
             self._summarize_event_pitching(event, appeared, involved)
-            self._summarize_event_defense(event)
+            self._summarize_event_defense(event, involved)
         self._summarize_game_appearances(appeared)
 
     def _summarize_event_batter(self, event, appeared, involved):
@@ -191,6 +191,7 @@ class SeasonSummary():
             players[p]['fielding'][pos]['O'] += event[40]
 
     def _summarize_event_defense(self, event, involved):
+        players = self.players
         # Defense accounting.
         # Track WP and PB for catchers.
         if event[44]:
