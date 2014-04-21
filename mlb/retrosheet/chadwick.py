@@ -84,6 +84,7 @@ class Chadwick():
     # Fix event to mark all flag fields as True or False.
     def sanitize_event_fields(self, event):
         # Boolean fields are generally the ones that end with 'FL' for 'flag'.
-        self.boolify_fields(event, [30, 31, 35, 36, 37, 38, 39, 41, 42, 44, 45, 48, 49, 66, 67, 68, 69, 70, 71, 72, 73, 74, 78, 79, 80, 81, 82])
-        # Integer fields are generally the 'CT' fields.
-        self.intify_fields(event, [2, 4, 5, 6, 8, 9, 40, 43, 51])
+        self.boolify_fields(event, [30, 31, 35, 36, 38, 39, 41, 42, 44, 45, 48, 49, 66, 67, 68, 69, 70, 71, 72, 73, 74, 78, 79, 80, 81, 82])
+        # Integer fields are generally the 'CT' fields, some 'CD' fields, and
+        # one 'ID' field (EVENT_ID).
+        self.intify_fields(event, [2, 4, 5, 6, 8, 9, 32, 33, 34, 37, 40, 43, 46, 51, 52, 54, 56, 58, 59, 60, 61, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96])
