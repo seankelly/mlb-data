@@ -26,6 +26,7 @@ class SeasonSummary():
                 'fielding': defaultdict(lambda: defaultdict(int)),
             }
         )
+        # Only the offense key is used.
         self.stats = {
             'offense': set(['G', 'GS', 'PA', 'AB', 'R', '1B', '2B', '3B', 'HR', 'ROE', 'RBI', 'K', 'BB', 'IBB', 'HBP', 'O', 'SF', 'SH', 'SB', 'CS', 'PO',]),
             'pitching': set(['G', 'GS', 'GF', 'CG', 'SHO', 'W', 'L', 'S', 'O', 'R', 'ER', 'K', 'BB', 'IBB', 'HBP', 'BK', 'SB', 'CS', 'WP', '1B', '2B', '3B', 'HR', 'GDP', 'ROE',]),
