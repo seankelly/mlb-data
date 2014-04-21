@@ -3,9 +3,8 @@ Summarize Retrosheet stats into game and season summaries, and splits.
 """
 
 from collections import defaultdict
-from datetime import date
-from itertools import chain
 from mlb.retrosheet.chadwick import Chadwick
+from itertools import chain
 import numpy as np
 
 def summarize_stats(args, extra_args):
