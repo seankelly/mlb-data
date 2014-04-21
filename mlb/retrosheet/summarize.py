@@ -176,7 +176,7 @@ class SeasonSummary():
 
     def _summarize_event_pitching(self, event, appeared, involved):
         players = self.players
-        # FIXME
+        # These are the indices in event_types that apply to pitchers.
         pitcher_stats = set([3, 9, 11, 14, 15, 16, 20, 21, 22, 23])
         # Pitcher accounting.
         if event[34] in pitcher_stats:
