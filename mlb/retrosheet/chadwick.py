@@ -74,9 +74,16 @@ class Chadwick():
             elif l[index] == 'F':
                 l[index] = False
 
+    def intify_fields(self, l, fields):
+        for index in fields:
+            l[index] = int(l[index])
+
     def sanitize_game_fields(self, game):
         self.boolify_fields(game, [5])
 
     # Fix event to mark all flag fields as True or False.
     def sanitize_event_fields(self, event):
+        # Boolean fields are generally the ones that end with 'FL' for 'flag'.
         self.boolify_fields(event, [30, 31, 35, 36, 37, 38, 39, 41, 42, 44, 45, 48, 49, 66, 67, 68, 69, 70, 71, 72, 73, 74, 78, 79, 80, 81, 82])
+        # Integer fields are generally the 'CT' fields.
+        self.intify_fields(event, [2, 4, 5, 6, 8, 9, 40, 43, 51])
