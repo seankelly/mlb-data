@@ -81,6 +81,7 @@ class Chadwick():
 
     def sanitize_game_fields(self, game):
         self.boolify_fields(game, [5])
+        self.intify_fields(game, [2, 18] + range(24, 42) + range(47, 82, 2))
 
     # Fix event to mark all flag fields as True or False.
     def sanitize_event_fields(self, event):
