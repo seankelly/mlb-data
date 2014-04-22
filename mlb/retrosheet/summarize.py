@@ -4,13 +4,19 @@ Summarize Retrosheet stats into game and season summaries, and splits.
 
 from collections import defaultdict
 from mlb.retrosheet.chadwick import Chadwick
+import csv
+import os.path
+import sys
 from itertools import chain
 import numpy as np
 
 def summarize_stats(args, extra_args):
+    if 'output_dir' not in args:
+        sys.exit("Need to pass an output directory")
     summary = SeasonSummary()
     for game in Chadwick(extra_args):
         summary.process(game)
+    summary.save_summary(args['output_dir'])
 
 class SeasonSummary():
     def __init__(self):
@@ -70,6 +76,31 @@ class SeasonSummary():
         year, gameid, game_info, events = game
         self.summarize_game_info(year, game_info)
         self.summarize_game_events(year, events)
+
+    def save_summary(self, output_directory):
+        offense = csv.writer(open(os.path.join(output_directory, 'offense.txt'), 'a'))
+        pitching = csv.writer(open(os.path.join(output_directory, 'pitching.txt'), 'a'))
+        fielding = csv.writer(open(os.path.join(output_directory, 'fielding.txt'), 'a'))
+
+        sections = (('offense', offense), ('pitching', pitching))
+        for player in self.players:
+            for year, season in self.players[player].iteritems():
+                for section, f in sections:
+                    player_stats = season[section]
+                    if len(player_stats) == 0:
+                        continue
+                    stats = [player_stats[s] for s in sorted(player_stats)]
+                    row = [player, year] + stats
+                    f.writerow(row)
+                # Fielding has to be handled separately due to an additional
+                # level for the position.
+                for pos, season in self.players[player][year]['fielding'].iteritems():
+                    player_stats = season[pos]
+                    if len(player_stats) == 0:
+                        continue
+                    stats = [player_stats[s] for s in sorted(player_stats)]
+                    row = [player, year, pos] + stats
+                    fielding.writerow(row)
 
     def summarize_game_info(self, year, game_info):
         """
