@@ -31,6 +31,7 @@ class Chadwick():
             file_dir, base_file = os.path.split(f)
             Y = get_year.match(base_file)
             year = Y.group(1)
+            int_year = int(year)
             # Since Chadwick requires the roster files to be in the current
             # directory, change directory to the event files to parse before
             # parsing.
@@ -58,7 +59,7 @@ class Chadwick():
                         events.append(tuple(event))
                     else:
                         break
-                game_data = (year, gameid, tuple(game), events)
+                game_data = (int_year, gameid, tuple(game), events)
                 yield game_data
                 # Reset events and append the event that caused the for loop to
                 # break, assuming it exists.
