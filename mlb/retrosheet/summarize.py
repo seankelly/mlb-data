@@ -82,7 +82,7 @@ class SeasonSummary():
         fd = self._summary_files(output_directory, sorted_stats)
         sections = (('offense', fd['offense']), ('pitching', fd['pitching']))
         fielding = fd['fielding']
-        for player in self.players:
+        for player in sorted(self.players):
             for year, season in self.players[player].iteritems():
                 for section, f in sections:
                     if section not in season:
