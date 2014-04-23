@@ -93,8 +93,6 @@ class SeasonSummary():
                     f.writerow(row)
                 # Fielding has to be handled separately due to an additional
                 # level for the position.
-                if 'fielding' not in season:
-                    continue
                 for pos, fielding in season['fielding'].iteritems():
                     stats = [fielding[s] for s in sorted_stats['fielding']]
                     row = [player, year, pos] + stats
