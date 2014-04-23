@@ -85,9 +85,9 @@ class SeasonSummary():
         for player in sorted(self.players):
             for year, season in self.players[player].iteritems():
                 for section, f in sections:
-                    if section not in season:
-                        continue
                     player_stats = season[section]
+                    if not player_stats:
+                        continue
                     stats = [player_stats[s] for s in sorted_stats[section]]
                     row = [player, year] + stats
                     f.writerow(row)
