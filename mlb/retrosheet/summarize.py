@@ -81,7 +81,7 @@ class SeasonSummary():
         sorted_stats = {k: sorted(v) for k, v in self.stats.iteritems()}
         fd = self._summary_files(output_directory, sorted_stats)
         sections = (('offense', fd['offense']), ('pitching', fd['pitching']))
-        fielding = fd['fielding']
+        fielding_file = fd['fielding']
         for player in sorted(self.players):
             for year, season in self.players[player].iteritems():
                 for section, f in sections:
@@ -95,10 +95,10 @@ class SeasonSummary():
                 # level for the position.
                 if 'fielding' not in season:
                     continue
-                for pos, season in self.players[player][year]['fielding'].iteritems():
-                    stats = [season[s] for s in sorted_stats['fielding']]
+                for pos, fielding in season['fielding'].iteritems():
+                    stats = [fielding[s] for s in sorted_stats['fielding']]
                     row = [player, year, pos] + stats
-                    fielding.writerow(row)
+                    fielding_file.writerow(row)
 
     def _summary_files(self, output_directory, sorted_stats):
         fd = {}
