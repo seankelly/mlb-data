@@ -83,22 +83,22 @@ class SeasonSummary():
         fielding = csv.writer(open(os.path.join(output_directory, 'fielding.txt'), 'a'))
 
         sections = (('offense', offense), ('pitching', pitching))
+        sorted_stats = {k: sorted(v) for k, v in self.stats.iteritems()}
         for player in self.players:
             for year, season in self.players[player].iteritems():
                 for section, f in sections:
-                    player_stats = season[section]
-                    if len(player_stats) == 0:
+                    if section not in season:
                         continue
-                    stats = [player_stats[s] for s in sorted(player_stats)]
+                    player_stats = season[section]
+                    stats = [player_stats[s] for s in sorted_stats[section]]
                     row = [player, year] + stats
                     f.writerow(row)
                 # Fielding has to be handled separately due to an additional
                 # level for the position.
+                if 'fielding' not in season:
+                    continue
                 for pos, season in self.players[player][year]['fielding'].iteritems():
-                    player_stats = season[pos]
-                    if len(player_stats) == 0:
-                        continue
-                    stats = [player_stats[s] for s in sorted(player_stats)]
+                    stats = [season[s] for s in sorted_stats['fielding']]
                     row = [player, year, pos] + stats
                     fielding.writerow(row)
 
