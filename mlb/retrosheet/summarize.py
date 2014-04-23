@@ -78,12 +78,10 @@ class SeasonSummary():
         self.summarize_game_events(year, events)
 
     def save_summary(self, output_directory):
-        offense = csv.writer(open(os.path.join(output_directory, 'offense.txt'), 'a'))
-        pitching = csv.writer(open(os.path.join(output_directory, 'pitching.txt'), 'a'))
-        fielding = csv.writer(open(os.path.join(output_directory, 'fielding.txt'), 'a'))
-
-        sections = (('offense', offense), ('pitching', pitching))
         sorted_stats = {k: sorted(v) for k, v in self.stats.iteritems()}
+        fd = self._summary_files(output_directory, sorted_stats)
+        sections = (('offense', fd['offense']), ('pitching', fd['pitching']))
+        fielding = fd['fielding']
         for player in self.players:
             for year, season in self.players[player].iteritems():
                 for section, f in sections:
@@ -101,6 +99,20 @@ class SeasonSummary():
                     stats = [season[s] for s in sorted_stats['fielding']]
                     row = [player, year, pos] + stats
                     fielding.writerow(row)
+
+    def _summary_files(self, output_directory, sorted_stats):
+        fd = {}
+        for what in ['offense', 'pitching', 'fielding']:
+            output_file = os.path.join(output_directory, what + '.txt')
+            write_header = not os.path.exists(output_file)
+            f = csv.writer(open(output_file, 'a'))
+            fd[what] = f
+            if write_header:
+                preamble = ['Player', 'Year']
+                if what == 'fielding':
+                    preamble.append('Pos')
+                f.writerow(preamble + sorted_stats[what])
+        return fd
 
     def summarize_game_info(self, year, game_info):
         """
