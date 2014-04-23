@@ -129,7 +129,8 @@ class SeasonSummary():
         # Credit pitcher win, loss, and save.
         players[game_info[42]][year]['pitching']['W'] += 1
         players[game_info[43]][year]['pitching']['L'] += 1
-        players[game_info[44]][year]['pitching']['S'] += 1
+        if game_info[44]:
+            players[game_info[44]][year]['pitching']['S'] += 1
         # Credit game starters and finishers.
         players[game_info[10]][year]['pitching']['GS'] += 1
         players[game_info[11]][year]['pitching']['GS'] += 1
