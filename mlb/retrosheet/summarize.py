@@ -20,7 +20,7 @@ def summarize_stats(args, extra_args):
 
 class SeasonSummary():
     def __init__(self):
-        # Create nested defaultdicts. The offense and pitching keys contain
+        # Create nested defaultdicts. The batting and pitching keys contain
         # stats accumulated while the player was in that role. Fielding is a
         # dict where the keys are the position and each position has keys for
         # the stats accumulated while the player was at that position.
@@ -29,15 +29,15 @@ class SeasonSummary():
             lambda: defaultdict(
                 # Second step maps type of stats to the stats themselves.
                 lambda: {
-                    'offense': defaultdict(int),
+                    'batting': defaultdict(int),
                     'pitching': defaultdict(int),
                     'fielding': defaultdict(lambda: defaultdict(int)),
                 }
             )
         )
-        # Only the offense key is used.
+        # Only the batting key is used.
         self.stats = {
-            'offense': set(['G', 'GS', 'PA', 'AB', 'R', '1B', '2B', '3B', 'HR', 'ROE', 'RBI', 'K', 'BB', 'IBB', 'HBP', 'O', 'SF', 'SH', 'SB', 'CS', 'PO',]),
+            'batting': set(['G', 'GS', 'PA', 'AB', 'R', '1B', '2B', '3B', 'HR', 'ROE', 'RBI', 'K', 'BB', 'IBB', 'HBP', 'O', 'SF', 'SH', 'SB', 'CS', 'PO',]),
             'pitching': set(['G', 'GS', 'GF', 'CG', 'SHO', 'W', 'L', 'S', 'O', 'R', 'ER', 'K', 'BB', 'IBB', 'HBP', 'BK', 'SB', 'CS', 'WP', '1B', '2B', '3B', 'HR', 'GDP', 'ROE',]),
             'fielding': set(['G', 'GS', 'Pos', 'O', 'Ch', 'PO', 'A', 'E', 'DP', 'SB', 'CS', 'WP', 'PB', 'Pickoff',]),
         }
@@ -80,7 +80,7 @@ class SeasonSummary():
     def save_summary(self, output_directory):
         sorted_stats = {k: sorted(v) for k, v in self.stats.iteritems()}
         fd = self._summary_files(output_directory, sorted_stats)
-        sections = (('offense', fd['offense']), ('pitching', fd['pitching']))
+        sections = (('batting', fd['batting']), ('pitching', fd['pitching']))
         fielding_file = fd['fielding']
         for player in sorted(self.players):
             for year, season in self.players[player].iteritems():
@@ -100,7 +100,7 @@ class SeasonSummary():
 
     def _summary_files(self, output_directory, sorted_stats):
         fd = {}
-        for what in ['offense', 'pitching', 'fielding']:
+        for what in ['batting', 'pitching', 'fielding']:
             output_file = os.path.join(output_directory, what + '.txt')
             write_header = not os.path.exists(output_file)
             f = csv.writer(open(output_file, 'a'))
@@ -122,7 +122,7 @@ class SeasonSummary():
             pos = game_info[idx+1]
             if pos == 1:
                 continue
-            players[game_info[idx]][year]['offense']['GS'] += 1
+            players[game_info[idx]][year]['batting']['GS'] += 1
             players[game_info[idx]][year]['fielding'][pos]['GS'] += 1
         # Credit pitcher win, loss, and save.
         players[game_info[42]][year]['pitching']['W'] += 1
@@ -145,7 +145,7 @@ class SeasonSummary():
     def summarize_game_events(self, year, events):
         # Keep track of all players that appear in this game.
         appeared = {
-            'offense': set(),
+            'batting': set(),
             'pitching': set(),
             # Ignore the zero index. 1-10 are the indices that matter.
             'fielding': [set() for x in xrange(11)],
@@ -162,32 +162,32 @@ class SeasonSummary():
         players = self.players
         batter = involved['batter']
         # Batter accounting.
-        appeared['offense'].add(involved['batter'])
+        appeared['batting'].add(involved['batter'])
         # Add the batter for the defensive position. This is the only way
         # to acount for the DH.
         # 11 is the PH position.
         if event[32] <= 10:
             appeared['fielding'][event[32]].add(involved['batter'])
         stat = self.event_types[event[34]]
-        if stat and stat in self.stats['offense']:
-            players[batter][year]['offense'][stat] += 1
+        if stat and stat in self.stats['batting']:
+            players[batter][year]['batting'][stat] += 1
         # Field 36 indicates whether the event counts as an official at
         # bat. Use that instead of trying to calculate it. The one
         # downside is if trying to apply historical rules since Chadwick
         # uses modern rules.
         if event[36]:
-            players[batter][year]['offense']['PA'] += 1
-            players[batter][year]['offense']['AB'] += 1
+            players[batter][year]['batting']['PA'] += 1
+            players[batter][year]['batting']['AB'] += 1
         elif event[38]:
-            players[batter][year]['offense']['PA'] += 1
-            players[batter][year]['offense']['SH'] += 1
+            players[batter][year]['batting']['PA'] += 1
+            players[batter][year]['batting']['SH'] += 1
         elif event[39]:
-            players[batter][year]['offense']['PA'] += 1
-            players[batter][year]['offense']['SF'] += 1
+            players[batter][year]['batting']['PA'] += 1
+            players[batter][year]['batting']['SF'] += 1
         elif 14 <= event[34] <= 16:
-            players[batter][year]['offense']['PA'] += 1
+            players[batter][year]['batting']['PA'] += 1
         # Field 43 is the RBI on play.
-        players[involved['batter']][year]['offense']['RBI'] += event[43]
+        players[involved['batter']][year]['batting']['RBI'] += event[43]
 
     def _summarize_event_baserunning(self, year, event, involved):
         players = self.players
@@ -197,7 +197,7 @@ class SeasonSummary():
         for idx in [58, 59, 60, 61]:
             if event[idx] >= 4:
                 base = 'base' + str(idx-58)
-                players[involved[base]][year]['offense']['R'] += 1
+                players[involved[base]][year]['batting']['R'] += 1
                 if idx > 58:
                     charged_pitcher = event[75+idx-59]
                 else:
@@ -218,7 +218,7 @@ class SeasonSummary():
             for idx in offsets:
                 if event[idx]:
                     base = 'base' + str(idx-offset+1)
-                    players[involved[base]][year]['offense'][br_stat] += 1
+                    players[involved[base]][year]['batting'][br_stat] += 1
 
     def _summarize_event_pitching(self, year, event, appeared, involved):
         players = self.players
@@ -271,7 +271,7 @@ class SeasonSummary():
         players = self.players
         # Credit each player with a game played at the appropriate position(s).
         # Iterate in a specific order.
-        for idx, what in enumerate(['offense', 'pitching']):
+        for idx, what in enumerate(['batting', 'pitching']):
             for player in appeared[what]:
                 players[player][year][what]['G'] += 1
         # Fielding requires indexing position, so put in a different loop.
@@ -304,10 +304,10 @@ def merge_players(h5_file, year, players):
         # stats to the new stats and store that.
         if player_season in h5_file:
             season_group = h5_file[player_season]
-            stats['offense'] += np.array(season_group['offense'], dtype='i2')
+            stats['batting'] += np.array(season_group['batting'], dtype='i2')
             stats['pitching'] += np.array(season_group['pitching'], dtype='i2')
             stats['fielding'] = merge_fielding(season_group['fielding'], stats['fielding'])
-            del season_group['offense'], season_group['pitching'], season_group['fielding']
+            del season_group['batting'], season_group['pitching'], season_group['fielding']
         else:
             season_group = h5_file.create_group(player_season)
             stats['fielding'] = merge_fielding({}, stats['fielding'])
