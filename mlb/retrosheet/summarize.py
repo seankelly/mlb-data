@@ -161,12 +161,12 @@ class SeasonSummary():
         players = self.players
         batter = involved['batter']
         # Batter accounting.
-        appeared['batting'].add(involved['batter'])
+        appeared['batting'].add(batter)
         # Add the batter for the defensive position. This is the only way
         # to acount for the DH.
         # 11 is the PH position.
         if event[32] <= 10:
-            appeared['fielding'][event[32]].add(involved['batter'])
+            appeared['fielding'][event[32]].add(batter)
         stat = self.event_types[event[34]]
         if stat and stat in self.stats['batting']:
             players[batter][year]['batting'][stat] += 1
@@ -186,7 +186,7 @@ class SeasonSummary():
         elif 14 <= event[34] <= 16:
             players[batter][year]['batting']['PA'] += 1
         # Field 43 is the RBI on play.
-        players[involved['batter']][year]['batting']['RBI'] += event[43]
+        players[batter][year]['batting']['RBI'] += event[43]
 
     def _summarize_event_baserunning(self, year, event, involved):
         players = self.players
